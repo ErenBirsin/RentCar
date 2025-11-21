@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentCarServer.Domain", "src\RentCarServer\RentCarServer.Domain.csproj", "{CC2FD0AE-1A9F-4B9D-B686-C383422A484B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentCarServer.Application", "src\RentCarServer.Application\RentCarServer.Application.csproj", "{991F6F3D-1251-57A7-A730-800927010029}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentCarServer.Infrastructure", "src\RentCarServer.Infrastructure\RentCarServer.Infrastructure.csproj", "{42FC7892-C82E-4435-8CC2-D7D4575FC1DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,22 @@ Global
 		{CC2FD0AE-1A9F-4B9D-B686-C383422A484B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC2FD0AE-1A9F-4B9D-B686-C383422A484B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC2FD0AE-1A9F-4B9D-B686-C383422A484B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{991F6F3D-1251-57A7-A730-800927010029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{991F6F3D-1251-57A7-A730-800927010029}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{991F6F3D-1251-57A7-A730-800927010029}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{991F6F3D-1251-57A7-A730-800927010029}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42FC7892-C82E-4435-8CC2-D7D4575FC1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42FC7892-C82E-4435-8CC2-D7D4575FC1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42FC7892-C82E-4435-8CC2-D7D4575FC1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42FC7892-C82E-4435-8CC2-D7D4575FC1DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CC2FD0AE-1A9F-4B9D-B686-C383422A484B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{991F6F3D-1251-57A7-A730-800927010029} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{42FC7892-C82E-4435-8CC2-D7D4575FC1DF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {226D741F-4A3F-4E47-9BD1-5E4BECDC007A}
