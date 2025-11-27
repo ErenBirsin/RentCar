@@ -12,7 +12,7 @@ import {
   inject,
   signal
 } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import Breadcrumb from './breadcrumb/breadcrumb';
 
 @Component({
@@ -32,6 +32,7 @@ readonly navigations = signal<NavigationModel[]>(navigations)
 
   readonly #elementRef = inject(ElementRef);
   readonly #renderer = inject(Renderer2);
+  readonly #router = inject(Router)
 
   ngOnInit(): void {
     this.initializeSidebar();
@@ -44,6 +45,11 @@ readonly navigations = signal<NavigationModel[]>(navigations)
     if (this.resizeTimer) {
       clearTimeout(this.resizeTimer);
     }
+  }
+
+  logout(){
+    localStorage.clear();
+    this.#router.navigateByUrl("/login");
   }
 
   @HostListener('window:resize', ['$event'])
