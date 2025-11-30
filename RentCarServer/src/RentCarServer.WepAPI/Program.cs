@@ -28,6 +28,13 @@ builder.Services.AddRateLimiter(cfr =>
         opt.Window = TimeSpan.FromMinutes(1);
         opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
     });
+
+    cfr.AddFixedWindowLimiter("forgot-pasword-fixed", opt =>
+    {
+        opt.PermitLimit = 2;
+        opt.Window = TimeSpan.FromMinutes(5);
+        opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
 });
 
 builder.Services

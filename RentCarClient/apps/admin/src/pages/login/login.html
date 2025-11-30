@@ -209,6 +209,7 @@
             Şifre Sıfırlama
           </h5>
           <button
+            #modalCloseBtn
             type="button"
             class="btn-close"
             data-bs-dismiss="modal"
@@ -223,7 +224,7 @@
                 Şifre sıfırlama bağlantısını e-posta adresinize göndereceğiz
               </p>
             </div>
-            <form>
+
               <div class="form-group">
                 <label for="resetEmail" class="form-label"
                   >Admin E-posta Adresi</label
@@ -234,6 +235,7 @@
                   </span>
                   <input
                     type="email"
+                    [(ngModel)]="email"
                     class="form-control"
                     id="resetEmail"
                     placeholder="admin@rentcar.com"
@@ -248,7 +250,7 @@
                   sıfırlama bağlantısı gönderilir.</small
                 >
               </div>
-            </form>
+
           </div>
         </div>
         <div class="modal-footer">
@@ -259,7 +261,7 @@
           >
             İptal
           </button>
-          <button type="button" class="btn btn-primary">
+          <button type="button" class="btn btn-primary" (click)="forgotPassword()">
             <i class="bi bi-send me-1"></i>Sıfırlama Bağlantısı Gönder
           </button>
         </div>
