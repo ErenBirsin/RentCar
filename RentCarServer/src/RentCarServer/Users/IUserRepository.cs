@@ -1,6 +1,6 @@
 ﻿using GenericRepository;
 
-namespace RentCarServer.Domain.Users.ValueObjects;
+namespace RentCarServer.Domain.Users;
 public interface IUserRepository : IRepository<User>
 {
 }

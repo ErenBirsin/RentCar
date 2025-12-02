@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using RentCarServer.Application.Services;
-using RentCarServer.Domain.Users.ValueObjects;
+using RentCarServer.Domain.Users;
 using TS.MediatR;
 using TS.Result;
 

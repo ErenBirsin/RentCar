@@ -4,11 +4,6 @@ using RentCarServer.Domain.Users.ValueObjects;
 namespace RentCarServer.Domain.Users;
 public sealed class User : Entity
 {
-    public User()
-    {
-
-    }
-
     public User(FirstName firstName, LastName lastName, Email email, UserName userName, Password password)
     {
         FirstName = firstName;
@@ -17,7 +12,10 @@ public sealed class User : Entity
         FullName = new($"{FirstName.Value} {LastName.Value} ({Email.Value})");
         UserName = userName;
         Password = password;
+        IsForgotPasswordCompleted = new(true);
     }
+
+    private User() { }
 
     public FirstName FirstName { get; private set; } = default!;
     public LastName LastName { get; private set; } = default!;
@@ -25,12 +23,27 @@ public sealed class User : Entity
     public Email Email { get; private set; } = default!;
     public UserName UserName { get; private set; } = default!;
     public Password Password { get; private set; } = default!;
+    public ForgotPasswordCode? ForgotPasswordCode { get; private set; }
+    public ForgotPasswordDate? ForgotPasswordDate { get; private set; }
+    public IsForgotPasswordCompleted IsForgotPasswordCompleted { get; private set; } = default!;
 
     public bool VerifyPasswordHash(string password)
     {
         using var hmac = new System.Security.Cryptography.HMACSHA512(Password.PasswordSalt);
         var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
         return computedHash.SequenceEqual(Password.PasswordHash);
+    }
+
+    public void CreateForgotPasswordId()
+    {
+        ForgotPasswordCode = new(Guid.CreateVersion7());
+        ForgotPasswordDate = new(DateTimeOffset.Now);
+        IsForgotPasswordCompleted = new(false);
+    }
+
+    public void SetPassword(Password password)
+    {
+        Password = password;
     }
 
 }

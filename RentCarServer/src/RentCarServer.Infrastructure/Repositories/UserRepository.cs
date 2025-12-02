@@ -1,6 +1,5 @@
 ﻿using GenericRepository;
 using RentCarServer.Domain.Users;
-using RentCarServer.Domain.Users.ValueObjects;
 using RentCarServer.Infrastructure.Context;
 
 namespace RentCarServer.Infrastructure.Repositories;
