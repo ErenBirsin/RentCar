@@ -18,11 +18,19 @@ export default class Login {
   readonly loading = signal<boolean>(false);
   readonly email = signal<string>("");
 
+  readonly passwordEl = viewChild<ElementRef<HTMLInputElement>>("passwordEl");
   readonly closeBtn = viewChild<ElementRef<HTMLButtonElement>>("modalCloseBtn");
 
   readonly #http = inject(HttpService);
   readonly #router = inject(Router);
   readonly #toast = inject(FlexiToastService);
+
+
+  togglePasswordEl(){
+    const input = this.passwordEl()?.nativeElement;
+    if (!input) return;
+    input.type = input.type === "password" ? "text" : "password";
+  }
 
 login(form:NgForm){
   if(!form.valid) return;

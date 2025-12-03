@@ -6,13 +6,13 @@ public sealed class User : Entity
 {
     public User(FirstName firstName, LastName lastName, Email email, UserName userName, Password password)
     {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        FullName = new($"{FirstName.Value} {LastName.Value} ({Email.Value})");
-        UserName = userName;
-        Password = password;
-        IsForgotPasswordCompleted = new(true);
+        SetFirstName(firstName);
+        SetLastName(lastName);
+        SetEmail(email);
+        SetUserName(userName);
+        SetPassword(password);
+        SetFullName();
+        SetIsForgotPasswordCompleted(new(true));
     }
 
     private User() { }
@@ -26,6 +26,8 @@ public sealed class User : Entity
     public ForgotPasswordCode? ForgotPasswordCode { get; private set; }
     public ForgotPasswordDate? ForgotPasswordDate { get; private set; }
     public IsForgotPasswordCompleted IsForgotPasswordCompleted { get; private set; } = default!;
+
+    #region Behaviors
 
     public bool VerifyPasswordHash(string password)
     {
@@ -41,9 +43,40 @@ public sealed class User : Entity
         IsForgotPasswordCompleted = new(false);
     }
 
+    public void SetFirstName(FirstName firstName)
+    {
+        FirstName = firstName;
+    }
+
+    public void SetEmail(Email email)
+    {
+        Email = email;
+    }
+
+    public void SetUserName(UserName userName)
+    {
+        UserName = userName;
+    }
+
+    public void SetLastName(LastName lastName)
+    {
+        LastName = lastName;
+    }
+
+    public void SetFullName()
+    {
+        FullName = new(FirstName.Value + " " + LastName.Value + " (" + Email.Value + ")");
+    }
+
     public void SetPassword(Password password)
     {
         Password = password;
     }
+
+    public void SetIsForgotPasswordCompleted(IsForgotPasswordCompleted isForgotPasswordCompleted)
+    {
+        IsForgotPasswordCompleted = isForgotPasswordCompleted;
+    }
+    #endregion
 
 }

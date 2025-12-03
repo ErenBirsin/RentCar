@@ -35,7 +35,7 @@ public sealed class LoginCommandHandler(IUserRepository userRepository, IJwtProv
             return Result<string>.Failure("Kullanıcı adı veya şifre hatalı.");
         }
 
-        var token = jwtProvider.CreateToken(user);
+        var token = await jwtProvider.CreateTokenAsync(user, cancellationToken);
 
         return token;
     }
