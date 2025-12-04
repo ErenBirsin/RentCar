@@ -72,6 +72,8 @@ builder.Services.AddResponseCompression(
     });
 
 builder.Services.AddTransient<CheckTokenMiddleware>();
+builder.Services.AddHostedService<CheckLoginTokenBackgroundService>();
+
 var app = builder.Build();
 app.MapOpenApi();
 app.MapScalarApiReference();
