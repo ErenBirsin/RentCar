@@ -88,7 +88,7 @@ app.UseResponseCompression();
 app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
-// app.UseExceptionHandler(); en üste ekledim 
+// app.UseExceptionHandler(); en ï¿½ste ekledim 
 app.UseMiddleware<CheckTokenMiddleware>();
 app.UseRateLimiter();
 app.MapControllers()
