@@ -16,6 +16,7 @@ internal sealed class BranchDeleteCommandHandler(IBranchRepository branchReposit
             return Result<string>.Failure("Şube bulunamadı");
         }
         branch.Delete();
+        branchRepository.Update(branch);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return "Şube başarılı şekilde silindi.";
     }

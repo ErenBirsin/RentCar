@@ -35,6 +35,7 @@ internal sealed class BranchUpdateCommandHandler(IBranchRepository branchReposit
         branch.SetName(name);
         branch.SetAddress(address);
         branch.SetStatus(request.IsActive);
+        branchRepository.Update(branch);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
