@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using RentCarServer.Application.Branches;
 using TS.MediatR;
 
 namespace RentCarServer.WepAPI.Controllers;
-[Route("api/[controller]")]
+[Route("odata")]
 [ApiController]
 [EnableQuery]
-public class oDataController : ControllerBase
+public class MainODataController : ODataController
 {
     public static IEdmModel GetEdmModel()
     {

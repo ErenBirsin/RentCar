@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using RentCarServer.Application;
 using RentCarServer.Infrastructure;
 using RentCarServer.WepAPI;
+using RentCarServer.WepAPI.Controllers;
 using RentCarServer.WepAPI.Middlewares;
 using RentCarServer.WepAPI.Modules;
 using Scalar.AspNetCore;
@@ -60,9 +61,10 @@ builder.Services
                      .Expand()
                      .OrderBy()
                      .SetMaxTop(null)
+                     .AddRouteComponents("odata", MainODataController.GetEdmModel())
                 );
 builder.Services.AddCors();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi("v1", options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
 builder.Services.AddExceptionHandler<ExceptionHandler>().AddProblemDetails();
 builder.Services.AddResponseCompression(
     opt =>
