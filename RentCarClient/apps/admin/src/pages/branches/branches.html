@@ -1,4 +1,4 @@
-<app-blank pageTitle="Şubeler" pageIcon="bi-buildings">
+<app-blank pageTitle="Şubeler" pageIcon="bi-buildings" [showStatusCheckbox]="false">
   <flexi-grid
   [data]="data()"
   [total]="total()"
@@ -23,9 +23,15 @@
         <span>+90{{item.address.phoneNumber1 | mask:'(000) 000 0000'}}</span>
     </ng-template>
     </flexi-grid-column>
-  <flexi-grid-column field="address.phoneNumber2" title="Telefon 2" />
+    <flexi-grid-column field="address.phoneNumber2" title="Telefon 1">
+    <ng-template flexiGridCellTemplate let-item>
+      @if(item.address.phoneNumber2){
+        <span>+90{{item.address.phoneNumber2| mask:'(000) 000 0000'}}</span>
+      }
+    </ng-template>
+    </flexi-grid-column>
   <flexi-grid-column field="address.email" title="Mail Adresi" />
-  <flexi-grid-column field="isActive" title="Aktif Mi?" filterType="boolean" [booleanData]="['Aktif','Aktif Değil']" textAlign="center" />
+  <flexi-grid-column field="isActive" title="Aktif Mi?" filterType="boolean" [booleanData]="['Aktif','Pasif']" textAlign="center" />
   <flexi-grid-column field="createdAt" title="Oluşturulma Tarihi" filterType="date-time" format="dd MMM yyyy HH:mm:ss"/>
   <flexi-grid-column field="createdFullName" title="Oluşturan"/>
   <flexi-grid-column field="updatedAt" title="Güncelleme Tarihi" filterType="date-time" format="dd MMM yyyy HH:mm:ss"/>
@@ -39,7 +45,7 @@
       btnSize="small"
       flexiTooltip
       [routerLink]="['/branches/edit/',item.id]"></flexi-button>
-      <flexi-button btnColor="danger" btnIcon="delete" title="Sil" btnSize="small" flexiTooltip></flexi-button>
+      <flexi-button btnColor="danger" btnIcon="delete" title="Sil" btnSize="small" flexiTooltip (click)="delete(item.id)"></flexi-button>
   </ng-template>
 
   </flexi-grid>

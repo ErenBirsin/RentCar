@@ -1,11 +1,22 @@
 <div class="row">
   <div class="col-md-5 col-12">
-    <app-blank [pageTitle]="pageTitle()" [pageIcon]="pageIcon()">
+<app-blank
+  [pageTitle]="pageTitle()"
+  [pageIcon]="pageIcon()"
+  (changeStatusEvent)="changeStatus($event)"
+  [status]="data().isActive"
+  [showBackBtn]="false">
       @if(loading()){
         <app-loading />
       }
 
-      <form #form="ngForm" formValidate class="admin-form">
+  <div class="d-flex justify-content-end mb-2">
+    <button type="button" class="btn btn-outline-secondary" [routerLink]="'/branches'">
+      <i class="bi bi-arrow-left me-1"></i>Geri
+    </button>
+  </div>
+
+      <form #form="ngForm" formValidate class="admin-form" (ngSubmit)="save(form)">
 
         <div class="admin-card">
           <div class="card-header">
@@ -14,7 +25,14 @@
           <div class="card-body">
             <div class="form-group">
               <label for="branchName">Şube Adı (*)</label>
-              <input id="branchName" type="text" class="form-control" ngModel name="name" required>
+              <input
+                id="branchName"
+                type="text"
+                class="form-control"
+                [(ngModel)]="data().name"
+                name="name"
+                required>
+              <div class="invalid-feedback">Geçerli bir şube adı girin</div>
             </div>
           </div>
         </div>
@@ -27,32 +45,74 @@
 
             <div class="form-group">
               <label for="city">Şehir (*)</label>
-              <input id="city" type="text" class="form-control" ngModel name="city" required>
+              <input
+                id="city"
+                type="text"
+                class="form-control"
+                [(ngModel)]="data().address.city"
+                name="city"
+                required>
             </div>
 
             <div class="form-group mt-2">
               <label for="district">İlçe (*)</label>
-              <input id="district" type="text" class="form-control" ngModel name="district" required>
+              <input
+                id="district"
+                type="text"
+                class="form-control"
+                [(ngModel)]="data().address.district"
+                name="district"
+                required>
             </div>
 
             <div class="form-group mt-2">
               <label for="fullAddress">Açık Adres (*)</label>
-              <textarea id="fullAddress" rows="5" class="form-control" ngModel name="fullAddress" required></textarea>
+              <textarea
+                id="fullAddress"
+                rows="5"
+                class="form-control"
+                [(ngModel)]="data().address.fullAddress"
+                name="fullAddress"
+                required
+                minlength="10">
+              </textarea>
+              <div class="invalid-feedback">Geçerli bir açık adres girin</div>
             </div>
 
             <div class="form-group mt-2">
               <label for="phone1">Telefon 1 (*)</label>
-              <input id="phone1" type="text" class="form-control" ngModel name="phoneNumber1" required>
+              <input
+                id="phone1"
+                type="text"
+                class="form-control"
+                [(ngModel)]="data().address.phoneNumber1"
+                name="phoneNumber1"
+                prefix="+90"
+                mask="(000) 000 0000"
+                required>
+            <div class="invalid-feedback">Geçerli bir telefon numarası girin</div>
             </div>
 
             <div class="form-group mt-2">
               <label for="phone2">Telefon 2</label>
-              <input id="phone2" type="text" class="form-control" ngModel name="phoneNumber2">
+              <input
+                id="phone2"
+                type="text"
+                class="form-control"
+                [(ngModel)]="data().address.phoneNumber2"
+                name="phoneNumber2"
+                prefix="+90"
+                mask="(000) 000 0000">
             </div>
 
             <div class="form-group mt-2">
-              <label for="email">Mail Adresi</label>
-              <input id="email" type="email" class="form-control" ngModel name="email">
+              <label for="email">Mail Adresi </label>
+              <input
+                id="email"
+                type="email"
+                class="form-control"
+                [(ngModel)]="data().address.email"
+                name="email">
             </div>
 
           </div>

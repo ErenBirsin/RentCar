@@ -22,6 +22,16 @@ public sealed class ExceptionHandler : IExceptionHandler
         var validationExceptionType = typeof(ValidationException);
         var authorizationExceptionType = typeof(AuthorizationException);
         var tokenException = typeof(TokenException);
+        var cancelledExceptionType = typeof(OperationCanceledException);
+
+        // İstek iptal edildi (tarayıcı geri/yenile vb.) -> 499 döndür, log kirletme
+        if (exceptionType == cancelledExceptionType)
+        {
+            httpContext.Response.StatusCode = 499; // Client Closed Request
+            errorResult = Result<string>.Failure(499, "İstek iptal edildi");
+            await httpContext.Response.WriteAsJsonAsync(errorResult, cancellationToken);
+            return true;
+        }
 
         if (exceptionType == validationExceptionType)
         {
