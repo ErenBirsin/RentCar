@@ -4,6 +4,14 @@ import { Routes } from "@angular/router";
   {
     path: '',
     loadComponent: () => import('./branches')
+  },
+  {
+    path:'add',
+    loadComponent:() => import('./create/create')
+  },
+   {
+    path:'edit/:id',
+    loadComponent:() => import('./create/create')
   }
 ]
 

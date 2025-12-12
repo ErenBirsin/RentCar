@@ -11,7 +11,7 @@
   (dataStateChange)="dataStateChange($event)"
   >
   <ng-template flexiGridCaptionCommandTemplate="">
-      <flexi-button btnColor="primary" btnIcon="add" title="Şube Ekle" flexiTooltip/>
+      <flexi-button btnColor="primary" btnIcon="add" title="Şube Ekle" flexiTooltip routerLink="/branches/add"/>
   </ng-template>
 
   <flexi-grid-column field="name" title="Şube Adı" />
@@ -32,7 +32,13 @@
   <flexi-grid-column field="updatedFullName" title="Güncelleyen"/>
 
   <ng-template flexiGridColumnCommandTemplate let-item>
-      <flexi-button btnColor="info" btnIcon="edit" title="Güncelle" btnSize="small" flexiTooltip></flexi-button>
+      <flexi-button
+      btnColor="info"
+      btnIcon="edit"
+      title="Güncelle"
+      btnSize="small"
+      flexiTooltip
+      [routerLink]="['/branches/edit/',item.id]"></flexi-button>
       <flexi-button btnColor="danger" btnIcon="delete" title="Sil" btnSize="small" flexiTooltip></flexi-button>
   </ng-template>
 
