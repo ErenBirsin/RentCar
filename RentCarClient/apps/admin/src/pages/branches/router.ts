@@ -12,6 +12,10 @@ import { Routes } from "@angular/router";
    {
     path:'edit/:id',
     loadComponent:() => import('./create/create')
+  },
+   {
+    path:'detail/:id',
+    loadComponent:() => import('./detail/detail')
   }
 ]
 

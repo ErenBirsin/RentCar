@@ -38,14 +38,33 @@
   <flexi-grid-column field="updatedFullName" title="Güncelleyen"/>
 
   <ng-template flexiGridColumnCommandTemplate let-item>
+
+     <flexi-button
+      btnColor="indigo"
+      btnIcon="zoom_in"
+      title="Detay"
+      btnSize="small"
+      flexiTooltip
+      [routerLink]="['/branches/detail/',item.id]">
+
+    </flexi-button>
+
       <flexi-button
       btnColor="info"
       btnIcon="edit"
       title="Güncelle"
       btnSize="small"
       flexiTooltip
-      [routerLink]="['/branches/edit/',item.id]"></flexi-button>
-      <flexi-button btnColor="danger" btnIcon="delete" title="Sil" btnSize="small" flexiTooltip (click)="delete(item.id)"></flexi-button>
+      [routerLink]="['/branches/edit/',item.id]">
+
+    </flexi-button>
+      <flexi-button
+      btnColor="danger"
+      btnIcon="delete"
+      title="Sil"
+      btnSize="small"
+      flexiTooltip (click)="delete(item.id)">
+    </flexi-button>
   </ng-template>
 
   </flexi-grid>

@@ -5,10 +5,9 @@
   [pageIcon]="pageIcon()"
   (changeStatusEvent)="changeStatus($event)"
   [status]="data().isActive"
-  [showBackBtn]="false">
-      @if(loading()){
-        <app-loading />
-      }
+  [showBackBtn]="false"
+  [loading]="loading()">
+
 
   <div class="d-flex justify-content-end mb-2">
     <button type="button" class="btn btn-outline-secondary" [routerLink]="'/branches'">

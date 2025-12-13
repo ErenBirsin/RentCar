@@ -7,7 +7,6 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { FormValidateDirective } from 'form-validate-angular';
 import { NgClass } from '@angular/common';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import Loading from 'apps/admin/src/components/loading/loading';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { BranchModel, initialBranch } from 'apps/admin/src/models/branch.model';
 import { HttpService } from 'apps/admin/src/services/http';
@@ -22,7 +21,6 @@ import { lastValueFrom } from 'rxjs';
     FormsModule,
     FormValidateDirective,
     NgClass,
-    Loading,
     NgxMaskDirective,
     RouterLink
 ],

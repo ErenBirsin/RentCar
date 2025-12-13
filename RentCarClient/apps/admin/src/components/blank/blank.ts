@@ -1,7 +1,9 @@
 import { DatePipe, Location, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, output, ViewEncapsulation } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EntityModel } from '../../models/entity.model';
+import { FormsModule } from '@angular/forms';
+import Loading from '../loading/loading';
 
 @Component({
   selector: 'app-blank',
@@ -9,6 +11,8 @@ import { EntityModel } from '../../models/entity.model';
     NgClass,
     RouterLink,
     DatePipe,
+    FormsModule,
+    Loading
   ],
   templateUrl: './blank.html',
   encapsulation: ViewEncapsulation.None,
@@ -24,14 +28,22 @@ export default class Blank {
   readonly showBackBtn = input<boolean>(true);
   readonly showEditBtn = input<boolean>(false);
   readonly editBtnUrl = input<string>("");
+  readonly backUrl = input<string>("");
   readonly audit = input<EntityModel>();
   readonly showAudit = input<boolean>(false);
-   readonly changeStatusEvent = output<boolean>();
+  readonly changeStatusEvent = output<boolean>();
+  readonly loading = input<boolean>(false);
 
   readonly #location = inject(Location);
+  readonly #router = inject(Router);
 
   back(){
-    this.#location.back();
+    const backUrl = this.backUrl();
+    if(backUrl){
+      this.#router.navigateByUrl(backUrl);
+    } else {
+      this.#location.back();
+    }
   }
 
    changeStatus(event:any){

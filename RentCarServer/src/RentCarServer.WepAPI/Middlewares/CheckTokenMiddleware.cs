@@ -8,6 +8,14 @@ public sealed class CheckTokenMiddleware
 {
     public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
+        // Auth endpoint'lerini bypass et (login, forgot-password vb.)
+        var path = httpContext.Request.Path.Value?.ToLower() ?? "";
+        if (path.Contains("/auth/"))
+        {
+            await next(httpContext);
+            return;
+        }
+
         var token = httpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
         if (string.IsNullOrWhiteSpace(token))
         {
