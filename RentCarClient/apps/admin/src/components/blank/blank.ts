@@ -33,6 +33,7 @@ export default class Blank {
   readonly showAudit = input<boolean>(false);
   readonly changeStatusEvent = output<boolean>();
   readonly loading = input<boolean>(false);
+  readonly size = input<string>("col-md-12");
 
   readonly #location = inject(Location);
   readonly #router = inject(Router);

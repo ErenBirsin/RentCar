@@ -1,13 +1,11 @@
-<div class="row">
-  <div class="col-md-5 col-12">
 <app-blank
   [pageTitle]="pageTitle()"
   [pageIcon]="pageIcon()"
   (changeStatusEvent)="changeStatus($event)"
   [status]="data().isActive"
   [showBackBtn]="false"
-  [loading]="loading()">
-
+  [loading]="loading()"
+  size="col-md-5" >
 
   <div class="d-flex justify-content-end mb-2">
     <button type="button" class="btn btn-outline-secondary" [routerLink]="'/branches'">
@@ -126,5 +124,4 @@
 
       </form>
     </app-blank>
-  </div>
-</div>
+
