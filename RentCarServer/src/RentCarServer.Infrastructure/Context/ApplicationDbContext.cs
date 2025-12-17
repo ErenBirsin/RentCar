@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentCarServer.Domain.Abstractions;
-using RentCarServer.Domain.Branches;
-using RentCarServer.Domain.LoginTokens;
-using RentCarServer.Domain.Users;
 using System.Security.Claims;
 
 namespace RentCarServer.Infrastructure.Context;
@@ -14,10 +11,6 @@ internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
-
-    public DbSet<User> Users { get; set; }
-    public DbSet<LoginToken> LoginTokens { get; set; }
-    public DbSet<Branch> Branches { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
