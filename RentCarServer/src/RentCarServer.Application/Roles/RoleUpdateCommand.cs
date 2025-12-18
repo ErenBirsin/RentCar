@@ -6,6 +6,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Roles;
+[Permission("role:edit")]
 public sealed record RoleUpdateCommand(Guid Id, string Name, bool IsActive) : IRequest<Result<string>>;
 
 public sealed class RoleUpdateCommandValidator : AbstractValidator<RoleUpdateCommand>

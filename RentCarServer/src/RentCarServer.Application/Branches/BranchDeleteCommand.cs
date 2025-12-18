@@ -4,6 +4,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Branches;
+[Permission("branch:delete")]
 public sealed record BranchDeleteCommand(Guid Id) : IRequest<Result<string>>;
 
 internal sealed class BranchDeleteCommandHandler(IBranchRepository branchRepository, IUnitOfWork unitOfWork) : IRequestHandler<BranchDeleteCommand, Result<string>>

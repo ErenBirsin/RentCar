@@ -6,6 +6,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Branches;
+[Permission("branch:create")]
 public sealed record BranchCreateCommand(
     string Name,
     Address Address,

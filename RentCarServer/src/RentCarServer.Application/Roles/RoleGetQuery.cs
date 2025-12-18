@@ -4,6 +4,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Roles;
+[Permission("role:view")]
 public sealed record RoleGetQuery(Guid Id) : IRequest<Result<RoleDto>>;
 
 internal sealed class RoleGetQueryHandler(IRoleRepository roleRepository) : IRequestHandler<RoleGetQuery, Result<RoleDto>>

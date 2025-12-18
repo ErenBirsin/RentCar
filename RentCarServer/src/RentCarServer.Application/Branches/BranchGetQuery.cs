@@ -4,6 +4,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Branches;
+[Permission("branch:view")]
 public sealed record BranchGetQuery(Guid Id) : IRequest<Result<BranchDto>>;
 
 internal sealed class BranchGetQueryHandler(IBranchRepository branchRepository) : IRequestHandler<BranchGetQuery, Result<BranchDto>>
