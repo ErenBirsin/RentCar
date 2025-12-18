@@ -8,10 +8,9 @@ import { FormValidateDirective } from 'form-validate-angular';
 import { NgClass } from '@angular/common';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { BranchModel, initialBranch } from 'apps/admin/src/models/branch.model';
+import { RoleModel, initialRole } from 'apps/admin/src/models/role.model';
 import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiToastService } from 'flexi-toast';
-import { NgxMaskDirective } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
 
 
@@ -21,7 +20,6 @@ import { lastValueFrom } from 'rxjs';
     FormsModule,
     FormValidateDirective,
     NgClass,
-    NgxMaskDirective,
     RouterLink
 ],
   templateUrl: './create.html',
@@ -32,23 +30,23 @@ export default class Create {
   readonly id = signal<string | undefined>(undefined);
   readonly breadcrumbs = signal<BreadcrumbModel[]>([
     {
-      title:'Şubeler',
+      title:'Roller',
       icon: 'bi-buildings',
-      url:'/branches'
+      url:'/roles'
     }
   ]);
-  readonly pageTitle = computed(() => this.id() ? 'Şube Güncelle' : 'Şube Ekle');
+  readonly pageTitle = computed(() => this.id() ? 'Rol Güncelle' : 'Rol Ekle');
   readonly pageIcon = computed(() => this.id() ? 'bi-pen' : 'bi-plus');
   readonly btnName = computed(() => this.id() ? 'Güncelle' : 'Kaydet');
   readonly result = resource({
     params: () => this.id(),
     loader: async () => {
-      const res = await lastValueFrom(this.#http.getResource<BranchModel>(`/rent/branches/${this.id()}`));
+      const res = await lastValueFrom(this.#http.getResource<RoleModel>(`/rent/roles/${this.id()}`));
 
       this.breadcrumbs.update(prev => [...prev, {
           title:res.data!.name,
           icon:'bi-pen',
-          url: `/branches/edit/${this.id()}`,
+          url: `/roles/edit/${this.id()}`,
           isActive:true
         }]);
       this.#breadcrumb.reset(this.breadcrumbs());
@@ -56,7 +54,7 @@ export default class Create {
     }
   });
 
-  readonly data = linkedSignal(() => this.result.value() ?? {...initialBranch});
+  readonly data = linkedSignal(() => this.result.value() ?? {...initialRole});
   readonly loading = linkedSignal(() => this.result.isLoading());
 
   readonly #breadcrumb = inject(BreadcrumbService);
@@ -73,7 +71,7 @@ export default class Create {
         this.breadcrumbs.update(prev => [...prev, {
           title:'Ekle',
           icon:'bi-plus',
-          url:'/branches/add',
+          url:'/roles/add',
           isActive:true
         }]);
       this.#breadcrumb.reset(this.breadcrumbs());
@@ -87,16 +85,16 @@ export default class Create {
 
     if(!this.id()){
     this.loading.set(true);
-    this.#http.post<string>('/rent/branches',this.data(),(res) =>{
+    this.#http.post<string>('/rent/roles',this.data(),(res) =>{
         this.#toast.showToast("Başarılı",res,"success");
-        this.#router.navigateByUrl("/branches");
+        this.#router.navigateByUrl("/roles");
         this.loading.set(false);
     }, () => this.loading.set(false));
     }else{
     this.loading.set(true);
-    this.#http.put<string>('/rent/branches',this.data(),(res) =>{
+    this.#http.put<string>('/rent/roles',this.data(),(res) =>{
         this.#toast.showToast("Başarılı",res,"info");
-        this.#router.navigateByUrl("/branches");
+        this.#router.navigateByUrl("/roles");
         this.loading.set(false);
     }, () => this.loading.set(false));
     }

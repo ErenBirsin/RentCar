@@ -31,7 +31,8 @@ readonly detailUrl = input.required<string>();
 readonly deleteEndpoint = input.required<string>();
 readonly breadcrumbs = input.required<BreadcrumbModel[]>();
 readonly commandColumnWidth = input<string>("150px");
-readonly showIndex = input<boolean>(false);
+readonly showIndex = input<boolean>(true);
+readonly captionTitle = input.required<string>();
 
 readonly columns = contentChildren(FlexiGridColumnComponent, {descendants:true});
 readonly commandTemplateRef = contentChild<TemplateRef<any>>("commandTemplate");
