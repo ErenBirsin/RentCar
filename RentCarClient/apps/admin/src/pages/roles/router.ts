@@ -13,10 +13,14 @@ import { Routes } from "@angular/router";
     path:'edit/:id',
     loadComponent:() => import('./create/create')
   },
-   {
+  {
     path:'detail/:id',
     loadComponent:() => import('./detail/detail')
-  }
+  },
+   {
+        path: 'permissions/:id',
+        loadComponent: () => import('./permissions/permissions')
+    }
 
 ]
 export default router;

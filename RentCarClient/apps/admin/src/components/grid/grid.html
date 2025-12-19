@@ -37,7 +37,9 @@
 }
 
 <ng-template flexiGridColumnCommandTemplate let-item>
-
+@if(columnCommandTemplateRef() !== undefined){
+          <ng-container *ngTemplateOutlet="columnCommandTemplateRef()!; context:{$implicit: item}"></ng-container>
+        }
    <flexi-button
     btnColor="indigo"
     btnIcon="zoom_in"
@@ -64,9 +66,7 @@
     btnSize="small"
     flexiTooltip (click)="delete(item.id)">
   </flexi-button>
-   @if(commandTemplateRef() !== undefined){
-          <ng-container *ngTemplateOutlet="columnCommandTemplateRef()!; context:{$implicit: item}"></ng-container>
-        }
+
 </ng-template>
 </flexi-grid>
 

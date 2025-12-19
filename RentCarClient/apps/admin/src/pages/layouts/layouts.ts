@@ -237,6 +237,6 @@ readonly navigations = signal<NavigationModel[]>(navigations)
 
   public showNotification(message: string): void {
     // Notification logic can be implemented here
-    console.log('Notification:', message);
+
   }
 }
