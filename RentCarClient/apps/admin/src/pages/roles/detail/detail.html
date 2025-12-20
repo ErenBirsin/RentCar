@@ -28,5 +28,24 @@
       </div>
     </div>
   </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <h6>
+        <i class="bi bi-key text-warning me-2"></i>İzinler
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="detail-grid">
+        @for(val of data().permissions; track val){
+        <ul>
+          <li>
+            {{val}}
+          </li>
+        </ul>
+  }
+      </div>
+    </div>
+  </div>
 </app-blank>
 
