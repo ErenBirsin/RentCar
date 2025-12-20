@@ -1,4 +1,5 @@
 ﻿using GenericRepository;
+using RentCarServer.Application.Services;
 using RentCarServer.Domain.Users;
 using RentCarServer.Domain.Users.ValueObjects;
 
@@ -33,5 +34,13 @@ public static class ExtensionMethods
 
         }
 
+    }
+
+    public static async Task CleanRemovedPermissionsFromRoleAsync(this WebApplication app)
+    {
+        using var scoped = app.Services.CreateScope();
+        var srv = scoped.ServiceProvider;
+        var service = srv.GetRequiredService<PermissionCleanerService>();
+        await service.CleanRemovedPermissionsFromRolesAsync();
     }
 }

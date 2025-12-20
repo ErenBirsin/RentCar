@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
 namespace RentCarServer.Application.Services;
-internal sealed class PermissionService
+public sealed class PermissionService
 {
     public List<string> GetAll()
     {
