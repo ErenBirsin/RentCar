@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, resource, signal, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, linkedSignal, resource, signal, ViewEncapsulation } from '@angular/core';
 import Blank from '../../../components/blank/blank';
 import { BreadcrumbModel, BreadcrumbService } from '../../../services/breadcrumb';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -13,6 +13,9 @@ import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { NgxMaskDirective } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
+import { httpResource } from '@angular/common/http';
+import { FlexiSelectModule } from 'flexi-select';
+
 
 
 @Component({
@@ -22,7 +25,8 @@ import { lastValueFrom } from 'rxjs';
     FormValidateDirective,
     NgClass,
     NgxMaskDirective,
-    RouterLink
+    RouterLink,
+    FlexiSelectModule
 ],
   templateUrl: './create.html',
   encapsulation: ViewEncapsulation.None,
@@ -57,7 +61,15 @@ export default class Create {
   });
 
   readonly data = linkedSignal(() => this.result.value() ?? {...initialBranch});
-  readonly loading = linkedSignal(() => this.result.isLoading());
+  readonly saving = signal(false);
+  readonly loading = computed(() => {
+    if (this.saving()) return true;
+    return this.id() ? this.result.isLoading() : false;
+  });
+  readonly ilResult = httpResource<any[]>(() => "/il-lce.json");
+  readonly iller = computed(() => this.ilResult.value() ?? []);
+  readonly ilLoading = computed(() => this.ilResult.isLoading());
+  readonly ilceler = signal<any[]>([]);
 
   readonly #breadcrumb = inject(BreadcrumbService);
   readonly #activated = inject(ActivatedRoute)
@@ -79,6 +91,17 @@ export default class Create {
       this.#breadcrumb.reset(this.breadcrumbs());
       }
     })
+
+    effect(() => {
+      const city = this.data().address.city;
+      const illerList = this.iller();
+      
+      // Hem city hem de iller yüklendiğinde ilçeleri getir
+      if (city && illerList.length > 0) {
+        this.getIlceler();
+      }
+    })
+
   }
 
   save(form: NgForm){
@@ -86,24 +109,35 @@ export default class Create {
       return;
 
     if(!this.id()){
-    this.loading.set(true);
+    this.saving.set(true);
     this.#http.post<string>('/rent/branches',this.data(),(res) =>{
         this.#toast.showToast("Başarılı",res,"success");
         this.#router.navigateByUrl("/branches");
-        this.loading.set(false);
-    }, () => this.loading.set(false));
+        this.saving.set(false);
+    }, () => this.saving.set(false));
     }else{
-    this.loading.set(true);
+    this.saving.set(true);
     this.#http.put<string>('/rent/branches',this.data(),(res) =>{
         this.#toast.showToast("Başarılı",res,"info");
         this.#router.navigateByUrl("/branches");
-        this.loading.set(false);
-    }, () => this.loading.set(false));
+        this.saving.set(false);
+    }, () => this.saving.set(false));
     }
   }
 
   changeStatus(status:boolean){
-    // computed signal döndüğü nesne referansını doğrudan güncelle
     this.data().isActive = status;
+  }
+
+  getIlceler(){
+    const city = this.data().address.city;
+    if (!city) return;
+    
+    const il = this.iller().find(i => i.il_adi === city);
+    if (il && il.ilceler) {
+      this.ilceler.set(il.ilceler);
+    } else {
+      this.ilceler.set([]);
+    }
   }
 }

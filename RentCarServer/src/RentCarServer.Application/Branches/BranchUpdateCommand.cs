@@ -7,7 +7,12 @@ using TS.Result;
 
 namespace RentCarServer.Application.Branches;
 [Permission("branch:edit")]
-public sealed record BranchUpdateCommand(Guid Id, string Name, Address Address, bool IsActive) : IRequest<Result<string>>;
+public sealed record BranchUpdateCommand(Guid Id,
+    string Name,
+    Address Address,
+    Contact Contact,
+    bool IsActive
+    ) : IRequest<Result<string>>;
 
 public sealed class BranchUpdateCommandValidator : AbstractValidator<BranchUpdateCommand>
 {
@@ -17,7 +22,7 @@ public sealed class BranchUpdateCommandValidator : AbstractValidator<BranchUpdat
         RuleFor(i => i.Address.City).NotEmpty().WithMessage("Geçerli bir şehir seçin");
         RuleFor(i => i.Address.District).NotEmpty().WithMessage("Geçerli bir ilçe seçin");
         RuleFor(i => i.Address.FullAddress).NotEmpty().WithMessage("Geçerli bir tam adres girin");
-        RuleFor(i => i.Address.PhoneNumber1).NotEmpty().WithMessage("Geçerli bir telefon numarası girin");
+        RuleFor(i => i.Contact.PhoneNumber1).NotEmpty().WithMessage("Geçerli bir telefon numarası girin");
     }
 }
 
@@ -32,9 +37,10 @@ internal sealed class BranchUpdateCommandHandler(IBranchRepository branchReposit
         }
         Name name = new(request.Name);
         Address address = request.Address;
-
+        Contact contact = request.Contact;
         branch.SetName(name);
         branch.SetAddress(address);
+        branch.SetContact(contact);
         branch.SetStatus(request.IsActive);
         branchRepository.Update(branch);
 

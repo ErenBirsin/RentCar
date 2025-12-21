@@ -3,125 +3,123 @@
   [pageIcon]="pageIcon()"
   (changeStatusEvent)="changeStatus($event)"
   [status]="data().isActive"
-  [showBackBtn]="false"
   [loading]="loading()"
-  size="col-md-5" >
-
-  <div class="d-flex justify-content-end mb-2">
-    <button type="button" class="btn btn-outline-secondary" [routerLink]="'/branches'">
-      <i class="bi bi-arrow-left me-1"></i>Geri
-    </button>
-  </div>
-
-      <form #form="ngForm" formValidate class="admin-form" (ngSubmit)="save(form)">
-
+  size="col-md-5">
+    <form #form="ngForm" formValidate class="admin-form" (ngSubmit)="save(form)">
         <div class="admin-card">
-          <div class="card-header">
-            <h6><i class="bi bi-info-circle text-primary me-2"></i>Temel Bilgiler</h6>
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <label for="branchName">Şube Adı (*)</label>
-              <input
-                id="branchName"
-                type="text"
-                class="form-control"
-                [(ngModel)]="data().name"
-                name="name"
-                required>
-              <div class="invalid-feedback">Geçerli bir şube adı girin</div>
+            <div class="card-header">
+                <h6><i class="bi bi-info-circle text-primary me-2"></i>Temel Bilgiler</h6>
             </div>
-          </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <span>Şube Adı (*)</span>
+                   <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="data().name"
+                      name="name"
+                      required>
+                    <div class="invalid-feedback">Geçerli bir şube adı girin</div>
+                </div>
+            </div>
         </div>
 
         <div class="admin-card">
-          <div class="card-header">
-            <h6><i class="bi bi-info-circle text-primary me-2"></i>Adres Bilgileri</h6>
-          </div>
-          <div class="card-body">
-
-            <div class="form-group">
-              <label for="city">Şehir (*)</label>
-              <input
-                id="city"
-                type="text"
-                class="form-control"
-                [(ngModel)]="data().address.city"
-                name="city"
-                required>
+            <div class="card-header">
+                <h6><i class="bi bi-info-circle text-primary me-2"></i>İletişim Bilgiler</h6>
             </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <span>Telefon 1 (*)</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="data().contact.phoneNumber1"
+                      name="phoneNumber1"
+                      prefix="+90"
+                      mask="(000) 000 0000"
+                      required>
+                    <div class="invalid-feedback">Geçerli bir telefon numarası girin</div>
+                </div>
 
-            <div class="form-group mt-2">
-              <label for="district">İlçe (*)</label>
-              <input
-                id="district"
-                type="text"
-                class="form-control"
-                [(ngModel)]="data().address.district"
-                name="district"
-                required>
+                <div class="form-group mt-2">
+                    <span>Telefon 2</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="data().contact.phoneNumber2"
+                      name="phoneNumber2"
+                      prefix="+90"
+                      mask="(000) 000 0000"
+                      >
+                </div>
+
+                <div class="form-group mt-2">
+                    <span>Mail Adresi</span>
+                    <input
+                      type="email"
+                      class="form-control"
+                      [(ngModel)]="data().contact.email"
+                      name="email">
+                </div>
             </div>
+        </div>
 
-            <div class="form-group mt-2">
-              <label for="fullAddress">Açık Adres (*)</label>
-              <textarea
-                id="fullAddress"
-                rows="5"
-                class="form-control"
-                [(ngModel)]="data().address.fullAddress"
-                name="fullAddress"
-                required
-                minlength="10">
-              </textarea>
-              <div class="invalid-feedback">Geçerli bir açık adres girin</div>
+        <div class="admin-card">
+            <div class="card-header">
+                <h6><i class="bi bi-info-circle text-primary me-2"></i>Adres Bilgiler</h6>
             </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <span>Şehir (*)</span>
+                    <flexi-select
+                     [data]="iller()"
+                     label="il_adi"
+                     value="il_adi"
+                     [(ngModel)]="data().address.city"
+                     name="city"
+                     language="tr"
+                     [required]="true"
+                     (ngModelChange)="getIlceler()"
+                    />
+                </div>
 
-            <div class="form-group mt-2">
-              <label for="phone1">Telefon 1 (*)</label>
-              <input
-                id="phone1"
-                type="text"
-                class="form-control"
-                [(ngModel)]="data().address.phoneNumber1"
-                name="phoneNumber1"
-                prefix="+90"
-                mask="(000) 000 0000"
-                required>
-            <div class="invalid-feedback">Geçerli bir telefon numarası girin</div>
+                <div class="form-group mt-2">
+                    <span>İlçe (*)</span>
+                    <flexi-select
+                        [data]="ilceler()"
+                        label="ilce_adi"
+                        value="ilce_adi"
+                        [(ngModel)]="data().address.district"
+                        name="district"
+                        language="tr"
+                        [required]="true"
+                        />
+                </div>
+
+                <div class="form-group mt-2">
+                    <span>Açık Adres (*)</span>
+                    <textarea
+                      type="text"
+                      rows="5"
+                      class="form-control"
+                      [(ngModel)]="data().address.fullAddress"
+                      name="fullAddress"
+                      required
+                      minlength="10"
+                      >
+                    </textarea>
+                    <div class="invalid-feedback">Geçerli bir açık adres girin</div>
+                </div>
+
             </div>
-
-            <div class="form-group mt-2">
-              <label for="phone2">Telefon 2</label>
-              <input
-                id="phone2"
-                type="text"
-                class="form-control"
-                [(ngModel)]="data().address.phoneNumber2"
-                name="phoneNumber2"
-                prefix="+90"
-                mask="(000) 000 0000">
-            </div>
-
-            <div class="form-group mt-2">
-              <label for="email">Mail Adresi </label>
-              <input
-                id="email"
-                type="email"
-                class="form-control"
-                [(ngModel)]="data().address.email"
-                name="email">
-            </div>
-
-          </div>
         </div>
 
         <div class="form-group mt-2 d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">
-            <i class="bi" [ngClass]="pageIcon()"></i>
-            {{btnName()}}
-          </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi" [ngClass]="pageIcon()"></i>
+                {{btnName()}}
+            </button>
         </div>
-
-      </form>
-    </app-blank>
-
+    </form>
+</app-blank>

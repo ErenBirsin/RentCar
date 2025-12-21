@@ -7,14 +7,19 @@ public sealed class Branch : Entity
 
     private Branch() { }
 
-    public Branch(Name name, Address address, bool isActive)
+    public Branch(Name name,
+        Address address,
+        bool isActive,
+        Contact contact)
     {
         SetName(name);
         SetAddress(address);
+        SetContact(contact);
         SetStatus(isActive);
     }
     public Name Name { get; private set; } = default!;
     public Address Address { get; private set; } = default!;
+    public Contact Contact { get; private set; } = default!;
 
     #region Behaviors
 
@@ -26,6 +31,11 @@ public sealed class Branch : Entity
     public void SetAddress(Address address)
     {
         Address = address;
+    }
+
+    public void SetContact(Contact contact)
+    {
+        Contact = contact;
     }
 
     #endregion
