@@ -5,25 +5,32 @@ using Microsoft.IdentityModel.Tokens;
 using RentCarServer.Application.Services;
 using RentCarServer.Domain.LoginTokens;
 using RentCarServer.Domain.LoginTokens.ValueObjects;
+using RentCarServer.Domain.Roles;
 using RentCarServer.Domain.Users;
 using RentCarServer.Infrastructure.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace RentCarServer.Infrastructure.Services;
 internal sealed class JwtProvider(
     ILoginTokenRepository loginTokenRepository,
+    IRoleRepository roleRepository,
     IUnitOfWork unitOfWork,
     IOptions<JwtOptions> options) : IJwtProvider
 {
     public async Task<string> CreateTokenAsync(User user, CancellationToken cancellationToken = default)
     {
+        var role = await roleRepository.FirstOrDefaultAsync(i => i.Id == user.RoleId, cancellationToken);
+
         List<Claim> claims = new()
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim("fullName", user.FullName.Value),
-            new Claim("email",user.Email.Value)
+            new Claim("email",user.Email.Value),
+            new Claim("role", role.Name.Value),
+            new Claim("permissions", JsonSerializer.Serialize(role.Permissions))
         };
 
         SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(options.Value.SecretKey));

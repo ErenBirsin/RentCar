@@ -7,7 +7,8 @@ public sealed class Branch : Entity
 
     private Branch() { }
 
-    public Branch(Name name,
+    public Branch(
+        Name name,
         Address address,
         bool isActive,
         Contact contact)
