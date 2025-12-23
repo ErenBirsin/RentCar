@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import { BreadcrumbModel } from '../../services/breadcrumb';
 import Grid from '../../components/grid/grid';
 import { FlexiGridModule } from 'flexi-grid';
 import { RouterLink } from "@angular/router";
+import { Common } from '../../services/common';
 
 @Component({
   imports: [
@@ -24,4 +25,10 @@ readonly breadcrumbs = signal<BreadcrumbModel[]>([
       isActive: true
     }
   ]);
+
+  readonly #common = inject(Common);
+
+  checkPermission(permission:string){
+    return this.#common.checkPermission(permission);
+  }
 }

@@ -3,7 +3,8 @@ export interface NavigationModel{
   url?: string;
   icon?: string;
   haveSubNav?: boolean;
-  subNavs?: NavigationModel[]
+  subNavs?: NavigationModel[],
+  permission:string;
 }
 
 export const navigations: NavigationModel[]=[
@@ -11,15 +12,18 @@ export const navigations: NavigationModel[]=[
     title:'Dashboard',
     url: '/',
     icon:'bi-speedometer2',
+    permission:'dashboard:view'
   },
   {
     title :'Şubeler',
     url:'/branches',
-    icon: 'bi-buildings'
+    icon: 'bi-buildings',
+    permission:'branch:view'
   },
   {
     title:'Roller',
     url:'/roles',
-    icon:'bi-clipboard2-check'
+    icon:'bi-clipboard2-check',
+    permission:'role:view'
   }
 ]

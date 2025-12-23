@@ -9,11 +9,13 @@ import {
   OnInit,
   Renderer2,
   ViewEncapsulation,
+  computed,
   inject,
   signal
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import Breadcrumb from './breadcrumb/breadcrumb';
+import { Common } from '../../services/common';
 
 @Component({
   imports: [
@@ -30,10 +32,12 @@ import Breadcrumb from './breadcrumb/breadcrumb';
 export default class Layouts implements OnInit,OnDestroy {
 private resizeTimer: any;
 readonly navigations = signal<NavigationModel[]>(navigations)
+readonly decode = computed(() => this.#common.decode());
 
   readonly #elementRef = inject(ElementRef);
   readonly #renderer = inject(Renderer2);
-  readonly #router = inject(Router)
+  readonly #router = inject(Router);
+  readonly #common = inject(Common);
 
   ngOnInit(): void {
     this.initializeSidebar();
@@ -239,4 +243,9 @@ readonly navigations = signal<NavigationModel[]>(navigations)
     // Notification logic can be implemented here
 
   }
+
+  checkPermission(permission:string) {
+    return this.#common.checkPermission(permission);
+  }
+
 }
