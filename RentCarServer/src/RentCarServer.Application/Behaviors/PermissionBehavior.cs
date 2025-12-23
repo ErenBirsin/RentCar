@@ -3,7 +3,7 @@ using System.Reflection;
 using TS.MediatR;
 
 public sealed class PermissionBehavior<TRequest, TResponse>(
-    IUserContext userContext) : IPipelineBehavior<TRequest, TResponse>
+    IClaimContext userContext) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken = default)
