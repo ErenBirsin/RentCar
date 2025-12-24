@@ -56,7 +56,8 @@ public static class ExtensionMethods
                 userName,
                 password,
                 branchId,
-                roleId
+                roleId,
+                true
                 );
 
             userRepository.Add(user);

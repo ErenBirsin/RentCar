@@ -4,6 +4,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Users;
+[Permission("user:delete")]
 public sealed record UserDeleteCommand(
     Guid Id) : IRequest<Result<string>>;
 
@@ -17,6 +18,11 @@ internal sealed class UserDeleteCommandHandler(
         if (user is null)
         {
             return Result<string>.Failure("Kullanıcı bulunamadı");
+        }
+
+        if (user.UserName.Value == "admin")
+        {
+            return Result<string>.Failure("Admin kullanıcısı silinemez");
         }
 
         user.Delete();

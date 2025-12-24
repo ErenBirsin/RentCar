@@ -6,6 +6,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Users;
+[Permission("user:view")]
 public sealed record UserGetQuery(Guid Id) : IRequest<Result<UserDto>>;
 
 internal sealed class UserGetQueryHandler(

@@ -8,6 +8,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Users;
+[Permission("user:update")]
 public sealed record UserUpdateCommand(
     Guid Id,
     string FirstName,
@@ -15,7 +16,8 @@ public sealed record UserUpdateCommand(
     string Email,
     string UserName,
     Guid? BranchId,
-    Guid RoleId) : IRequest<Result<string>>;
+    Guid RoleId,
+    bool IsActive) : IRequest<Result<string>>;
 
 public sealed class UserUpdateCommandValidator : AbstractValidator<UserUpdateCommand>
 {
@@ -77,6 +79,7 @@ internal sealed class UserUpdateCommandHandler(
         user.SetUserName(userName);
         user.SetBranchId(branchIdRecord);
         user.SetRoleId(roleId);
+        user.SetStatus(request.IsActive);
         userRepository.Update(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
