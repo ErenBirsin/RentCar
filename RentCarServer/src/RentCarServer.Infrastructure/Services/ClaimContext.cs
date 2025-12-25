@@ -56,4 +56,21 @@ internal sealed class ClaimContext(IHttpContextAccessor httpContextAccessor) : I
             throw new ArgumentNullException("Şube id uygun Guid formatında değil");
         }
     }
+
+    public string GetRoleName()
+    {
+        var httpContext = httpContextAccessor.HttpContext;
+        if (httpContext is null)
+        {
+            throw new ArgumentNullException("Context bilgisi bulunamadı");
+        }
+        var claims = httpContext.User.Claims;
+        string? roleName = claims.FirstOrDefault(i => i.Type == ClaimTypes.Role)?.Value;
+        if (roleName is null)
+        {
+            throw new ArgumentNullException("Rol bilgisi bulunamadı");
+        }
+
+        return roleName;
+    }
 }

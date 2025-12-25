@@ -12,7 +12,7 @@ export interface UserModel extends EntityModel{
   roleName:string;
 }
 
-export const initalUser : UserModel = {
+export const initialUser : UserModel = {
   id:'',
   firstName: '',
   lastName: '',
