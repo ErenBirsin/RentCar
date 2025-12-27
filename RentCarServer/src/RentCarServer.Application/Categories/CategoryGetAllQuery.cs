@@ -4,6 +4,7 @@ using TS.MediatR;
 namespace RentCarServer.Application.Categories;
 
 public sealed record CategoryGetAllQuery : IRequest<IQueryable<CategoryDto>>;
+[Permission("category:view")]
 
 internal sealed class CategoryGetAllQueryHandler(
     ICategoryRepository categoryRepository) : IRequestHandler<CategoryGetAllQuery, IQueryable<CategoryDto>>

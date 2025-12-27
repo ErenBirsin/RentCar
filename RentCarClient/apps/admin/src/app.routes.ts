@@ -36,6 +36,10 @@ export const appRoutes: Route[] = [
         loadChildren: () => import('./pages/roles/router')
       },
       {
+        path: 'categories',
+        loadChildren: () => import('./pages/categories/router')
+      },
+      {
         path:'users',
         loadChildren: () => import('./pages/users/router')
       }

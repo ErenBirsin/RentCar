@@ -6,7 +6,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Categories;
-
+[Permission("category:create")]
 public sealed record CategoryCreateCommand(
     string Name,
     bool IsActive) : IRequest<Result<string>>;

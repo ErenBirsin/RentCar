@@ -6,7 +6,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Categories;
-
+[Permission("category:update")]
 public sealed record CategoryUpdateCommand(
     Guid Id,
     string Name,

@@ -21,7 +21,7 @@ export default class Detail {
   readonly result = httpResource<Result<UserModel>>(() => `/rent/users/${this.id()}`);
   readonly data = computed(() =>this.result.value()?.data ?? initialUser);
   readonly loading = computed(() => this.result.isLoading());
-  readonly pageTitle = computed(() => this.data().firstName + " " + this.data().lastName);
+  readonly pageTitle = signal<string>("Kullanıcı Detay");
 
   readonly #activated = inject(ActivatedRoute);
   readonly #breadcrumb = inject(BreadcrumbService);

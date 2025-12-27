@@ -4,7 +4,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Categories;
-
+[Permission("category:create")]
 public sealed record CategoryDeleteCommand(
     Guid Id) : IRequest<Result<string>>;
 
