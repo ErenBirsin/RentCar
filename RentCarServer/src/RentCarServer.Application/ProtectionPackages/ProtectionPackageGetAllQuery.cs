@@ -2,6 +2,7 @@
 using TS.MediatR;
 
 namespace RentCarServer.Application.ProtectionPackages;
+[Permission("protection_package:view")]
 
 public sealed record ProtectionPackageGetAllQuery : IRequest<IQueryable<ProtectionPackageDto>>;
 

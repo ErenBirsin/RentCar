@@ -6,6 +6,7 @@ using TS.Result;
 namespace RentCarServer.Application.ProtectionPackages;
 
 public sealed record ProtectionPackageDeleteCommand(Guid Id) : IRequest<Result<string>>;
+[Permission("protection_package:delete")]
 
 internal sealed class ProtectionPackageDeleteCommandHandler(
     IProtectionPackageRepository repository,
