@@ -1,0 +1,32 @@
+<app-blank
+  [pageTitle]="pageTitle()"
+  pageIcon="bi-zoom-in"
+  [showStatusCheckbox]="false"
+  [showStatus]="true"
+  [status]="data().isActive"
+  [showAudit]="true"
+  [audit]="data()"
+  [loading]="loading()"
+  size="col-md-5">
+  <div class="admin-card">
+    <div class="card-header">
+      <h6><i class="bi bi-info-circle text-primary me-2"></i>Ekstra Bilgileri</h6>
+    </div>
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-item">
+          <div class="detail-label">Ekstra Adı</div>
+          <span class="detail-value">{{data().name}}</span>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Açıklama</div>
+          <span class="detail-value">{{data().description}}</span>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Fiyat</div>
+          <span class="detail-value">{{data().price | trCurrency:'₺'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-blank>
