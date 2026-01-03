@@ -86,6 +86,7 @@ app.UseCors(x => x
 .AllowAnyMethod()
 .SetPreflightMaxAge(TimeSpan.FromDays(10)));
 app.UseResponseCompression();
+app.UseStaticFiles();
 
 app.UseExceptionHandler();
 app.UseAuthentication();
