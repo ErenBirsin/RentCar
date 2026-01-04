@@ -27,22 +27,28 @@ export const navigations: NavigationModel[]=[
         permission:'role:view'
   },
   {
+         title:'Kullanıcılar',
+         url:'/users',
+         icon:'bi-people',
+         permission:'user:view'
+  },
+  {
         title: 'Kategoriler',
         url: '/categories',
         icon: 'bi-tags',
         permission: 'category:view'
   },
   {
+        title: 'Araçlar',
+        url: '/vehicles',
+        icon: 'bi-car-front',
+        permission: 'vehicle:view'
+    },
+  {
         title: 'Koruma Paketleri',
         url: '/protection-packages',
         icon: 'bi-shield-check',
         permission: 'protection_package:view'
-  },
-  {
-         title:'Kullanıcılar',
-         url:'/users',
-         icon:'bi-people',
-         permission:'user:view'
   },
   {
         title: 'Ekstralar',
