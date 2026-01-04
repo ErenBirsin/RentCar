@@ -75,6 +75,7 @@ builder.Services.AddResponseCompression(
 builder.Services.AddTransient<CheckTokenMiddleware>();
 builder.Services.AddHostedService<CheckLoginTokenBackgroundService>();
 
+
 var app = builder.Build();
 app.MapOpenApi();
 app.MapScalarApiReference();
@@ -87,11 +88,10 @@ app.UseCors(x => x
 .SetPreflightMaxAge(TimeSpan.FromDays(10)));
 app.UseResponseCompression();
 app.UseStaticFiles();
-
 app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
-// app.UseExceptionHandler(); en �ste ekledim 
+
 app.UseMiddleware<CheckTokenMiddleware>();
 app.UseRateLimiter();
 app.MapControllers()
@@ -105,6 +105,7 @@ app.MapUser();
 app.MapCategory();
 app.MapProtectionPackage();
 app.MapExtra();
+app.MapVehicle();
 
 app.MapGet("/", () => "Hello World").RequireAuthorization();
 // await app.CreateUserFirstUser();
