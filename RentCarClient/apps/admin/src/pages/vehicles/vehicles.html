@@ -8,10 +8,15 @@
   [breadcrumbs]="bredcrumbs()"
   captionTitle="Araç Listesi"
 >
-  <flexi-grid-column field="brand" title="Marka">
+  <flexi-grid-column title="Araç Resmi">
     <ng-template flexiGridCellTemplate let-item>
-      <img [src]="item.imageUrl" alt="Araç" style="width:40px;height:28px;object-fit:cover;margin-right:8px;border-radius:4px;">
-      {{item.brand}}
+      <div style="display: flex; align-items: center; gap: 8px; max-width: 100%; overflow: hidden;">
+        <img 
+          [src]="`https://localhost:7161/images/${item.imageUrl}`" 
+          alt="Araç" 
+          style="width: 80px; min-width: 80px; height: 60px; object-fit: cover; border-radius: 4px; flex-shrink: 0;">
+        <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{item.brand}}</span>
+      </div>
     </ng-template>
   </flexi-grid-column>
   <flexi-grid-column field="model" title="Model"/>

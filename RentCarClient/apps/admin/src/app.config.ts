@@ -12,7 +12,7 @@ import { authInterceptor } from './interceptors/auth-interceptor';
 import { errorInterceptor } from './interceptors/error-interceptor';
 import { provideNgxMask } from 'ngx-mask';
 import localeTr from '@angular/common/locales/tr';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, DatePipe } from '@angular/common';
 
 registerLocaleData(localeTr);
 
@@ -28,8 +28,7 @@ export const appConfig: ApplicationConfig = {
       errorInterceptor
     ])),
     {
-      provide: LOCALE_ID,useValue:'tr-TR'
-    }
+      provide: LOCALE_ID,useValue:'tr-TR'}
   ],
 };
 
