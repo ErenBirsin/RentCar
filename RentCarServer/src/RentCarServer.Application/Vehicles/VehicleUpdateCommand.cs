@@ -2,6 +2,7 @@
 using GenericFileService.Files;
 using GenericRepository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RentCarServer.Domain.Abstractions;
 using RentCarServer.Domain.Shared;
 using RentCarServer.Domain.Vehicles;
@@ -36,26 +37,44 @@ public sealed record VehicleUpdateCommand(
     decimal WeeklyDiscountRate,
     decimal MonthlyDiscountRate,
     string InsuranceType,
-    DateTimeOffset LastMaintenanceDate,
+    DateOnly LastMaintenanceDate,
     int LastMaintenanceKm,
     int NextMaintenanceKm,
-    DateTimeOffset InspectionDate,
-    DateTimeOffset InsuranceEndDate,
-    DateTimeOffset CascoEndDate,
+    DateOnly InspectionDate,
+    DateOnly InsuranceEndDate,
+    DateOnly? CascoEndDate,
     string TireStatus,
     string GeneralStatus,
     List<string> Features,
-    IFormFile? File,
     bool IsActive
-) : IRequest<Result<string>>;
+) : IRequest<Result<string>>
+{
+    [FromForm]
+    public IFormFile? File { get; set; }
+}
 public sealed class VehicleUpdateCommandValidator : AbstractValidator<VehicleUpdateCommand>
 {
     public VehicleUpdateCommandValidator()
     {
-        RuleFor(p => p.Brand).NotEmpty();
-        RuleFor(p => p.Model).NotEmpty();
-        RuleFor(p => p.ModelYear).GreaterThan(1900);
-        RuleFor(p => p.Plate).NotEmpty();
+        RuleFor(p => p.Brand)
+           .NotEmpty()
+           .WithMessage("Marka alanı boş bırakılamaz.");
+
+        RuleFor(p => p.Model)
+            .NotEmpty()
+            .WithMessage("Model alanı boş bırakılamaz.");
+
+        RuleFor(p => p.ModelYear)
+            .GreaterThan(1900)
+            .WithMessage("Geçerli bir model yılı seçmelisiniz.");
+
+        RuleFor(p => p.Plate)
+            .NotEmpty()
+            .WithMessage("Plaka bilgisi girilmelidir.");
+
+        RuleFor(p => p.Features)
+            .Must(i => i != null && i.Any())
+            .WithMessage("En az bir özellik seçmelisiniz.");
     }
 }
 internal sealed class VehicleUpdateCommandHandler(
@@ -110,7 +129,7 @@ internal sealed class VehicleUpdateCommandHandler(
         NextMaintenanceKm nextMaintenanceKm = new(request.NextMaintenanceKm);
         InspectionDate inspectionDate = new(request.InspectionDate);
         InsuranceEndDate insuranceEndDate = new(request.InsuranceEndDate);
-        CascoEndDate cascoEndDate = new(request.CascoEndDate);
+        CascoEndDate? cascoEndDate = request.CascoEndDate is not null ? new(request.CascoEndDate.Value) : null;
         TireStatus tireStatus = new(request.TireStatus);
         GeneralStatus generalStatus = new(request.GeneralStatus);
         IEnumerable<Feature> features = request.Features.Select(f => new Feature(f));
@@ -143,7 +162,10 @@ internal sealed class VehicleUpdateCommandHandler(
         vehicle.SetNextMaintenanceKm(nextMaintenanceKm);
         vehicle.SetInspectionDate(inspectionDate);
         vehicle.SetInsuranceEndDate(insuranceEndDate);
-        vehicle.SetCascoEndDate(cascoEndDate);
+        if (cascoEndDate is not null)
+        {
+            vehicle.SetCascoEndDate(cascoEndDate);
+        }
         vehicle.SetTireStatus(tireStatus);
         vehicle.SetGeneralStatus(generalStatus);
         vehicle.SetFeatures(features);

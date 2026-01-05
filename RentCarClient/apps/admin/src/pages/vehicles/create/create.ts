@@ -131,12 +131,8 @@ export default class CreateVehicle {
   ];
 
   readonly insuranceTypeList = signal<string[]>([
-    'Kasko',
-    'Trafik',
-    'Kasko ve Trafik',
-    'Yok',
-    'Full',
-    'Partial'
+    'Kasko & Sigorta',
+    'Sigorta'
   ]);
 
   readonly tractionTypeList = [
