@@ -920,6 +920,31 @@ body {
 
 .admin-card .card-body {
     padding: 1.5rem;
+    color: var(--text-dark);
+}
+
+.admin-card .card-body b {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.admin-card .card-body,
+.admin-card .card-body * {
+    color: var(--text-dark);
+}
+
+.admin-card .card-body .text-muted {
+    color: var(--text-muted) !important;
+}
+
+.admin-card .card-body .form-check-label {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.admin-card .card-body span:not(.badge):not(.text-muted) {
+    color: var(--text-dark);
+    font-weight: 500;
 }
 
 .admin-card.border-warning {
