@@ -19,7 +19,7 @@
                 <label for="brand" class="form-label">Marka *</label>
                 <select id="brand" class="form-select" [(ngModel)]="data().brand" name="brand" required>
                   <option value="">Marka seçiniz</option>
-                  @for (brand of brandList; track $index) {
+                  @for (brand of brandList(); track $index) {
                     <option [value]="brand">{{brand}}</option>
                   }
                 </select>
@@ -32,7 +32,7 @@
                 <label for="modelYear" class="form-label">Model Yılı *</label>
                 <select id="modelYear" class="form-select" [(ngModel)]="data().modelYear" name="modelYear" required>
                   <option value="">Model yılı seçiniz</option>
-                  @for (year of modelYearList; track $index) {
+                  @for (year of modelYearList(); track $index) {
                     <option [value]="year">{{year}}</option>
                   }
                 </select>
@@ -41,7 +41,7 @@
                 <label for="color" class="form-label">Renk</label>
                 <select id="color" class="form-select" [(ngModel)]="data().color" name="color">
                   <option value="">Renk seçiniz</option>
-                  @for (color of colorList; track $index) {
+                  @for (color of colorList(); track $index) {
                     <option [value]="color">{{color}}</option>
                   }
                 </select>
@@ -305,7 +305,7 @@
               aria-label="Araç fotoğrafı yüklemek için tıklayın veya dosyayı sürükleyin"
               style="border:2px dashed #ccc; border-radius:8px; padding:16px; cursor:pointer; position:relative; outline: none;">
               <img
-                [src]="getImageUrl()"
+                [src]="showImageUrl()"
                 alt="Araç Fotoğrafı"
                 class="img-fluid mb-2"
                 style="max-width: 100%; max-height: 400px; object-fit:cover; display:block; margin:auto;">

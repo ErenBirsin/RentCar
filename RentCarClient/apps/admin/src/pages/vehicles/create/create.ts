@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, resource, signal, ViewEncapsulation, ElementRef, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, resource, signal, ViewEncapsulation, ElementRef, viewChild, Signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FlexiToastService } from 'flexi-toast';
@@ -20,6 +20,33 @@ export interface FeatureGroup {
     group: string;
     features: { key: string; label: string; icon: string }[];
 }
+
+export const brandList = [
+    'Toyota',
+    'Renault',
+    'Volkswagen',
+    'Ford', 'Fiat',
+    'Hyundai',
+    'Peugeot',
+    'Opel',
+    'Honda',
+    'BMW'
+  ];
+
+  export const colorList = [
+    'Beyaz',
+    'Siyah',
+    'Gri',
+    'Kırmızı',
+    'Mavi',
+    'Yeşil',
+    'Sarı',
+    'Turuncu',
+    'Kahverengi',
+    'Mor'
+  ];
+
+  export const modelYearList = Array.from({length: 16}, (_, i) => 2010 + i);
 
 @Component({
   imports: [
@@ -44,30 +71,9 @@ export default class CreateVehicle {
       url: '/vehicles'
     }
   ]);
-  readonly brandList = [
-    'Toyota',
-    'Renault',
-    'Volkswagen',
-    'Ford', 'Fiat',
-    'Hyundai',
-    'Peugeot',
-    'Opel',
-    'Honda',
-    'BMW'
-  ];
-  readonly modelYearList = Array.from({length: 21}, (_, i) => 2010 + i); // 2010-2030 arası
-  readonly colorList = [
-    'Beyaz',
-    'Siyah',
-    'Gri',
-    'Kırmızı',
-    'Mavi',
-    'Yeşil',
-    'Sarı',
-    'Turuncu',
-    'Kahverengi',
-    'Mor'
-  ];
+  readonly brandList = computed(() => brandList);
+  readonly modelYearList = computed(() => modelYearList);
+  readonly colorList = computed(() => colorList);
   readonly fuelTypeList = [
     'Benzin',
     'Dizel',
@@ -188,6 +194,7 @@ export default class CreateVehicle {
   readonly branchLoading = computed(() => this.branchResource.isLoading());
   featuresInput = '';
   readonly file = signal<any | undefined>(undefined);
+  readonly fileData = signal<string | undefined>(undefined);
 
   readonly fileInput = viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
   dragOver = false;
@@ -317,7 +324,7 @@ export default class CreateVehicle {
 
   triggerFileInput() {
     const fileInput = this.fileInput();
-    fileInput.nativeElement.value = ''; // Aynı dosya tekrar seçilebilsin diye sıfırla
+    fileInput.nativeElement.value = '';
     fileInput.nativeElement.click();
   }
 
@@ -328,13 +335,14 @@ export default class CreateVehicle {
       this.file.set(file);
       const reader = new FileReader();
       reader.onload = () => {
+        this.fileData.set(reader.result as string)
         this.data.update(prev => ({
           ...prev,
-          imageUrl: reader.result as string
+          imageUrl: ''
         }));
       };
       reader.readAsDataURL(file);
-      input.value = ''; // Aynı dosya tekrar seçilebilsin diye sıfırla
+      input.value = '';
     }
   }
 
@@ -356,9 +364,10 @@ export default class CreateVehicle {
       this.file.set(file);
       const reader = new FileReader();
       reader.onload = () => {
+        this.fileData.set(reader.result as string)
         this.data.update(prev => ({
           ...prev,
-          imageUrl: reader.result as string
+          imageUrl: ''
         }));
       };
       reader.readAsDataURL(file);
@@ -388,17 +397,13 @@ export default class CreateVehicle {
     return this.data().features.includes(feature);
   }
 
-  // Resim URL'ini döndürür - base64 ise direkt kullan, değilse URL ile birleştir
-  getImageUrl(): string {
-    const imageUrl = this.data().imageUrl;
-    if (!imageUrl) {
-      return 'no-image.png';
+  showImageUrl(){
+    if(this.fileData()){
+        return this.fileData()
+    }else if(this.data().imageUrl){
+        return `https://localhost:7161/images/${this.data().imageUrl}`
+    }else{
+        return '/no-noimage.png'
     }
-    // Base64 string kontrolü (data: ile başlıyorsa base64)
-    if (imageUrl.startsWith('data:')) {
-      return imageUrl;
-    }
-    // Normal dosya adı ise URL ile birleştir
-    return `https://localhost:7161/images/${imageUrl}`;
   }
 }

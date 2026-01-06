@@ -10,21 +10,17 @@
 >
   <flexi-grid-column title="Araç Resmi">
     <ng-template flexiGridCellTemplate let-item>
-      <div style="display: flex; align-items: center; gap: 8px; max-width: 100%; overflow: hidden;">
-        <img 
-          [src]="`https://localhost:7161/images/${item.imageUrl}`" 
-          alt="Araç" 
-          style="width: 80px; min-width: 80px; height: 60px; object-fit: cover; border-radius: 4px; flex-shrink: 0;">
-        <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{item.brand}}</span>
-      </div>
+      <img [src]="`https://localhost:7161/images/${item.imageUrl}`" alt="Araç" style="width:150px;height:90px;object-fit:cover;margin-right:8px;border-radius:4px;">
+      {{item.brand}}
     </ng-template>
   </flexi-grid-column>
+  <flexi-grid-column field="brand" title="Marka" filterType="select" [filterData]="brandFilterData()" />
   <flexi-grid-column field="model" title="Model"/>
-  <flexi-grid-column field="modelYear" title="Model Yılı"/>
-  <flexi-grid-column field="color" title="Renk"/>
+  <flexi-grid-column field="modelYear" title="Model Yılı" filterType="select" [filterData]="modelYearFilterData()" />
+  <flexi-grid-column field="color" title="Renk" filterType="select" [filterData]="colorFilterData()"/>
   <flexi-grid-column field="plate" title="Plaka"/>
-  <flexi-grid-column field="categoryId" title="Kategori"/>
-  <flexi-grid-column field="branchId" title="Şube"/>
+  <flexi-grid-column field="categoryName" title="Kategori"/>
+  <flexi-grid-column field="branchName" title="Şube"/>
   <flexi-grid-column field="vinNumber" title="Şasi No"/>
   <flexi-grid-column field="engineNumber" title="Motor No"/>
   <flexi-grid-column field="description" title="Açıklama"/>
