@@ -106,7 +106,8 @@ app.MapCategory();
 app.MapProtectionPackage();
 app.MapExtra();
 app.MapVehicle();
-app.MapSeedData();
+// app.MapSeedData();
+app.MapCustomer();
 
 app.MapGet("/", () => "Hello World").RequireAuthorization();
 // await app.CreateUserFirstUser();
