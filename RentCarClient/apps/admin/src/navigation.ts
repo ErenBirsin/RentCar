@@ -14,31 +14,37 @@ export const navigations: NavigationModel[]=[
         icon:'bi-speedometer2',
         permission:'dashboard:view'
   },
-  {
+    {
         title :'Şubeler',
         url:'/branches',
         icon: 'bi-buildings',
         permission:'branch:view'
   },
-  {
+    {
         title:'Roller',
         url:'/roles',
         icon:'bi-clipboard2-check',
         permission:'role:view'
   },
-  {
+    {
          title:'Kullanıcılar',
          url:'/users',
          icon:'bi-people',
          permission:'user:view'
   },
-  {
+    {
+        title: 'Müşteriler',
+        url: '/customers',
+        icon: 'bi-person-vcard',
+        permission: 'customer:view'
+  },
+    {
         title: 'Kategoriler',
         url: '/categories',
         icon: 'bi-tags',
         permission: 'category:view'
   },
-  {
+   {
         title: 'Araçlar',
         url: '/vehicles',
         icon: 'bi-car-front',
@@ -50,7 +56,7 @@ export const navigations: NavigationModel[]=[
         icon: 'bi-shield-check',
         permission: 'protection_package:view'
   },
-  {
+    {
         title: 'Ekstralar',
         url: '/extra',
         icon: 'bi-plus-square',
