@@ -51,53 +51,55 @@ public static class VehicleExtensions
         IQueryable<Category> categories
         )
     {
-        return entities
-        .Join(branches, m => m.Entity.BranchId.value, m => m.Id, (r, branch) => new { r.Entity, r.CreatedUser, r.UpdatedUser, Branch = branch })
-        .Join(categories, m => m.Entity.CategoryId.value, m => m.Id, (r, category) => new { r.Entity, r.CreatedUser, r.UpdatedUser, r.Branch, Category = category })
-            .Select(s => new VehicleDto
-            {
-                Id = s.Entity.Id,
-                Brand = s.Entity.Brand.Value,
-                Model = s.Entity.Model.Value,
-                ModelYear = s.Entity.ModelYear.Value,
-                Color = s.Entity.Color.Value,
-                Plate = s.Entity.Plate.Value,
-                CategoryId = s.Entity.CategoryId,
-                CategoryName = s.Category.Name.Value,
-                BranchId = s.Entity.BranchId,
-                BranchName = s.Branch.Name.Value,
-                VinNumber = s.Entity.VinNumber.Value,
-                EngineNumber = s.Entity.EngineNumber.Value,
-                Description = s.Entity.Description.Value,
-                ImageUrl = s.Entity.ImageUrl.Value,
-                FuelType = s.Entity.FuelType.Value,
-                Transmission = s.Entity.Transmission.Value,
-                EngineVolume = s.Entity.EngineVolume.Value,
-                EnginePower = (int)s.Entity.EnginePower.Value,
-                TractionType = s.Entity.TractionType.Value,
-                FuelConsumption = s.Entity.FuelConsumption.Value,
-                SeatCount = s.Entity.SeatCount.Value,
-                Kilometer = s.Entity.Kilometer.Value,
-                DailyPrice = s.Entity.DailyPrice.Value,
-                WeeklyDiscountRate = s.Entity.WeeklyDiscountRate.Value,
-                MonthlyDiscountRate = s.Entity.MonthlyDiscountRate.Value,
-                InsuranceType = s.Entity.InsuranceType.Value,
-                LastMaintenanceDate = s.Entity.LastMaintenanceDate.Value,
-                LastMaintenanceKm = s.Entity.LastMaintenanceKm.Value,
-                NextMaintenanceKm = s.Entity.NextMaintenanceKm.Value,
-                InspectionDate = s.Entity.InspectionDate.Value,
-                InsuranceEndDate = s.Entity.InsuranceEndDate.Value,
-                CascoEndDate = s.Entity.CascoEndDate != null ? s.Entity.CascoEndDate.Value : null,
-                TireStatus = s.Entity.TireStatus.Value,
-                GeneralStatus = s.Entity.GeneralStatus.Value,
-                Features = s.Entity.Features.Select(f => f.Value).ToList(),
-                IsActive = s.Entity.IsActive,
-                CreatedAt = s.Entity.CreatedAt,
-                CreatedBy = s.Entity.CreatedBy,
-                CreatedFullName = s.CreatedUser.FullName.Value,
-                UpdatedAt = s.Entity.UpdatedAt,
-                UpdatedBy = s.Entity.UpdatedBy != null ? s.Entity.UpdatedBy.value : null,
-                UpdatedFullName = s.UpdatedUser != null ? s.UpdatedUser.FullName.Value : null,
-            });
+        return from e in entities
+               join b in branches on e.Entity.BranchId.value equals b.Id into branchGroup
+               from branch in branchGroup.DefaultIfEmpty()
+               join c in categories on e.Entity.CategoryId.value equals c.Id into categoryGroup
+               from category in categoryGroup.DefaultIfEmpty()
+               select new VehicleDto
+               {
+                   Id = e.Entity.Id,
+                   Brand = e.Entity.Brand.Value,
+                   Model = e.Entity.Model.Value,
+                   ModelYear = e.Entity.ModelYear.Value,
+                   Color = e.Entity.Color.Value,
+                   Plate = e.Entity.Plate.Value,
+                   CategoryId = e.Entity.CategoryId,
+                   CategoryName = category != null ? category.Name.Value : "Kategori Yok",
+                   BranchId = e.Entity.BranchId,
+                   BranchName = branch != null ? branch.Name.Value : "Şube Yok",
+                   VinNumber = e.Entity.VinNumber.Value,
+                   EngineNumber = e.Entity.EngineNumber.Value,
+                   Description = e.Entity.Description.Value,
+                   ImageUrl = e.Entity.ImageUrl.Value,
+                   FuelType = e.Entity.FuelType.Value,
+                   Transmission = e.Entity.Transmission.Value,
+                   EngineVolume = e.Entity.EngineVolume.Value,
+                   EnginePower = (int)e.Entity.EnginePower.Value,
+                   TractionType = e.Entity.TractionType.Value,
+                   FuelConsumption = e.Entity.FuelConsumption.Value,
+                   SeatCount = e.Entity.SeatCount.Value,
+                   Kilometer = e.Entity.Kilometer.Value,
+                   DailyPrice = e.Entity.DailyPrice.Value,
+                   WeeklyDiscountRate = e.Entity.WeeklyDiscountRate.Value,
+                   MonthlyDiscountRate = e.Entity.MonthlyDiscountRate.Value,
+                   InsuranceType = e.Entity.InsuranceType.Value,
+                   LastMaintenanceDate = e.Entity.LastMaintenanceDate.Value,
+                   LastMaintenanceKm = e.Entity.LastMaintenanceKm.Value,
+                   NextMaintenanceKm = e.Entity.NextMaintenanceKm.Value,
+                   InspectionDate = e.Entity.InspectionDate.Value,
+                   InsuranceEndDate = e.Entity.InsuranceEndDate.Value,
+                   CascoEndDate = e.Entity.CascoEndDate != null ? e.Entity.CascoEndDate.Value : null,
+                   TireStatus = e.Entity.TireStatus.Value,
+                   GeneralStatus = e.Entity.GeneralStatus.Value,
+                   Features = e.Entity.Features.Select(f => f.Value).ToList(),
+                   IsActive = e.Entity.IsActive,
+                   CreatedAt = e.Entity.CreatedAt,
+                   CreatedBy = e.Entity.CreatedBy,
+                   CreatedFullName = e.CreatedUser != null ? e.CreatedUser.FullName.Value : "Bilinmiyor",
+                   UpdatedAt = e.Entity.UpdatedAt,
+                   UpdatedBy = e.Entity.UpdatedBy != null ? e.Entity.UpdatedBy.value : null,
+                   UpdatedFullName = e.UpdatedUser != null ? e.UpdatedUser.FullName.Value : null,
+               };
     }
 }
