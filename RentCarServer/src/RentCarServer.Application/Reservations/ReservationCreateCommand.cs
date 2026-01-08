@@ -31,8 +31,7 @@ public sealed record ReservationCreateCommand(
     Guid ExtraId,
     decimal ExtraPrice,
     string Note,
-    CreditCartInformation CreditCartInformation,
-    string CartOwner
+    CreditCartInformation CreditCartInformation
 ) : IRequest<Result<string>>;
 
 public sealed class ReservationCreateCommandValidator : AbstractValidator<ReservationCreateCommand>
@@ -104,12 +103,12 @@ internal sealed class ReservationCreateCommandHandler(
         // Aynı araç için bu zaman aralığında çakışan rezervasyon var mı kontrol et
         var overlaps = await reservationRepository.AnyAsync(r =>
                 r.VehicleId.value == request.VehicleId &&
-
+                (
                     requestedPickUp < r.DeliveryDate.Value.ToDateTime(r.DeliveryTime.Value).AddHours(1) &&
                     // yeni başlangıç, mevcut +1 saatten önce başlıyorsa
                     requestedDelivery > r.PickUpDate.Value.ToDateTime(r.PickUpTime.Value)
-                // yeni bitiş, mevcut başlangıçtan sonra bitiyorsa
-                ,
+                   // yeni bitiş, mevcut başlangıçtan sonra bitiyorsa
+                   ),
             cancellationToken: cancellationToken
         );
 
