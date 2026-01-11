@@ -8,6 +8,8 @@ using RentCarServer.Domain.Vehicles;
 using TS.MediatR;
 
 namespace RentCarServer.Application.Reservations;
+[Permission("reservation:view")]
+
 public sealed record ReservationGetAllQuery : IRequest<IQueryable<ReservationDto>>;
 internal sealed class ReservationGetAllQueryHandler(
     IReservationRepository reservationRepository,

@@ -5,6 +5,8 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Reservations;
+[Permission("reservation:delete")]
+
 public sealed record ReservationDeleteCommand(
     Guid Id) : IRequest<Result<string>>;
 internal sealed class ReservationDeleteCommandHandler(

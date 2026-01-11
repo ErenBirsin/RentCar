@@ -6928,3 +6928,23 @@ a{
     font-size: 0.8rem;
     opacity: 0.9;
 }
+
+.vehicle-image{
+  width: 150px;
+  height: 90px;
+  object-fit: cover;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+
+.flexi-grid-card-warning {
+    background-color: #ffc10778;
+    border-color: #ffc107 !important;
+    color: black;
+}
+
+.flexi-grid-card-info {
+    background-color: #5360ad7c;
+    border-color: #5360ad !important;
+    color: black;
+}

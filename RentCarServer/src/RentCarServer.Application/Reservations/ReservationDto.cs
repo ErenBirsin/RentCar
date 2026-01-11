@@ -8,7 +8,6 @@ using RentCarServer.Domain.Reservations;
 using RentCarServer.Domain.Vehicles;
 
 namespace RentCarServer.Application.Reservations;
-
 public sealed class PickUpDto
 {
     public string Name { get; set; } = default!;
@@ -35,6 +34,7 @@ public sealed class VehicleDto
     public int SeatCount { get; set; } = default!;
     public string TractionType { get; set; } = default!;
     public int Kilometer { get; set; } = default!;
+    public string ImageUrl { get; set; } = default!;
 }
 public sealed class ReservationExtraDto
 {
@@ -50,8 +50,10 @@ public sealed class ReservationDto : EntityDto
     public PickUpDto PickUp { get; set; } = default!;
     public DateOnly PickUpDate { get; set; } = default!;
     public TimeOnly PickUpTime { get; set; } = default!;
+    public DateTime PickUpDateTime { get; set; } = default!;
     public DateOnly DeliveryDate { get; set; } = default!;
     public TimeOnly DeliveryTime { get; set; } = default!;
+    public DateTime DeliveryDateTime { get; set; } = default!;
     public Guid VehicleId { get; set; } = default!;
     public decimal VehicleDailyPrice { get; set; } = default!;
     public VehicleDto Vehicle { get; set; } = default!;
@@ -64,7 +66,6 @@ public sealed class ReservationDto : EntityDto
     public string Status { get; set; } = default!;
     public int TotalDay { get; set; } = default!;
 }
-
 public static class ReservationExtensions
 {
     public static IQueryable<ReservationDto> MapTo(
@@ -93,28 +94,6 @@ public static class ReservationExtensions
                 r.Customer,
                 Branch = branch
             })
-            .Join(
-                vehicles.Join(categories, n => n.CategoryId, n => n.Id, (v, category) => new VehicleDto
-                {
-                    Id = v.Id,
-                    Brand = v.Brand.Value,
-                    Model = v.Model.Value,
-                    ModelYear = v.ModelYear.Value,
-                    CategoryName = category.Name.Value,
-                    Color = v.Color.Value,
-                    FuelConsumption = v.FuelConsumption.Value,
-                    SeatCount = v.SeatCount.Value,
-                    TractionType = v.TractionType.Value,
-                    Kilometer = v.Kilometer.Value,
-                }).AsQueryable(), m => m.Entity.VehicleId, m => m.Id, (r, vehicle) => new
-                {
-                    r.Entity,
-                    r.CreatedUser,
-                    r.UpdatedUser,
-                    r.Customer,
-                    r.Branch,
-                    Vehicle = vehicle
-                })
             .Join(protectionPackages, m => m.Entity.ProtectionPackageId, m => m.Id, (r, protectionPackage) => new
             {
                 r.Entity,
@@ -122,8 +101,17 @@ public static class ReservationExtensions
                 r.UpdatedUser,
                 r.Customer,
                 r.Branch,
-                r.Vehicle,
                 ProtectionPackage = protectionPackage
+            })
+            .Join(vehicles, m => m.Entity.VehicleId, m => m.Id, (r, vehicle) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                r.Customer,
+                r.Branch,
+                r.ProtectionPackage,
+                Vehicle = vehicle
             })
             .Select(s => new ReservationDto
             {
@@ -146,11 +134,26 @@ public static class ReservationExtensions
                 },
                 PickUpDate = s.Entity.PickUpDate.Value,
                 PickUpTime = s.Entity.PickUpTime.Value,
+                PickUpDateTime = new DateTime(s.Entity.PickUpDate.Value, s.Entity.PickUpTime.Value),
                 DeliveryDate = s.Entity.DeliveryDate.Value,
                 DeliveryTime = s.Entity.DeliveryTime.Value,
+                DeliveryDateTime = new DateTime(s.Entity.DeliveryDate.Value, s.Entity.DeliveryTime.Value),
                 VehicleId = s.Entity.VehicleId.value,
                 VehicleDailyPrice = s.Entity.VehicleDailyPrice.Value,
-                Vehicle = s.Vehicle,
+                Vehicle = new VehicleDto
+                {
+                    Id = s.Vehicle.Id,
+                    Brand = s.Vehicle.Brand.Value,
+                    Model = s.Vehicle.Model.Value,
+                    ModelYear = s.Vehicle.ModelYear.Value,
+                    CategoryName = categories.First(i => i.Id == s.Vehicle.CategoryId.value).Name.Value,
+                    Color = s.Vehicle.Color.Value,
+                    FuelConsumption = s.Vehicle.FuelConsumption.Value,
+                    SeatCount = s.Vehicle.SeatCount.Value,
+                    TractionType = s.Vehicle.TractionType.Value,
+                    Kilometer = s.Vehicle.Kilometer.Value,
+                    ImageUrl = s.Vehicle.ImageUrl.Value,
+                },
                 ProtectionPackageId = s.Entity.ProtectionPackageId.value,
                 ProtectionPackagePrice = s.Entity.ProtectionPackagePrice.Value,
                 ProtectionPackageName = s.ProtectionPackage.Name.Value,
@@ -172,7 +175,6 @@ public static class ReservationExtensions
                 UpdatedBy = s.Entity.UpdatedBy != null ? s.Entity.UpdatedBy.value : null,
                 UpdatedFullName = s.UpdatedUser != null ? s.UpdatedUser.FullName.Value : null,
             });
-
         return res;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using GenericRepository;
+using Microsoft.EntityFrameworkCore;
 using RentCarServer.Application.Services;
 using RentCarServer.Domain.Abstractions;
 using RentCarServer.Domain.Branches;
@@ -12,6 +13,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Reservations;
+[Permission("reservation:update")]
 public sealed record ReservationUpdateCommand(
     Guid Id,
     Guid CustomerId,
@@ -103,20 +105,26 @@ internal sealed class ReservationUpdateCommandHandler(
             || reservation.DeliveryTime.Value != request.DeliveryTime
             )
         {
-            // Yeni rezervasyonun alınma ve teslim datetime’ı
             var requestedPickUp = request.PickUpDate.ToDateTime(request.PickUpTime);
             var requestedDelivery = request.DeliveryDate.ToDateTime(request.DeliveryTime);
 
-            // Aynı araç için bu zaman aralığında çakışan rezervasyon var mı kontrol et
-            var overlaps = await reservationRepository.AnyAsync(r =>
-                    r.VehicleId.value == request.VehicleId &&
-                    (
-                        requestedPickUp < r.DeliveryDate.Value.ToDateTime(r.DeliveryTime.Value).AddHours(1) &&
-                        // yeni başlangıç, mevcut +1 saatten önce başlıyorsa
-                        requestedDelivery > r.PickUpDate.Value.ToDateTime(r.PickUpTime.Value)
-                    // yeni bitiş, mevcut başlangıçtan sonra bitiyorsa
-                    ),
-                cancellationToken: cancellationToken
+            var possibleOverlaps = await reservationRepository
+                .Where(r => r.VehicleId == request.VehicleId
+                && (r.Status.Value == Status.Pending.Value || r.Status.Value == Status.Delivered.Value))
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    VehicleId = s.VehicleId,
+                    DeliveryDate = s.DeliveryDate.Value,
+                    DeliveryTime = s.DeliveryTime.Value,
+                    PickUpDate = s.PickUpDate.Value,
+                    PickUpTime = s.PickUpTime.Value,
+                })
+                .ToListAsync(cancellationToken);
+
+            var overlaps = possibleOverlaps.Any(r =>
+                requestedPickUp < r.DeliveryDate.ToDateTime(r.DeliveryTime).AddHours(1) &&
+                requestedDelivery > r.PickUpDate.ToDateTime(r.PickUpTime)
             );
 
             if (overlaps)
@@ -137,8 +145,7 @@ internal sealed class ReservationUpdateCommandHandler(
         Price vehicleDailyPrice = new(request.VehicleDailyPrice);
         IdentityId protectionPackageId = new(request.ProtectionPackageId);
         Price protectionPackagePrice = new(request.ProtectionPackagePrice);
-        IEnumerable<ReservationExtra> reservationExtras = request.ReservationExtras.Select(s =>
-               new ReservationExtra(s.ExtraId, s.Price));
+        IEnumerable<ReservationExtra> reservationExtras = request.ReservationExtras.Select(s => new ReservationExtra(s.ExtraId, s.Price));
         Note note = new(request.Note);
         Total total = new(request.Total);
 
@@ -155,6 +162,7 @@ internal sealed class ReservationUpdateCommandHandler(
         reservation.SetReservationExtras(reservationExtras);
         reservation.SetNote(note);
         reservation.SetTotal(total);
+
         #endregion
 
         reservationRepository.Update(reservation);

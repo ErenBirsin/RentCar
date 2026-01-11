@@ -15,6 +15,12 @@ export const navigations: NavigationModel[]=[
         permission:'dashboard:view'
   },
     {
+        title:'Rezervasyonlar',
+        url: '/reservations',
+        icon:'bi-calendar-check',
+        permission:'reservation:view'
+  },
+    {
         title :'Şubeler',
         url:'/branches',
         icon: 'bi-buildings',
