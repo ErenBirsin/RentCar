@@ -9,7 +9,7 @@ export interface ReservationModel extends EntityModel {
     email: string;
     fullAddress: string;
   };
-  pickUpLocationId: string;
+  pickUpLocationId?: string;
   pickUp: {
     name: string;
     fullAddress: string;
@@ -17,10 +17,10 @@ export interface ReservationModel extends EntityModel {
   };
   pickUpDate: string;
   pickUpTime: string;
-  pickUpDateTime:string,
+  pickUpDateTime: string;
   deliveryDate: string;
   deliveryTime: string;
-  deliveryDateTime:string,
+  deliveryDateTime: string;
   vehicleId: string;
   vehicleDailyPrice: number;
   vehicle: {
@@ -34,7 +34,7 @@ export interface ReservationModel extends EntityModel {
     seatCount: number;
     tractionType: string;
     kilometer: number;
-    imageUrl:string;
+    imageUrl: string;
   };
   protectionPackageId: string;
   protectionPackagePrice: number;
@@ -59,18 +59,17 @@ export const initialReservation: ReservationModel = {
     email: '',
     fullAddress: ''
   },
-  pickUpLocationId: '',
   pickUp: {
     name: '',
     fullAddress: '',
     phoneNumber: ''
   },
   pickUpDate: '',
-  pickUpTime: '',
-  pickUpDateTime:'',
+  pickUpTime: '09:00',
+  pickUpDateTime: '',
   deliveryDate: '',
-  deliveryTime: '',
-  deliveryDateTime:'',
+  deliveryTime: '09:00',
+  deliveryDateTime: '',
   vehicleId: '',
   vehicleDailyPrice: 0,
   vehicle: {
@@ -84,7 +83,7 @@ export const initialReservation: ReservationModel = {
     seatCount: 0,
     tractionType: '',
     kilometer: 0,
-    imageUrl:''
+    imageUrl: ''
   },
   protectionPackageId: '',
   protectionPackagePrice: 0,
