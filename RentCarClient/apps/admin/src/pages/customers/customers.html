@@ -12,6 +12,9 @@
   <flexi-grid-column field="identityNumber" title="TC Kimlik No"/>
   <flexi-grid-column field="dateOfBirth" title="Doğum Tarihi"/>
   <flexi-grid-column field="phoneNumber" title="Telefon"/>
+   <ng-template flexiGridCellTemplate let-item>
+            <span>+90{{ item.phoneNumber | mask: '(000) 000 00 00' }}</span>
+        </ng-template>
   <flexi-grid-column field="email" title="E-posta"/>
   <flexi-grid-column field="drivingLicenseIssuanceDate" title="Ehliyet Veriliş Tarihi"/>
   <flexi-grid-column field="fullAddress" title="Adres"/>
