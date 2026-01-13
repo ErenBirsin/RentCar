@@ -5,9 +5,11 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Blank from 'apps/admin/src/components/blank/blank';
 import { BranchModel } from 'apps/admin/src/models/branch.model';
+import { CategoryModel } from 'apps/admin/src/models/category.model';
 import { CustomerModel, initialCustomerModel } from 'apps/admin/src/models/customer.model';
 import { ODataModel } from 'apps/admin/src/models/odata.model';
 import { initialReservation, ReservationModel } from 'apps/admin/src/models/reservation.model';
+import { VehicleModel } from 'apps/admin/src/models/vehicle.model';
 import { BreadcrumbModel, BreadcrumbService } from 'apps/admin/src/services/breadcrumb';
 import { Common } from 'apps/admin/src/services/common';
 import { HttpService } from 'apps/admin/src/services/http';
@@ -18,6 +20,9 @@ import { FlexiToastService } from 'flexi-toast';
 import { FormValidateDirective } from 'form-validate-angular';
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
+import { TrCurrencyPipe } from 'tr-currency';
+import { fuelTypeList, transmissionList } from '../../vehicles/create/create';
+import { VehiclePipe } from 'apps/admin/src/pipes/vehicle-pipe';
 
 @Component({
   imports: [
@@ -32,7 +37,9 @@ import { lastValueFrom } from 'rxjs';
     NgxMaskPipe,
     NgTemplateOutlet,
     FlexiSelectModule,
-    DatePipe
+    DatePipe,
+    TrCurrencyPipe,
+    VehiclePipe
   ],
   templateUrl: './create.html',
   encapsulation: ViewEncapsulation.None,
@@ -94,6 +101,19 @@ export default class Create {
     })
   );
   readonly branchName = linkedSignal(() => this.#common.decode().branch);
+  readonly vehicles = signal<VehicleModel[]>([]);
+  readonly vehicleLoading = signal<boolean>(false);
+  readonly categoryResult = httpResource<ODataModel<CategoryModel>>(() => '/rent/odata/categories');
+  readonly categoriesData = computed(() => this.categoryResult.value()?.value ?? []);
+  readonly categoriesLoading = computed(() => this.categoryResult.isLoading());
+  readonly fuelTypeList = (() => fuelTypeList);
+  readonly transmissionList = (() => transmissionList);
+  readonly vehicleFilter = signal<{categoryName: string, fuelType: string, transmission: string}>({
+    categoryName: '',
+    fuelType: '',
+    transmission: ''
+  });
+  readonly selectedVehicle = signal<VehicleModel | undefined>(undefined)
 
   readonly #breadcrumb = inject(BreadcrumbService);
   readonly #activated = inject(ActivatedRoute);
@@ -178,6 +198,7 @@ export default class Create {
   }
 
   calculateDayDifference() {
+    this.vehicles.set([]);
     const pickUpDateTime = new Date(`${this.data().pickUpDate}T${this.data().pickUpTime}`);
     const deliveryDateTime = new Date(`${this.data().deliveryDate}T${this.data().deliveryTime}`);
 
@@ -189,10 +210,8 @@ export default class Create {
     }
 
     const oneDayMs = 24 * 60 * 60 * 1000;
-
     const fullDays = Math.floor(diffMs / oneDayMs);
     const remainder = diffMs % oneDayMs;
-
     const totalDay = remainder > 0 ? fullDays + 1 : fullDays;
     this.data.update(prev => ({...prev, totalDay: totalDay}));
   }
@@ -200,5 +219,37 @@ export default class Create {
   setLocation(id:any){
     const branch = this.branchesData().find(i => i.id == id)!;
     this.branchName.set(branch.name);
+  }
+
+  getVehicles(){
+    const data = {
+      branchId: !this.data().pickUpLocationId ? this.#common.decode().branchId : this.data().pickUpLocationId,
+      pickUpDate: this.data().pickUpDate,
+      pickUpTime: this.data().pickUpTime,
+      deliveryDate: this.data().deliveryDate,
+      deliverTime: this.data().deliveryTime
+    }
+
+    this.vehicleLoading.set(true);
+    this.#http.post<VehicleModel[]>('/rent/reservations/vehicle-getall', data,(res) => {
+      this.vehicles.set(res);
+      this.vehicleLoading.set(false);
+    },()=> this.vehicleLoading.set(false));
+  }
+
+  getVehicleImage(vehicle: VehicleModel){
+    const endpoint = "https://localhost:7161/images/";
+    return endpoint + vehicle.imageUrl;
+  }
+
+  selectVehicle(item:VehicleModel){
+    this.selectedVehicle.set(item);
+    this.data.update(prev => ({
+      ...prev,
+      vehicleId: item.id,
+      vehicle: item,
+      vehicleDailyPrice: item.dailyPrice,
+      total: (item.dailyPrice * prev.totalDay)
+    }))
   }
 }

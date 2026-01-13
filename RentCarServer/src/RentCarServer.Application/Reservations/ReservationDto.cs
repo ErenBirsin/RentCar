@@ -1,4 +1,4 @@
-﻿using RentCarServer.Domain.Abstractions;
+using RentCarServer.Domain.Abstractions;
 using RentCarServer.Domain.Branches;
 using RentCarServer.Domain.Categories;
 using RentCarServer.Domain.Customers;
@@ -8,13 +8,13 @@ using RentCarServer.Domain.Reservations;
 using RentCarServer.Domain.Vehicles;
 
 namespace RentCarServer.Application.Reservations;
-public sealed class PickUpDto
+public sealed class ReservationPickUpDto
 {
     public string Name { get; set; } = default!;
     public string FullAddress { get; set; } = default!;
     public string PhoneNumber { get; set; } = default!;
 }
-public sealed class CustomerDto
+public sealed class ReservationCustomerDto
 {
     public string FullName { get; set; } = default!;
     public string IdentityNumber { get; set; } = default!;
@@ -22,19 +22,23 @@ public sealed class CustomerDto
     public string Email { get; set; } = default!;
     public string FullAddress { get; set; } = default!;
 }
-public sealed class VehicleDto
+public sealed class ReservationVehicleDto
 {
     public Guid Id { get; set; } = default!;
     public string Brand { get; set; } = default!;
     public string Model { get; set; } = default!;
     public int ModelYear { get; set; } = default!;
     public string Color { get; set; } = default!;
+    public string Plate { get; set; } = default!;
     public string CategoryName { get; set; } = default!;
+    public string FuelType { get; set; } = default!;
+    public string Transmission { get; set; } = default!;
     public decimal FuelConsumption { get; set; } = default!;
     public int SeatCount { get; set; } = default!;
     public string TractionType { get; set; } = default!;
     public int Kilometer { get; set; } = default!;
     public string ImageUrl { get; set; } = default!;
+    public decimal DailyPrice { get; set; } = default!;
 }
 public sealed class ReservationExtraDto
 {
@@ -45,18 +49,18 @@ public sealed class ReservationExtraDto
 public sealed class ReservationDto : EntityDto
 {
     public Guid CustomerId { get; set; } = default!;
-    public CustomerDto Customer { get; set; } = default!;
+    public ReservationCustomerDto Customer { get; set; } = default!;
     public Guid PickUpLocationId { get; set; } = default!;
-    public PickUpDto PickUp { get; set; } = default!;
+    public ReservationPickUpDto PickUp { get; set; } = default!;
     public DateOnly PickUpDate { get; set; } = default!;
     public TimeOnly PickUpTime { get; set; } = default!;
-    public DateTime PickUpDateTime { get; set; } = default!;
+    public DateTimeOffset PickUpDateTime { get; set; } = default!;
     public DateOnly DeliveryDate { get; set; } = default!;
     public TimeOnly DeliveryTime { get; set; } = default!;
-    public DateTime DeliveryDateTime { get; set; } = default!;
+    public DateTimeOffset DeliveryDateTime { get; set; } = default!;
     public Guid VehicleId { get; set; } = default!;
     public decimal VehicleDailyPrice { get; set; } = default!;
-    public VehicleDto Vehicle { get; set; } = default!;
+    public ReservationVehicleDto Vehicle { get; set; } = default!;
     public Guid ProtectionPackageId { get; set; } = default!;
     public decimal ProtectionPackagePrice { get; set; } = default!;
     public string ProtectionPackageName { get; set; } = default!;
@@ -117,7 +121,7 @@ public static class ReservationExtensions
             {
                 Id = s.Entity.Id,
                 CustomerId = s.Entity.CustomerId,
-                Customer = new CustomerDto
+                Customer = new ReservationCustomerDto
                 {
                     Email = s.Customer.Email.Value,
                     FullAddress = s.Customer.FullAddress.Value,
@@ -126,7 +130,7 @@ public static class ReservationExtensions
                     PhoneNumber = s.Customer.PhoneNumber.Value
                 },
                 PickUpLocationId = s.Entity.PickUpLocationId,
-                PickUp = new PickUpDto
+                PickUp = new ReservationPickUpDto
                 {
                     Name = s.Branch.Name.Value,
                     FullAddress = s.Branch.Address.FullAddress,
@@ -134,13 +138,13 @@ public static class ReservationExtensions
                 },
                 PickUpDate = s.Entity.PickUpDate.Value,
                 PickUpTime = s.Entity.PickUpTime.Value,
-                PickUpDateTime = new DateTime(s.Entity.PickUpDate.Value, s.Entity.PickUpTime.Value),
+                PickUpDateTime = s.Entity.PickUpDateTime.Value,
                 DeliveryDate = s.Entity.DeliveryDate.Value,
                 DeliveryTime = s.Entity.DeliveryTime.Value,
-                DeliveryDateTime = new DateTime(s.Entity.DeliveryDate.Value, s.Entity.DeliveryTime.Value),
+                DeliveryDateTime = s.Entity.DeliveryDateTime.Value,
                 VehicleId = s.Entity.VehicleId.value,
                 VehicleDailyPrice = s.Entity.VehicleDailyPrice.Value,
-                Vehicle = new VehicleDto
+                Vehicle = new ReservationVehicleDto
                 {
                     Id = s.Vehicle.Id,
                     Brand = s.Vehicle.Brand.Value,
@@ -148,11 +152,15 @@ public static class ReservationExtensions
                     ModelYear = s.Vehicle.ModelYear.Value,
                     CategoryName = categories.First(i => i.Id == s.Vehicle.CategoryId.value).Name.Value,
                     Color = s.Vehicle.Color.Value,
+                    Plate = s.Vehicle.Plate.Value,
+                    FuelType = s.Vehicle.FuelType.Value,
+                    Transmission = s.Vehicle.Transmission.Value,
                     FuelConsumption = s.Vehicle.FuelConsumption.Value,
                     SeatCount = s.Vehicle.SeatCount.Value,
                     TractionType = s.Vehicle.TractionType.Value,
                     Kilometer = s.Vehicle.Kilometer.Value,
                     ImageUrl = s.Vehicle.ImageUrl.Value,
+                    DailyPrice = s.Vehicle.DailyPrice.Value,
                 },
                 ProtectionPackageId = s.Entity.ProtectionPackageId.value,
                 ProtectionPackagePrice = s.Entity.ProtectionPackagePrice.Value,

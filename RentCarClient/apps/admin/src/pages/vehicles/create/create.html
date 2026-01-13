@@ -103,7 +103,7 @@
                 <label for="fuelType" class="form-label">Yakıt Türü *</label>
                 <select id="fuelType" class="form-select" [(ngModel)]="data().fuelType" name="fuelType" required>
                   <option value="">Yakıt türü seçiniz</option>
-                  @for (item of fuelTypeList; track $index) {
+                  @for (item of fuelTypeList(); track $index) {
                     <option [value]="item">{{item}}</option>
                   }
                 </select>
@@ -112,7 +112,7 @@
                 <label for="transmission" class="form-label">Şanzıman *</label>
                 <select id="transmission" class="form-select" [(ngModel)]="data().transmission" name="transmission" required>
                   <option value="">Şanzıman seçiniz</option>
-                  @for (item of transmissionList; track $index) {
+                  @for (item of transmissionList(); track $index) {
                     <option [value]="item">{{item}}</option>
                   }
                 </select>

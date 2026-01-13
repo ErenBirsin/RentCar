@@ -46,6 +46,20 @@ export const brandList = [
     'Mor'
   ];
 
+  export const fuelTypeList = [
+    'Benzin',
+    'Dizel',
+    'LPG',
+    'Elektrik',
+    'Hibrit'
+  ];
+
+  export const transmissionList = [
+    'Manuel',
+    'Otomatik',
+    'CVT'
+  ];
+
   export const modelYearList = Array.from({length: 16}, (_, i) => 2010 + i);
 
 @Component({
@@ -74,19 +88,8 @@ export default class CreateVehicle {
   readonly brandList = computed(() => brandList);
   readonly modelYearList = computed(() => modelYearList);
   readonly colorList = computed(() => colorList);
-  readonly fuelTypeList = [
-    'Benzin',
-    'Dizel',
-    'LPG',
-    'Elektrik',
-    'Hibrit'
-  ];
-
-  readonly transmissionList = [
-    'Manuel',
-    'Otomatik',
-    'CVT'
-  ];
+  readonly fuelTypeList = (() => fuelTypeList);
+  readonly transmissionList = (() => transmissionList);
 
   readonly seatCountList = [
     { value: 2, label: '2 Kişi' },
@@ -195,10 +198,8 @@ export default class CreateVehicle {
   featuresInput = '';
   readonly file = signal<any | undefined>(undefined);
   readonly fileData = signal<string | undefined>(undefined);
-
   readonly fileInput = viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
   dragOver = false;
-
   readonly #breadcrumb = inject(BreadcrumbService);
   readonly #activated = inject(ActivatedRoute);
   readonly #http = inject(HttpService);
@@ -236,11 +237,9 @@ export default class CreateVehicle {
 
     this.loading.set(true);
 
-    // FormData oluştur
     const formData = new FormData();
     const d = this.data();
 
-    // Tüm alanları ekle
     formData.append('Brand', d.brand);
     formData.append('Model', d.model);
     formData.append('ModelYear', d.modelYear.toString());
@@ -273,17 +272,14 @@ export default class CreateVehicle {
     formData.append('GeneralStatus', d.generalStatus);
     formData.append('IsActive', d.isActive ? 'true' : 'false');
 
-    // Features (array)
     if (d.features && d.features.length > 0) {
       d.features.forEach(f => formData.append('Features', f));
     }
 
-    // Resim dosyası (fileInput ile seçilen dosya)
     if (this.file()) {
       formData.append('File', this.file(),this.file().name);
     }
 
-    // Güncellemede Id ekle
     if (this.id()) {
       formData.append('Id', this.id()!);
     }
@@ -376,7 +372,7 @@ export default class CreateVehicle {
     }
   }
 
-  // Özellik seçimini yönetir
+
   toggleFeature(feature: string) {
     const features = this.data().features;
     if (features.includes(feature)) {
@@ -392,7 +388,6 @@ export default class CreateVehicle {
     }
   }
 
-  // Özellik seçili mi kontrolü
   isFeatureSelected(feature: string): boolean {
     return this.data().features.includes(feature);
   }
