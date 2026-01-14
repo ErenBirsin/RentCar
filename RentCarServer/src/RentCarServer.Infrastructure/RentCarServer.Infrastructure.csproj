@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RentCarServer.Application\RentCarServer.Application.csproj" />
-    <ProjectReference Include="..\RentCarServer\RentCarServer.Domain.csproj" />
+    <ProjectReference Include="..\RentCarServer.Domain\RentCarServer.Domain.csproj" />
   </ItemGroup>
 
 </Project>

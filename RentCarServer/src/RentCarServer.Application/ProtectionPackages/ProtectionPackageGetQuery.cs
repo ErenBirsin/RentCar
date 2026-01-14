@@ -19,7 +19,7 @@ internal sealed class ProtectionPackageGetQueryHandler(
             .FirstOrDefaultAsync(cancellationToken);
 
         if (res is null)
-            return Result<ProtectionPackageDto>.Failure("G�vence paketi bulunamad�");
+            return Result<ProtectionPackageDto>.Failure("Güvence paketi bulunamadı");
 
         return res;
     }
