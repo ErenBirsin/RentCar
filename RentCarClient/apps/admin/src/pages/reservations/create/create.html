@@ -108,7 +108,7 @@
                                   name="pickUpTime"
                                   required>
                                     @for(time of timeData(); track time){
-                                        <option>{{time}}</option>
+                                        <option [value]="time + ':00'">{{time}}</option>
                                     }
                                 </select>
                             </div>
@@ -133,7 +133,7 @@
                                   name="deliveryTime"
                                   required>
                                     @for(time of timeData(); track time){
-                                        <option>{{time}}</option>
+                                        <option [value]="time + ':00'">{{time}}</option>
                                     }
                                 </select>
                             </div>
@@ -324,15 +324,16 @@
                     </div>
                 </div>
 
-                <!-- Step 5: Ödeme Bilgileri -->
+                @if(!id()){
+                    <!-- Step 5: Ödeme Bilgileri -->
                     <div class="admin-card">
                         <div class="card-header">
                             <h6><i class="bi bi-credit-card text-primary me-2"></i>5. Ödeme Bilgileri</h6>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
-                                <div class="col-md-12">
-                                    <label for="cardOwner" class="form-label">Kart Sahibi *</label>
+                                 <div class="col-md-12">
+                                    <label class="form-label" for="cardOwner">Kart Sahibi *</label>
                                     <input
                                       type="text"
                                       id="cardOwner"
@@ -342,19 +343,19 @@
                                       required>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="cardNumber" class="form-label">Kart Numarası *</label>
+                                    <label class="form-label" for="cardNumber">Kart Numarası *</label>
                                     <input
                                       type="text"
                                       id="cardNumber"
                                       class="form-control"
                                       mask="0000 0000 0000 0000"
-                                      placeholder="4444 4444 4444 4444"
+                                      placeholder="4444 4444 4444 444"
                                       name="cartNumber"
                                       [(ngModel)]="data().creditCartInformation.cartNumber"
                                       required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="cardExpiry" class="form-label">Son Kullanma Tarihi *</label>
+                                    <label class="form-label" for="cardExpiry">Son Kullanma Tarihi *</label>
                                     <input
                                       type="text"
                                       id="cardExpiry"
@@ -365,7 +366,7 @@
                                       required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="cardCcv" class="form-label">CCV *</label>
+                                    <label class="form-label" for="cardCcv">CCV *</label>
                                     <input
                                       type="text"
                                       id="cardCcv"
@@ -380,7 +381,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                }
+            </div>
 
             <!-- Sağ Kolon - Özet ve İşlemler -->
             <div class="col-lg-4">
@@ -456,7 +458,7 @@
                                     </div>
                                     <div class="price-line">
                                         <span>Ek Hizmetler</span>
-                                        <span id="extrasPrice">0₺</span>
+                                        <span id="extrasPrice">{{totalExtra() | trCurrency:'₺'}}</span>
                                     </div>
                                     <div class="price-line discount">
                                         <span>İndirimler</span>
