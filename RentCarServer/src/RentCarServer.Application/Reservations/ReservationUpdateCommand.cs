@@ -176,6 +176,7 @@ internal sealed class ReservationUpdateCommandHandler(
 
         #endregion
 
+        reservation.SetReservationNumber();
         reservationRepository.Update(reservation);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

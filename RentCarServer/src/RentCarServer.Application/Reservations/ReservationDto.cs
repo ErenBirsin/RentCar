@@ -49,6 +49,7 @@ public sealed class ReservationExtraDto
 }
 public sealed class ReservationDto : EntityDto
 {
+    public string ReservationNumber { get; set; } = default!;
     public Guid CustomerId { get; set; } = default!;
     public ReservationCustomerDto Customer { get; set; } = default!;
     public Guid PickUpLocationId { get; set; } = default!;
@@ -122,6 +123,7 @@ public static class ReservationExtensions
             .Select(s => new ReservationDto
             {
                 Id = s.Entity.Id,
+                ReservationNumber = s.Entity.ReservationNumber.Value,
                 CustomerId = s.Entity.CustomerId,
                 Customer = new ReservationCustomerDto
                 {
