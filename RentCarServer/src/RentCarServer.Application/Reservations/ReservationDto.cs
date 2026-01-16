@@ -30,7 +30,6 @@ public sealed class ReservationVehicleDto
     public string Model { get; set; } = default!;
     public int ModelYear { get; set; } = default!;
     public string Color { get; set; } = default!;
-    public string Plate { get; set; } = default!;
     public string CategoryName { get; set; } = default!;
     public string FuelType { get; set; } = default!;
     public string Transmission { get; set; } = default!;
@@ -40,6 +39,7 @@ public sealed class ReservationVehicleDto
     public int Kilometer { get; set; } = default!;
     public string ImageUrl { get; set; } = default!;
     public decimal DailyPrice { get; set; } = default!;
+    public string Plate { get; set; } = default!;
 }
 public sealed class ReservationExtraDto
 {
@@ -156,7 +156,6 @@ public static class ReservationExtensions
                     ModelYear = s.Vehicle.ModelYear.Value,
                     CategoryName = categories.First(i => i.Id == s.Vehicle.CategoryId.value).Name.Value,
                     Color = s.Vehicle.Color.Value,
-                    Plate = s.Vehicle.Plate.Value,
                     FuelType = s.Vehicle.FuelType.Value,
                     Transmission = s.Vehicle.Transmission.Value,
                     FuelConsumption = s.Vehicle.FuelConsumption.Value,
@@ -165,6 +164,7 @@ public static class ReservationExtensions
                     Kilometer = s.Vehicle.Kilometer.Value,
                     ImageUrl = s.Vehicle.ImageUrl.Value,
                     DailyPrice = s.Vehicle.DailyPrice.Value,
+                    Plate = s.Vehicle.Plate.Value
                 },
                 ProtectionPackageId = s.Entity.ProtectionPackageId.value,
                 ProtectionPackagePrice = s.Entity.ProtectionPackagePrice.Value,
