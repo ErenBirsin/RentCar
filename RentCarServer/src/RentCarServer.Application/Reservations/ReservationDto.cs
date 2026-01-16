@@ -72,6 +72,7 @@ public sealed class ReservationDto : EntityDto
     public string Status { get; set; } = default!;
     public int TotalDay { get; set; } = default!;
     public PaymentInformation PaymentInformation { get; set; } = default!;
+    public List<ReservationHistory> Histories { get; set; } = default!;
 }
 public static class ReservationExtensions
 {
@@ -176,6 +177,7 @@ public static class ReservationExtensions
                     Price = re.Price
                 }).ToList(),
                 Note = s.Entity.Note.Value,
+                Histories = s.Entity.Histories.ToList(),
                 Total = s.Entity.Total.Value,
                 TotalDay = s.Entity.TotalDay.Value,
                 Status = s.Entity.Status.Value,

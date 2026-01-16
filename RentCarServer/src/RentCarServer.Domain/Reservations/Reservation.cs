@@ -6,6 +6,7 @@ namespace RentCarServer.Domain.Reservations;
 public sealed class Reservation : Entity, IAggregate
 {
     private readonly List<ReservationExtra> _reservationExtras = new();
+    private readonly List<ReservationHistory> _histories = new();
     private Reservation() { }
     private Reservation(
         IdentityId customerId,
@@ -23,7 +24,9 @@ public sealed class Reservation : Entity, IAggregate
         PaymentInformation paymentInformation,
         Status status,
         Total total,
-        TotalDay totalDay)
+        TotalDay totalDay,
+        ReservationHistory history
+        )
     {
         SetCustomerId(customerId);
         SetPickUpLocationId(pickUpLocationId);
@@ -44,6 +47,7 @@ public sealed class Reservation : Entity, IAggregate
         SetPickupDateTime();
         SetDeliveryDateTime();
         SetReservationNumber();
+        SetHistory(history);
     }
     public ReservationNumber ReservationNumber { get; private set; } = default!;
     public IdentityId CustomerId { get; private set; } = default!;
@@ -65,6 +69,7 @@ public sealed class Reservation : Entity, IAggregate
     public Status Status { get; private set; } = default!;
     public Total Total { get; private set; } = default!;
 
+    public IReadOnlyCollection<ReservationHistory> Histories => _histories;
     public static Reservation Create(
         IdentityId customerId,
         IdentityId pickUpLocationId,
@@ -81,7 +86,9 @@ public sealed class Reservation : Entity, IAggregate
         PaymentInformation paymentInformation,
         Status status,
         Total total,
-        TotalDay totalDay)
+        TotalDay totalDay
+        , ReservationHistory history
+        )
     {
         var reservation = new Reservation(
             customerId,
@@ -99,7 +106,8 @@ public sealed class Reservation : Entity, IAggregate
             paymentInformation,
             status,
             total,
-            totalDay
+            totalDay,
+            history
         );
 
         return reservation;
@@ -205,6 +213,11 @@ public sealed class Reservation : Entity, IAggregate
         var num = string.Concat(Enumerable.Range(0, 8).Select(_ => random.Next(10)));
         string number = "RSV-" + date.Year + "-" + num;
         ReservationNumber = new(number);
+    }
+
+    public void SetHistory(ReservationHistory history)
+    {
+        _histories.Add(history);
     }
 
     #endregion
