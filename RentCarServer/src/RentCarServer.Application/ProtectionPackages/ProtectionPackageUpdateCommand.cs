@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using GenericRepository;
+using Microsoft.EntityFrameworkCore;
 using RentCarServer.Domain.ProtectionPackage;
 using RentCarServer.Domain.ProtectionPackage.ValueObjects;
 using RentCarServer.Domain.Shared;
@@ -46,6 +47,21 @@ internal sealed class ProtectionPackageUpdateCommandHandler(
                 return Result<string>.Failure("Paket adı daha önce tanımlanmış");
         }
 
+        if (package.OrderNumber.Value != request.OrderNumber)
+        {
+            var packages = await repository
+                .WhereWithTracking(p => p.Id != package.Id)
+                .OrderBy(i => i.OrderNumber.Value)
+                .ToListAsync(cancellationToken);
+
+            packages.Insert(request.OrderNumber - 1, package);
+
+            foreach (var (item, index) in packages.Select((item, index) => (item, index)))
+            {
+                item.SetOrderNumber(new(index + 1));
+            }
+        }
+
         Name name = new(request.Name);
         Price price = new(request.Price);
         IsRecommended isRecommended = new(request.IsRecommended);
@@ -55,7 +71,6 @@ internal sealed class ProtectionPackageUpdateCommandHandler(
         package.SetName(name);
         package.SetPrice(price);
         package.SetIsRecommended(isRecommended);
-        package.SetOrderNumber(orderNumber);
         package.SetCoverages(coverages);
         package.SetStatus(request.IsActive);
 

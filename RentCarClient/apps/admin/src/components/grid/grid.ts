@@ -1,6 +1,6 @@
 import { httpResource } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, contentChild, contentChildren, inject, input, signal, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { FlexiGridColumnComponent, FlexiGridModule, FlexiGridService, StateFilterModel, StateModel, StateSortModel } from 'flexi-grid';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, contentChild, contentChildren, inject, input, output, signal, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { FlexiGridColumnComponent, FlexiGridModule, FlexiGridReorderModel, FlexiGridService, StateFilterModel, StateModel, StateSortModel } from 'flexi-grid';
 import { ODataModel } from '../../models/odata.model';
 import { RouterLink } from '@angular/router';
 import { FlexiToastService } from 'flexi-toast';
@@ -38,8 +38,11 @@ export default class Grid implements AfterViewInit {
   readonly showIndex = input<boolean>(true);
   readonly captionTitle = input.required<string>();
   readonly showIsActive = input<boolean>(true);
-  readonly sort = input<StateSortModel>({field: '',dir:'asc'});
+  readonly sort = input<StateSortModel>({field: '', dir:'asc'});
   readonly filter = input<StateFilterModel[]>([]);
+  readonly reorderable = input<boolean>(false);
+
+  readonly reoder = output<FlexiGridReorderModel>();
 
   readonly columns = contentChildren(FlexiGridColumnComponent, {descendants: true});
   readonly commandTemplateRef = contentChild<TemplateRef<any>>("commandTemplate");
@@ -87,5 +90,9 @@ export default class Grid implements AfterViewInit {
 
   checkPermission(permission: string){
     return this.#common.checkPermission(permission);
+  }
+
+  onReoderMethod(event:FlexiGridReorderModel){
+    this.reoder.emit(event);
   }
 }
