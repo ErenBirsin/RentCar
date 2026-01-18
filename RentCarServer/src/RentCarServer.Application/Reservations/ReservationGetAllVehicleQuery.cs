@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using RentCarServer.Application.Reservations;
 using RentCarServer.Application.Vehicles;
 using RentCarServer.Domain.Branches;
 using RentCarServer.Domain.Categories;

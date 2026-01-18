@@ -1,4 +1,5 @@
 ﻿using RentCarServer.Application.Reservations;
+using RentCarServer.Application.Reservations.Forms;
 using RentCarServer.Application.Vehicles;
 using TS.MediatR;
 using TS.Result;
@@ -54,4 +55,22 @@ public static class ReservationModule
             })
             .Produces<Result<List<VehicleDto>>>();
     }
+
+    public static void MapReservationForm(this IEndpointRouteBuilder builder)
+    {
+        var app = builder
+            .MapGroup("/reservation-form")
+            .RequireRateLimiting("fixed")
+            .RequireAuthorization()
+            .WithTags("ReservationForms");
+
+        app.MapGet("{reservationId}/{type}",
+            async (Guid reservationId, string type, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var res = await sender.Send(new FormGetQuery(reservationId, type), cancellationToken);
+                return res.IsSuccessful ? Results.Ok(res) : Results.InternalServerError(res);
+            })
+            .Produces<Result<FormDto>>();
+    }
+
 }

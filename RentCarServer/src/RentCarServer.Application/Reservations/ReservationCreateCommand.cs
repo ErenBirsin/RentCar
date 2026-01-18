@@ -6,9 +6,12 @@ using RentCarServer.Domain.Abstractions;
 using RentCarServer.Domain.Branches;
 using RentCarServer.Domain.Customers;
 using RentCarServer.Domain.Reservations;
+using RentCarServer.Domain.Reservations.Forms;
+using RentCarServer.Domain.Reservations.Forms.ValueObjects;
 using RentCarServer.Domain.Reservations.ValueObjects;
 using RentCarServer.Domain.Shared;
 using RentCarServer.Domain.Vehicles;
+using RentCarServer.Domain.Vehicles.ValueObjects;
 using TS.MediatR;
 using TS.Result;
 
@@ -67,6 +70,7 @@ public sealed class ReservationCreateCommandValidator : AbstractValidator<Reserv
             .WithMessage("Teslim etme tarihi bugünden önce olamaz.");
     }
 }
+
 internal sealed class ReservationCreateCommandHandler(
     IBranchRepository branchRepository,
     ICustomerRepository customerRepository,
@@ -104,7 +108,8 @@ internal sealed class ReservationCreateCommandHandler(
         var requestedDelivery = request.DeliveryDate.ToDateTime(request.DeliveryTime);
 
         var possibleOverlaps = await reservationRepository
-            .Where(r => r.VehicleId == request.VehicleId && (r.Status.Value == Status.Pending.Value || r.Status.Value == Status.Delivered.Value))
+            .Where(r => r.VehicleId == request.VehicleId
+            && (r.Status.Value == Status.Pending.Value || r.Status.Value == Status.Delivered.Value))
             .Select(s => new
             {
                 Id = s.Id,
@@ -149,7 +154,59 @@ internal sealed class ReservationCreateCommandHandler(
         Status status = Status.Pending;
         Total total = new(request.Total);
         TotalDay totalDay = new(request.TotalDay);
-        ReservationHistory history = new("Rezervasyon Oluşturuldu", "Online olarak rezervasyon oluşturuldu", DateTimeOffset.Now);
+        ReservationHistory history = new("Rezervayon Oluşturuldu", "Online olarak rezervasyon oluşturuldu", DateTimeOffset.Now);
+
+        Form? prevPickUpForm = await reservationRepository
+            .Where(p => p.VehicleId == vehicleId)
+            .OrderByDescending(p => p.CreatedAt)
+            .Select(s => s.PickUpForm)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        Form pickUpForm;
+        Form deliveryForm;
+
+        if (prevPickUpForm is null)
+        {
+            var kilometer = await vehicleRepository
+                .Where(p => p.Id == request.VehicleId)
+                .Select(s => s.Kilometer)
+                .FirstAsync(cancellationToken);
+            List<Supplies> supplies = new();
+            List<Damage> damages = new();
+            List<ImageUrl> imageUrls = new();
+            Note formNote = new(string.Empty);
+            pickUpForm = new(
+                kilometer,
+                supplies,
+                imageUrls,
+                damages,
+                formNote);
+        }
+        else
+        {
+            pickUpForm = new(
+                prevPickUpForm.Kilometer,
+                prevPickUpForm.Supplies.ToList(),
+                [],
+                prevPickUpForm.Damages.ToList(),
+                new(string.Empty));
+
+            if (pickUpForm.Kilometer.Value == 0)
+            {
+                var kilometer = await vehicleRepository
+                    .Where(p => p.Id == request.VehicleId)
+                    .Select(s => s.Kilometer)
+                    .FirstAsync(cancellationToken);
+                pickUpForm.SetKilometer(kilometer);
+            }
+        }
+
+        deliveryForm = new(
+            pickUpForm.Kilometer,
+            pickUpForm.Supplies.ToList(),
+            pickUpForm.ImageUrls.ToList(),
+            pickUpForm.Damages.ToList(),
+            pickUpForm.Note);
 
         Reservation reservation = Reservation.Create(
             customerId,
@@ -168,10 +225,12 @@ internal sealed class ReservationCreateCommandHandler(
             status,
             total,
             totalDay,
-            history
+            history,
+            pickUpForm,
+            deliveryForm
         );
 
-        ReservationHistory history2 = new("Ödeme Alındı", "Rezervasyonun ödemesi başarıyla alındı", DateTimeOffset.Now);
+        ReservationHistory history2 = new("Ödeme Alındı", "Reservasyonun ödemesi başarıyla alındı", DateTimeOffset.Now);
         reservation.SetHistory(history2);
         #endregion
 

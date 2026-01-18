@@ -1,4 +1,5 @@
 ﻿using RentCarServer.Domain.Abstractions;
+using RentCarServer.Domain.Reservations.Forms;
 using RentCarServer.Domain.Reservations.ValueObjects;
 using RentCarServer.Domain.Shared;
 
@@ -25,7 +26,9 @@ public sealed class Reservation : Entity, IAggregate
         Status status,
         Total total,
         TotalDay totalDay,
-        ReservationHistory history
+        ReservationHistory history,
+        Form pickUpForm,
+        Form deliveryForm
         )
     {
         SetCustomerId(customerId);
@@ -41,20 +44,22 @@ public sealed class Reservation : Entity, IAggregate
         SetReservationExtras(reservationExtras);
         SetNote(note);
         SetPaymentInformation(paymentInformation);
-        SetStatus(status);
+        SetReservationStatus(status);
         SetTotalDay(totalDay);
         SetTotal(total);
         SetPickupDateTime();
         SetDeliveryDateTime();
         SetReservationNumber();
         SetHistory(history);
+        SetPickUpForm(pickUpForm);
+        SetDeliveryForm(deliveryForm);
     }
     public ReservationNumber ReservationNumber { get; private set; } = default!;
     public IdentityId CustomerId { get; private set; } = default!;
     public IdentityId PickUpLocationId { get; private set; } = default!;
     public PickUpDate PickUpDate { get; private set; } = default!;
     public PickUpTime PickUpTime { get; private set; } = default!;
-    public PickUpDateTime PickUpDateTime { get; set; } = default!;
+    public PickUpDateTime PickUpDateTime { get; private set; } = default!;
     public DeliveryDate DeliveryDate { get; private set; } = default!;
     public DeliveryTime DeliveryTime { get; private set; } = default!;
     public DeliveryDateTime DeliveryDateTime { get; private set; } = default!;
@@ -68,6 +73,8 @@ public sealed class Reservation : Entity, IAggregate
     public PaymentInformation PaymentInformation { get; private set; } = default!;
     public Status Status { get; private set; } = default!;
     public Total Total { get; private set; } = default!;
+    public Form PickUpForm { get; private set; } = default!;
+    public Form DeliveryForm { get; private set; } = default!;
 
     public IReadOnlyCollection<ReservationHistory> Histories => _histories;
     public static Reservation Create(
@@ -86,8 +93,10 @@ public sealed class Reservation : Entity, IAggregate
         PaymentInformation paymentInformation,
         Status status,
         Total total,
-        TotalDay totalDay
-        , ReservationHistory history
+        TotalDay totalDay,
+        ReservationHistory history,
+        Form pickUpForm,
+        Form deliveryForm
         )
     {
         var reservation = new Reservation(
@@ -107,7 +116,9 @@ public sealed class Reservation : Entity, IAggregate
             status,
             total,
             totalDay,
-            history
+            history,
+            pickUpForm,
+            deliveryForm
         );
 
         return reservation;
@@ -184,7 +195,7 @@ public sealed class Reservation : Entity, IAggregate
         PaymentInformation = paymentInformation;
     }
 
-    public void SetStatus(Status status)
+    public void SetReservationStatus(Status status)
     {
         Status = status;
     }
@@ -218,6 +229,16 @@ public sealed class Reservation : Entity, IAggregate
     public void SetHistory(ReservationHistory history)
     {
         _histories.Add(history);
+    }
+
+    public void SetPickUpForm(Form pickUpForm)
+    {
+        PickUpForm = pickUpForm;
+    }
+
+    public void SetDeliveryForm(Form deliveryForm)
+    {
+        DeliveryForm = deliveryForm;
     }
 
     #endregion

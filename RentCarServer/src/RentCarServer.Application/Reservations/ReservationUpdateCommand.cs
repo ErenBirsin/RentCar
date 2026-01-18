@@ -31,7 +31,6 @@ public sealed record ReservationUpdateCommand(
     decimal Total,
     int TotalDay
 ) : IRequest<Result<string>>;
-
 public sealed class ReservationUpdateCommandValidator : AbstractValidator<ReservationUpdateCommand>
 {
     public ReservationUpdateCommandValidator()
@@ -45,7 +44,6 @@ public sealed class ReservationUpdateCommandValidator : AbstractValidator<Reserv
             .WithMessage("Teslim etme tarihi bugünden önce olamaz.");
     }
 }
-
 internal sealed class ReservationUpdateCommandHandler(
     IBranchRepository branchRepository,
     ICustomerRepository customerRepository,
@@ -102,7 +100,7 @@ internal sealed class ReservationUpdateCommandHandler(
         #region Araç Müsaitlik Kontrolü
         if (reservation.PickUpDate.Value != request.PickUpDate
             || reservation.PickUpTime.Value != request.PickUpTime
-            | reservation.DeliveryDate.Value != request.DeliveryDate
+            || reservation.DeliveryDate.Value != request.DeliveryDate
             || reservation.DeliveryTime.Value != request.DeliveryTime
             )
         {
@@ -150,7 +148,7 @@ internal sealed class ReservationUpdateCommandHandler(
         Note note = new(request.Note);
         Total total = new(request.Total);
         TotalDay totalDay = new(request.TotalDay);
-        ReservationHistory history = new("Rezervasyon Güncellendi", "Online rezervasyon güncellendi", DateTimeOffset.Now);
+        ReservationHistory history = new("Rezervayon Güncellendi", "Online rezervasyon güncellendi", DateTimeOffset.Now);
 
         reservation.SetCustomerId(customerId);
         reservation.SetPickUpLocationId(pickUpLocationId);
@@ -175,7 +173,6 @@ internal sealed class ReservationUpdateCommandHandler(
         reservation.SetDeliveryDateTime();
         reservation.SetTotalDay(totalDay);
         reservation.SetHistory(history);
-
         #endregion
 
         reservationRepository.Update(reservation);
