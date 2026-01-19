@@ -9,12 +9,8 @@
   captionTitle="Rezervasyon Listesi"
   [showIsActive]="false"
   [sort]="{field:'pickUpDateTime', dir:'asc'}"
-  [filter]='[{
-    field: "status",
-    value: "Bekliyor",
-    operator: "eq",
-    type: "select"
-  }]'
+  [filter]='[]'
+  commandColumnWidth="200px"
   >
     <flexi-grid-column field="reservationNumber" title="Rez.Numarası"/>
     <flexi-grid-column field="status" title="Durum" filterType="select" [filterData]="statusFilterData()" textAlign="center">
@@ -33,6 +29,7 @@
       title="Teslim Tarihi"
       filterType="date"
       format="dd MMM yyyy HH:mm" />
+
     <flexi-grid-column field="customer.fullName" title="Müşteri"/>
     <flexi-grid-column field="customer.phoneNumber" title="Telefon">
         <ng-template flexiGridCellTemplate let-item>
@@ -47,6 +44,7 @@
                 alt="Araç"
                 class="vehicle-image">
         </ng-template>
+
     </flexi-grid-column>
     <flexi-grid-column field="vehicle.brand" title="Marka"/>
     <flexi-grid-column field="vehicle.model" title="Model"/>
@@ -60,4 +58,13 @@
       format="c"
       symbol="₺"
       textAlign="right" />
+
+       <ng-template #columnCommandTemplate let-item>
+        @if(item.status !== 'İptal Edildi'){
+          <flexi-button btnColor="purple" btnIcon="assignment_add" btnSize="small" title="Teslim Etme Formu" [routerLink]="['/form','pickup',item.id]" />
+        }
+        @if(item.status !== 'Bekliyor' && item.status !== 'İptal Edildi'){
+          <flexi-button btnColor="pink" btnIcon="car_rental" btnSize="small" title="Teslim Alma Formu" [routerLink]="['/form','delivery',item.id]" />
+        }
+      </ng-template>
 </app-grid>

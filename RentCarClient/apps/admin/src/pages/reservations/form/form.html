@@ -1,0 +1,367 @@
+<main class="main-content" style="position: relative;">
+    @if(loading()){
+        <app-loading />
+    }
+    <div class="content-wrapper">
+        <div class="content-area">
+            <!-- Delivery Header -->
+            <div class="delivery-header">
+                <div class="delivery-header-content">
+                    <div class="delivery-logo" routerLink="/reservations" style="cursor: pointer;">
+                        <i class="bi bi-car-front-fill"></i>
+                        <span>RentCar</span>
+                    </div>
+                    <div class="delivery-title">
+                        <h2>{{pageTitle()}}</h2>
+                        <p>Rezervasyon No: <strong>{{data().reservationNumber}}</strong></p>
+                    </div>
+                    <div class="delivery-date">
+                        <div class="date-info">
+                            <span class="date-label">Teslim Tarihi:</span>
+                            <span class="date-value">{{data().pickUpDateTime | date:'dd MMMM yyyy, HH:mm'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Form Content -->
+            <div class="delivery-form-content">
+                <div class="row g-4">
+                    <!-- Sol Kolon -->
+                    <div class="col-lg-6">
+                        <!-- Müşteri Bilgileri -->
+                        <div class="delivery-section">
+                            <div class="section-header">
+                                <h5><i class="bi bi-person me-2"></i>Müşteri Bilgileri</h5>
+                            </div>
+                            <div class="section-content">
+                                <div class="customer-info-grid">
+                                    <div class="info-item">
+                                        <span class="info-label">Ad Soyad:</span>
+                                        <span class="info-value">{{data().customer.fullName}}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">TC Kimlik:</span>
+                                        <span class="info-value">{{data().customer.identityNumber}}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Telefon:</span>
+                                        <span class="info-value">+90{{data().customer.phoneNumber | mask:'(000) 000 00 00'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Araç Bilgileri -->
+                        <div class="delivery-section">
+                            <div class="section-header">
+                                <h5><i class="bi bi-car-front me-2"></i>Araç Bilgileri</h5>
+                            </div>
+                            <div class="section-content">
+                                <div class="vehicle-info-grid">
+                                    <div class="info-item">
+                                        <span class="info-label">Marka Model:</span>
+                                        <span class="info-value">{{data().vehicle.brand}} {{data().vehicle.model}} </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Plaka:</span>
+                                        <span class="info-value">{{data().vehicle.plate}} </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Model Yılı:</span>
+                                        <span class="info-value">{{data().vehicle.modelYear}} </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Renk:</span>
+                                        <span class="info-value">{{data().vehicle.color}} </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Kilometre:</span>
+                                        <span class="km-display">
+                                            <input type="number" class="km-input" [(ngModel)]="data().kilometer" [disabled]="!showButton()"> km
+                                        </span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">Yakıt Seviyesi:</span>
+                                        <span class="fuel-display">
+                                            <div class="fuel-gauge">
+                                                <div class="fuel-level" style="width: 100%"></div>
+                                            </div>
+                                            <span>Full</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Araç Malzemeleri -->
+                        <div class="delivery-section">
+                            <div class="section-header">
+                                <h5><i class="bi bi-list-check me-2"></i>Araç Malzemeleri</h5>
+                            </div>
+                            <div class="section-content">
+                                <div class="equipment-checklist">
+                                    <div class="checklist-grid">
+                                        @for(val of supplies(); track $index){
+                                            <div class="checklist-item">
+                                                <input
+                                                    type="checkbox"
+                                                    [id]="'supply-' + $index"
+                                                    [checked]="isHaveSupplies(val.name)"
+                                                    (change)="toggleSupply(val.name)">
+                                                <label [for]="'supply-' + $index">
+                                                    <i class="bi" [ngClass]="val.icon"></i>
+                                                    <span>{{val.name}}</span>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Araç Fotoğrafları -->
+                        <div class="delivery-section">
+                            <div class="section-header">
+                                <h5><i class="bi bi-camera me-2"></i>Araç Fotoğrafları</h5>
+                            </div>
+                            <div class="section-content">
+                                <div class="photo-upload-area">
+                                    <!-- Fotoğraf Yükleme Butonu -->
+                                    <div class="upload-controls">
+                                        <div class="upload-info">
+                                            <small class="text-muted">
+                                                <i class="bi bi-info-circle me-1"></i>
+                                                Araç fotoğraflarını çekiniz. (Maks. 10 MB, JPG/PNG)
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fotoğraf Galerisi -->
+                                    <div class="photo-gallery" id="photoGallery">
+                                        <!-- Genel Görünüm Kategorisi -->
+                                        <div class="photo-category-content active" id="category-genel">
+                                            <div class="photo-grid">
+                                                @for(val of data().imageUrls; track $index){
+                                                    <div class="photo-item">
+                                                        <div class="photo-wrapper">
+                                                            <img [src]="'https://localhost:7161/forms/' + val" [alt]="'Araç fotoğrafı ' + ($index + 1)">
+                                                            @if(showButton()){
+                                                                <div class="photo-overlay">
+                                                                    <div class="photo-actions">
+                                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                                            (click)="deleteImageUrl($index)" title="Sil">
+                                                                            <i class="bi bi-trash"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                @for(val of images(); track $index){
+                                                    <div class="photo-item">
+                                                        <div class="photo-wrapper">
+                                                            <img [src]="val" [alt]="'Yeni araç fotoğrafı ' + ($index + 1)">
+                                                            @if(showButton()){
+                                                                <div class="photo-overlay">
+                                                                    <div class="photo-actions">
+                                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                                            (click)="deleteFiles($index)" title="Sil">
+                                                                            <i class="bi bi-trash"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                @if(showButton()){
+                                                    <!-- Fotoğraf Ekleme Kartı -->
+                                                    <div class="photo-item add-photo">
+                                                        <input id="fileInputUpload" #fileInput type="file" accept="image/*" style="display: none" (change)="onFileSelected($event)" />
+                                                        <label for="fileInputUpload" class="add-photo-content" style="cursor: pointer; margin: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                                            <i class="bi bi-plus-circle"></i>
+                                                            <span>Fotoğraf Ekle</span>
+                                                        </label>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fotoğraf Özeti -->
+                                    <div class="photo-summary">
+                                        <div class="summary-stats">
+                                            <div class="stat-item">
+                                                <i class="bi bi-images text-primary"></i>
+                                                <span class="stat-number" id="totalPhotos">{{data().imageUrls.length + (data().files?.length ?? 0)}}</span>
+                                                <span class="stat-label">Toplam Fotoğraf</span>
+                                            </div>
+                                            <div class="stat-item">
+                                                <i class="bi bi-cloud-arrow-up text-success"></i>
+                                                <span class="stat-number" id="uploadedPhotos">{{data().imageUrls.length + (data().files?.length ?? 0)}}</span>
+                                                <span class="stat-label">Yüklendi</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sağ Kolon -->
+                    <div class="col-lg-6">
+                        <!-- Hasar Tespiti -->
+                        <div class="delivery-section">
+                            <div class="section-header">
+                                <h5><i class="bi bi-exclamation-triangle me-2"></i>Hasar Tespiti</h5>
+                            </div>
+                            <div class="section-content">
+                                <!-- Araç Diyagramı -->
+                                <div class="vehicle-diagram">
+                                    <div class="diagram-container">
+                                        <img src="https://otokarnavali.com/Content/ekspertiz-araci.gif" alt="Araç Hasar Diyagramı">
+                                    </div>
+                                </div>
+
+                                <!-- Hasar Listesi -->
+                                <div class="damage-list">
+                                    <div class="damage-types">
+                                        <label class="damage-type" for="damageMinor">
+                                            <input type="radio" name="damageType" value="minor" id="damageMinor">
+                                            <span class="damage-color minor" style="background-color: #ffc107;"></span>
+                                            Küçük Çizik
+                                        </label>
+                                        <label class="damage-type" for="damageMajor">
+                                            <input type="radio" name="damageType" value="major" id="damageMajor">
+                                            <span class="damage-color major" style="background-color: #ac3c47;"></span>
+                                            Büyük Hasar
+                                        </label>
+                                        <label class="damage-type" for="damageDent">
+                                            <input type="radio" name="damageType" value="dent" id="damageDent">
+                                            <span class="damage-color dent" style="background-color: #640912;"></span>
+                                            Kritik Hasar
+                                        </label>
+                                    </div>
+
+                                    @if(showButton()){
+                                        <!-- Hasar Ekleme Formu -->
+                                        <div class="damage-add-form mb-2">
+                                            <h6>Yeni Hasar Ekle:</h6>
+                                            <div class="add-damage-controls">
+                                                <div class="row g-2">
+                                                    <div class="col-md-4">
+                                                        <label for="damageLocation" class="visually-hidden">Hasar Seviyesi</label>
+                                                        <select class="form-control" id="damageLocation" [(ngModel)]="damage().level" name="damageLevel">
+                                                            <option>Küçük Çizik</option>
+                                                            <option>Büyük Hasar</option>
+                                                            <option>Kritik Hasar</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <label for="damageDescription" class="visually-hidden">Hasar Açıklaması</label>
+                                                        <input type="text" class="form-control" id="damageDescription"
+                                                            placeholder="Hasar açıklaması (opsiyonel)" maxlength="100" [(ngModel)]="damage().description" name="damageDescription">
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="btn btn-primary btn-sm w-100 h-100" (click)="addDamage()" aria-label="Hasar Ekle">
+                                                            <i class="bi bi-plus-circle me-1"
+                                                                style="font-size: 1.7rem;"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="selected-damages">
+                                        <h6>Tespit Edilen Hasarlar:</h6>
+                                        <ul id="damagesList">
+                                            @for(val of data().damages; track $index){
+                                                <li [ngClass]="setDamageClass(val.level)" class="d-flex justify-content-between">
+                                                    <span>{{val.description}}</span>
+                                                    @if(showButton()){
+                                                        <flexi-button btnColor="danger" btnSize="x-small" btnIcon="delete" (click)="removeDamage($index)" />
+                                                    }
+                                                </li>
+                                            }@empty {
+                                                <li class="no-damage">Hasar bulunmamaktadır.</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ek Notlar -->
+                        <div class="delivery-section">
+                            <div class="section-header">
+                                <h5><i class="bi bi-sticky me-2"></i>Ek Notlar ve Açıklamalar</h5>
+                            </div>
+                            <div class="section-content">
+                                <label for="deliveryNotes" class="visually-hidden">Ek Notlar</label>
+                                <textarea id="deliveryNotes" class="form-control delivery-notes" rows="4"
+                                    placeholder="Araç durumu, eksik malzemeler, özel durumlar vb. notlarınızı buraya yazınız..."
+                                     [(ngModel)]="data().note"
+                                      name="note"
+                                      [disabled]="!showButton()">
+                                    </textarea>
+                            </div>
+                        </div>
+
+                        @if(showButton() && type()==='pickup'){
+                            <!-- İmza Alanları -->
+                            <div class="delivery-section">
+                                <div class="section-header">
+                                    <h5><i class="bi bi-pencil me-2"></i>İmza ve Onay</h5>
+                                </div>
+                                <div class="section-content">
+                                    <div class="signature-area">
+                                        <div class="signature-grid">
+                                            <div class="signature-box">
+                                                <div class="signature-canvas" id="customerSignature">
+                                                    <div class="signature-placeholder">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                        <span>Müşteri İmzası</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Onay Metni -->
+                                        <div class="approval-text">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="customerApproval" [(ngModel)]="customerApproval"
+                                                    required>
+                                                <label class="form-check-label" for="customerApproval">
+                                                    Müşteri olarak, aracı yukarıda belirtilen durumda teslim aldığımı,
+                                                    araçtaki tüm malzemelerin kontrolünü yaptığımı ve herhangi bir
+                                                    eksiklik bulunmadığını onaylıyorum.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if(showButton()){
+                    <div class="delivery-actions">
+                        <div class="actions-container">
+                            <div class="actions-right d-flex justify-content-end w-100">
+                                <button type="button" class="btn btn-success btn-lg" (click)="save()">
+                                    <i class="bi bi-check-circle me-2"></i>Teslimi Tamamla
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</main>
