@@ -5,7 +5,6 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Dashboards;
-
 public sealed record DashboardActiveReservationCountQuery : IRequest<Result<int>>;
 
 internal sealed class DashboardActiveReservationCountQueryHandler(
@@ -14,7 +13,6 @@ internal sealed class DashboardActiveReservationCountQueryHandler(
 {
     public async Task<Result<int>> Handle(DashboardActiveReservationCountQuery request, CancellationToken cancellationToken)
     {
-        // "Aktif" = tamamlanmamış ve iptal edilmemiş rezervasyonlar
         var res = await reservationRepository
             .GetAll()
             .Where(p => p.IsActive == true)

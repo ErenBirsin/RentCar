@@ -5,7 +5,6 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Dashboards;
-
 public sealed record DashboardMonthlyRevenueQuery(int Year, int Month) : IRequest<Result<decimal>>;
 
 internal sealed class DashboardMonthlyRevenueQueryHandler(

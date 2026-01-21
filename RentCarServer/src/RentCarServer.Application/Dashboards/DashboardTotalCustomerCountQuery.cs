@@ -4,7 +4,6 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Dashboards;
-
 public sealed record DashboardTotalCustomerCountQuery : IRequest<Result<int>>;
 
 internal sealed class DashboardTotalCustomerCountQueryHandler(
