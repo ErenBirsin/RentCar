@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { VehicleModel } from '../models/vehicle.model';
+import { VehicleModel } from '../../../../libraries/shared/src/lib/models/vehicle.model';
 
 @Pipe({
   name: 'vehicle'

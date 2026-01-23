@@ -4,7 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "types": []
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "../../libraries/shared/src/lib/models/branch.model.ts", "../../libraries/shared/src/lib/models/category.model.ts", "../../libraries/shared/src/lib/models/customer.model.ts", "../../libraries/shared/src/lib/models/decode.model.ts", "../../libraries/shared/src/lib/models/entity.model.ts", "../../libraries/shared/src/lib/models/extra.model.ts", "../../libraries/shared/src/lib/models/form.model.ts", "../../libraries/shared/src/lib/models/odata.model.ts", "../../libraries/shared/src/lib/models/protection-package.model.ts", "../../libraries/shared/src/lib/models/reservation.model.ts", "../../libraries/shared/src/lib/models/result.model.ts", "../../libraries/shared/src/lib/models/role.model.ts", "../../libraries/shared/src/lib/models/user.model.ts", "../../libraries/shared/src/lib/models/vehicle.model.ts"],
   "exclude": [
     "jest.config.ts",
     "src/test-setup.ts",

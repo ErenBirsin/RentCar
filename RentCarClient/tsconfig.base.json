@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "apps/admin/src/*": ["apps/admin/src/*"]
+      "apps/admin/src/*": ["apps/admin/src/*"],
+      "@shared/*": ["libraries/shared/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

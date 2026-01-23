@@ -2,8 +2,8 @@ import { httpResource } from '@angular/common/http';
 import { BreadcrumbModel, BreadcrumbService } from './../../../services/breadcrumb';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, resource, signal, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
-import { BranchModel, initialBranch } from 'apps/admin/src/models/branch.model';
+import { Result } from '@shared/lib/models/result.model';
+import { BranchModel, initialBranch } from '@shared/lib/models/branch.model';
 import Blank from 'apps/admin/src/components/blank/blank';
 import { NgxMaskPipe } from 'ngx-mask';
 

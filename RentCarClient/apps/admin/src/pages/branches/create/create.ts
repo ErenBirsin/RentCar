@@ -8,8 +8,8 @@ import { FormValidateDirective } from 'form-validate-angular';
 import { NgClass } from '@angular/common';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { BranchModel, initialBranch } from 'apps/admin/src/models/branch.model';
-import { HttpService } from 'apps/admin/src/services/http';
+import { BranchModel, initialBranch } from '@shared/lib/models/branch.model';
+import { HttpService } from '@shared/lib/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { NgxMaskDirective } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
@@ -95,7 +95,7 @@ export default class Create {
     effect(() => {
       const city = this.data().address.city;
       const illerList = this.iller();
-      
+
       // Hem city hem de iller yüklendiğinde ilçeleri getir
       if (city && illerList.length > 0) {
         this.getIlceler();
@@ -132,7 +132,7 @@ export default class Create {
   getIlceler(){
     const city = this.data().address.city;
     if (!city) return;
-    
+
     const il = this.iller().find(i => i.il_adi === city);
     if (il && il.ilceler) {
       this.ilceler.set(il.ilceler);

@@ -8,8 +8,8 @@ import { FormValidateDirective } from 'form-validate-angular';
 import { NgClass } from '@angular/common';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { RoleModel, initialRole } from 'apps/admin/src/models/role.model';
-import { HttpService } from 'apps/admin/src/services/http';
+import { RoleModel, initialRole } from '@shared/lib/models/role.model';
+import { HttpService } from '@shared/lib/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { lastValueFrom } from 'rxjs';
 

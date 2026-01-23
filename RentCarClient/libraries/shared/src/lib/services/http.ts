@@ -2,8 +2,7 @@ import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http
 import { inject, Injectable } from '@angular/core';
 import { ErrorService } from './error';
 import { Result } from '../models/result.model';
-import { catchError, of } from 'rxjs';
-import { SKIP_ERROR_HANDLER } from '../app.config';
+import { SKIP_ERROR_HANDLER } from '../context-tokens';
 
 @Injectable({
   providedIn: 'root',

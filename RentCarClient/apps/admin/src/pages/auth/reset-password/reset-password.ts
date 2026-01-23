@@ -3,7 +3,7 @@ import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FlexiToastService } from 'flexi-toast';
-import { HttpService } from '../../../services/http';
+import { HttpService } from '@shared/lib/services/http';
 import { httpResource } from '@angular/common/http';
 import Loading from '../../../components/loading/loading';
 

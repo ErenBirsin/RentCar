@@ -1,7 +1,7 @@
 import { DatePipe, Location, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, output, ViewEncapsulation } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { EntityModel } from '../../models/entity.model';
+import { EntityModel } from '../../../../../libraries/shared/src/lib/models/entity.model';
 import { FormsModule } from '@angular/forms';
 import Loading from '../loading/loading';
 

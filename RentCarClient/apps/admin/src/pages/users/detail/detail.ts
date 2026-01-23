@@ -2,8 +2,8 @@ import { httpResource } from '@angular/common/http';
 import { BreadcrumbModel, BreadcrumbService } from './../../../services/breadcrumb';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, resource, signal, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
-import { UserModel, initialUser } from 'apps/admin/src/models/user.model';
+import { Result } from '@shared/lib/models/result.model';
+import { UserModel, initialUser } from '@shared/lib/models/user.model';
 import Blank from 'apps/admin/src/components/blank/blank';
 
 @Component({
