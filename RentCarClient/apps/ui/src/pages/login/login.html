@@ -1,4 +1,4 @@
-    <!-- Main Auth Section -->
+<!-- Main Auth Section -->
     <section class="auth-section">
         <div class="container-fluid h-100">
             <div class="row h-100">
@@ -22,15 +22,22 @@
 
                         <!-- Login Form -->
                         <div class="auth-form-container" id="loginForm">
-                            <form class="auth-form">
+                            <form #form="ngForm" class="auth-form" autocomplete="off" (ngSubmit)="login(form)">
                                 <div class="form-group">
                                     <label for="loginEmail" class="form-label">E-posta Adresi</label>
                                     <div class="input-group">
                                         <span class="input-group-text">
                                             <i class="bi bi-envelope"></i>
                                         </span>
-                                        <input type="email" class="form-control" id="loginEmail"
-                                            placeholder="E-posta adresinizi girin" required>
+                                        <input
+                                            type="email"
+                                            class="form-control"
+                                            id="loginEmail"
+                                            name="email"
+                                            ngModel
+                                            placeholder="E-posta adresinizi girin"
+                                            required
+                                        >
                                     </div>
                                 </div>
 
@@ -40,10 +47,21 @@
                                         <span class="input-group-text">
                                             <i class="bi bi-lock"></i>
                                         </span>
-                                        <input type="password" class="form-control" id="loginPassword"
-                                            placeholder="Şifrenizi girin" required>
-                                        <button type="button" class="input-group-text password-toggle">
-                                            <i class="bi bi-eye"></i>
+                                        <input
+                                            [type]="showPassword() ? 'text' : 'password'"
+                                            class="form-control"
+                                            id="loginPassword"
+                                            name="password"
+                                            ngModel
+                                            placeholder="Şifrenizi girin"
+                                            required
+                                        >
+                                        <button type="button" class="input-group-text password-toggle" (click)="togglePasswordVisibility()">
+                                            @if(showPassword()){
+                                                <i class="bi bi-eye-slash"></i>
+                                            }@else{
+                                                <i class="bi bi-eye"></i>
+                                            }
                                         </button>
                                     </div>
                                 </div>
@@ -58,8 +76,12 @@
                                     <a href="#" class="forgot-password" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Şifremi unuttum</a>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary btn-auth">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                                <button type="submit" class="btn btn-primary btn-auth" [disabled]="loading()">
+                                    @if(loading()){
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    }@else{
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                                    }
                                 </button>
                             </form>
                         </div>
