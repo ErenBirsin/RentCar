@@ -23,7 +23,7 @@ public static class ExtraExtensions
             IsActive = s.Entity.IsActive,
             CreatedAt = s.Entity.CreatedAt,
             CreatedBy = s.Entity.CreatedBy,
-            CreatedFullName = s.CreatedUser.FullName.Value,
+            CreatedFullName = s.CreatedUser != null ? s.CreatedUser.FullName.Value : "Admin",
             UpdatedAt = s.Entity.UpdatedAt,
             UpdatedBy = s.Entity.UpdatedBy != null ? s.Entity.UpdatedBy.value : null,
             UpdatedFullName = s.UpdatedUser != null ? s.UpdatedUser.FullName.Value : null,

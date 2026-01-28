@@ -26,7 +26,7 @@ public static class BranchExtensions
                 IsActive = s.Entity.IsActive,
                 UpdatedAt = s.Entity.UpdatedAt,
                 UpdatedBy = s.Entity.UpdatedBy == null ? null : s.Entity.UpdatedBy.value,
-                CreatedFullName = s.CreatedUser.FullName.Value,
+                CreatedFullName = s.CreatedUser != null ? s.CreatedUser.FullName.Value : "Admin",
                 UpdatedFullName = s.UpdatedUser == null ? null : s.UpdatedUser.FullName.Value
             })
             .AsQueryable();

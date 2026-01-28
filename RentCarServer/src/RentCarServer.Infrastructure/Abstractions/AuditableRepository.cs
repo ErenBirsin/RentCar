@@ -21,17 +21,19 @@ internal class AuditableRepository<TEntity, TContext> : Repository<TEntity, TCon
 
         var res = entities
             .AsNoTracking()
-            .Join(users, m => m.CreatedBy, m => m.Id, (b, user) =>
-                   new { entity = b, createdUser = user })
-           .GroupJoin(users, m => m.entity.UpdatedBy, m => m.Id, (b, user) =>
-                   new { b.entity, b.createdUser, updatedUser = user })
-           .SelectMany(s => s.updatedUser.DefaultIfEmpty(),
-               (x, updatedUser) => new EntityWithAuditDto<TEntity>
-               {
-                   Entity = x.entity,
-                   CreatedUser = x.createdUser,
-                   UpdatedUser = updatedUser
-               });
+            .GroupJoin(users, e => e.CreatedBy, u => u.Id, (entity, createdUsers) =>
+                new { entity, createdUsers })
+            .SelectMany(x => x.createdUsers.DefaultIfEmpty(),
+                (x, createdUser) => new { x.entity, createdUser })
+            .GroupJoin(users, x => x.entity.UpdatedBy, u => u.Id, (x, updatedUsers) =>
+                new { x.entity, x.createdUser, updatedUsers })
+            .SelectMany(x => x.updatedUsers.DefaultIfEmpty(),
+                (x, updatedUser) => new EntityWithAuditDto<TEntity>
+                {
+                    Entity = x.entity,
+                    CreatedUser = x.createdUser,
+                    UpdatedUser = updatedUser
+                });
 
         return res;
     }
