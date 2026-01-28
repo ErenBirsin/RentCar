@@ -41,14 +41,9 @@ internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
         .FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier)?
         .Value;
 
-        if (userIdString is null)
-        {
-            return base.SaveChangesAsync(cancellationToken);
-
-        }
-
-        Guid userId = Guid.Parse(userIdString);
-        IdentityId identityId = new(userId);
+        IdentityId identityId = userIdString is not null
+            ? new(Guid.Parse(userIdString))
+            : new(Guid.Empty);
 
         foreach (var entry in entries)
         {
@@ -88,7 +83,6 @@ internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
     }
 
 }
-
 
 internal sealed class IdentityIdValueConverter : ValueConverter<IdentityId, Guid>
 {

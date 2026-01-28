@@ -98,6 +98,7 @@ app.MapControllers()
     .RequireRateLimiting("fixed")
     .RequireAuthorization();
 app.MapAuth();
+app.MapCustomerAuth();
 app.MapBranch();
 app.MapRole();
 app.MapPermission();
