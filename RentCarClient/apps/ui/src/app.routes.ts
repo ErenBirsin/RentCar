@@ -16,6 +16,10 @@ export const appRoutes: Route[] = [
       {
         path:'register',
         loadComponent:() => import('./pages/register/register')
+      },
+      {
+        path:'offer-select',
+        loadComponent:() => import('./pages/offer-select/offer.select')
       }
     ]
   }

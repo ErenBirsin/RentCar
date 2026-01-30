@@ -1,0 +1,184 @@
+<section class="progress-steps py-3 bg-white border-bottom">
+  <div class="container">
+      <div class="row align-items-center">
+          <div class="col-lg-8">
+              <div class="steps-container d-flex align-items-center gap-4">
+                  <div class="step active">
+                      <div class="step-number">1</div>
+                      <div class="step-label">ARAÇ SEÇİMİ</div>
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step">
+                      <div class="step-number">2</div>
+                      <div class="step-label">GÜVENCE PAKETLERİ</div>
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step">
+                      <div class="step-number">3</div>
+                      <div class="step-label">ÜCRET&EKSTRA</div>
+                  </div>
+                  <div class="step-divider"></div>
+                  <div class="step">
+                      <div class="step-number">4</div>
+                      <div class="step-label">SÜRÜCÜ DETAY</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<section class="booking-section py-4 bg-light">
+  <div class="container">
+      <div class="justify-content-center">
+          <div class="booking-card">
+              <div class="booking-header p-3 bg-primary text-white">
+                  <h4 class="mb-0 text-center">
+                      <i class="bi bi-calendar-check me-2"></i>
+                      Araç Kiralama - Rent A Car
+                  </h4>
+              </div>
+              <div class="booking-form p-4">
+                  <form (ngSubmit)="showVehicles()">
+                      <div class="row mb-3">
+                          <div class="col-md-6">
+                              <div class="form-tabs d-flex">
+                                  <button type="button" class="btn btn-outline-primary active me-2">Yurt İçi</button>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row g-3 align-items-end">
+                          <div class="col-md-3">
+                              <div class="form-group">
+                                  <label for="branchSelect" class="form-label text-muted small">Alış & Dönüş</label>
+                                  <select id="branchSelect" class="form-control" [ngModel]="pickUpLocationId()" (ngModelChange)="pickUpLocationId.set($event)" name="branch">
+                                      <option *ngFor="let b of (branches().length ? branches() : branchesData())" [value]="b.id">{{b.name}}</option>
+                                  </select>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3">
+                              <div class="form-group">
+                                  <label for="pickUpDate" class="form-label text-muted small">Alış tarihi saati</label>
+                                  <div class="d-flex">
+                                      <input id="pickUpDate" type="date" class="form-control" [ngModel]="pickUpDate()" (ngModelChange)="pickUpDate.set($event)" name="pickUpDate">
+                                      <select id="pickUpTime" aria-label="Alış saati" class="form-control" [ngModel]="pickUpTime()" (ngModelChange)="pickUpTime.set($event)" name="pickUpTime">
+                                          <option *ngFor="let t of timeOptions()" [value]="t">{{t}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3">
+                              <div class="form-group">
+                                  <label for="deliveryDate" class="form-label text-muted small">Dönüş tarihi saati</label>
+                                  <div class="d-flex">
+                                      <input id="deliveryDate" type="date" class="form-control" [ngModel]="deliveryDate()" (ngModelChange)="deliveryDate.set($event)" name="deliveryDate">
+                                      <select id="deliveryTime" aria-label="Dönüş saati" class="form-control" [ngModel]="deliveryTime()" (ngModelChange)="deliveryTime.set($event)" name="deliveryTime">
+                                          <option *ngFor="let t of timeOptions()" [value]="t">{{t}}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-3">
+                              <button type="submit" class="btn btn-primary btn-lg fw-bold">ARAÇLARI GÖSTER</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- Filters and Cars -->
+<section class="cars-listing py-4">
+  <div class="container">
+      <div class="filter-bar mb-4">
+          <div class="row align-items-center">
+              <div class="col-md-2">
+                  <div class="car-count">
+                      <span class="count-number">{{filteredVehicles().length}}</span>
+                      <span class="count-label">TEKLİF</span>
+                  </div>
+              </div>
+              <div class="col-md-10">
+                  <div class="filter-options d-flex align-items-center gap-3 flex-wrap">
+                      <div class="filter-dropdown">
+                          <select class="form-select form-select-sm" [ngModel]="filterCategory()" (ngModelChange)="filterCategory.set($event)" name="category">
+                              <option value="">ARAÇ TİPİ</option>
+                              <option *ngFor="let c of categoriesData()" [value]="c.name">{{c.name}}</option>
+                          </select>
+                      </div>
+
+                      <div class="filter-toggle">
+                                <label for="otomatikSwitch" class="form-label mb-0 me-2">SADECE OTOMATİK</label>
+                                <div class="form-check form-switch">
+                                    <input id="otomatikSwitch" class="form-check-input" type="checkbox" [ngModel]="filterAutomaticOnly()" (ngModelChange)="filterAutomaticOnly.set($event)" name="autoOnly">
+                                </div>
+                      </div>
+
+                      <div class="filter-dropdown">
+                          <select class="form-select form-select-sm" [ngModel]="filterBrand()" (ngModelChange)="filterBrand.set($event)" name="brand">
+                              <option value="">MARKA</option>
+                              <option *ngFor="let b of brands()" [value]="b">{{b}}</option>
+                          </select>
+                      </div>
+
+                      <div class="filter-dropdown">
+                          <select class="form-select form-select-sm" [ngModel]="filterSeatCount()" (ngModelChange)="filterSeatCount.set($event)" name="seatCount">
+                              <option [ngValue]="null">KOLTUK SAYISI</option>
+                              <option [ngValue]="2">2 Koltuk</option>
+                              <option [ngValue]="4">4 Koltuk</option>
+                              <option [ngValue]="5">5+ Koltuk</option>
+                          </select>
+                      </div>
+
+                      <div class="ms-auto">
+                          <button class="btn btn-sm btn-outline-secondary" (click)="clearFilters()">Filtreleri Temizle</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="cars-grid-layout">
+          <div class="row g-3">
+              <div class="col-lg-3 col-md-6" *ngFor="let vehicle of filteredVehicles()">
+                  <div class="car-card-grid">
+                      <div class="car-header">
+                          <h6 class="car-name">{{vehicle.brand}} {{vehicle.model}}</h6>
+                          <p class="car-description">{{vehicle.categoryName}} | {{vehicle.transmission}} | {{vehicle.fuelType}}</p>
+                      </div>
+                      <div class="car-image-wrapper">
+                          <img [src]="getVehicleImage(vehicle)" alt="{{vehicle.brand}}" class="car-img">
+                      </div>
+                      <div class="car-price-section">
+                          <div class="price-display">
+                              <span class="price-main">{{vehicle.dailyPrice | number:'1.0-0'}}</span>
+                              <span class="price-currency">TL</span>
+                              <span class="price-period">günlük</span>
+                          </div>
+                          <div class="price-total">{{(vehicle.dailyPrice * totalDay()) | number:'1.0-0'}} TL Toplam</div>
+                          <div class="d-grid mt-2">
+                              <button class="btn btn-primary btn-sm" (click)="selectVehicle(vehicle)">Seç</button>
+                              <div *ngIf="selectedVehicle()?.id === vehicle.id" class="mt-2 text-success small">Seçildi</div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div *ngIf="!loading() && filteredVehicles().length === 0" class="col-12">
+                  <div class="alert alert-warning">Seçtiğiniz tarihlerde araç bulunamadı.</div>
+              </div>
+
+              <div *ngIf="loading()" class="col-12">
+                  <div class="text-center">Yükleniyor...</div>
+              </div>
+
+          </div>
+      </div>
+  </div>
+</section>

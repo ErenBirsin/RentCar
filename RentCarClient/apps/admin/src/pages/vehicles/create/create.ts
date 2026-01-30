@@ -25,12 +25,23 @@ export const brandList = [
     'Toyota',
     'Renault',
     'Volkswagen',
-    'Ford', 'Fiat',
+    'Ford',
+    'Fiat',
     'Hyundai',
     'Peugeot',
     'Opel',
     'Honda',
-    'BMW'
+    'BMW',
+    'Mercedes-Benz',
+    'Audi',
+    'Nissan',
+    'Kia',
+    'Mazda',
+    'Chevrolet',
+    'Dacia',
+    'Citroën',
+    'Jeep',
+    'Subaru'
   ];
 
   export const colorList = [
@@ -43,7 +54,10 @@ export const brandList = [
     'Sarı',
     'Turuncu',
     'Kahverengi',
-    'Mor'
+    'Mor',
+    'Füme',
+    'Bej',
+    'Lacivert',
   ];
 
   export const fuelTypeList = [
