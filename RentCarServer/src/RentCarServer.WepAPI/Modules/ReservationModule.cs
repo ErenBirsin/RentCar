@@ -54,6 +54,14 @@ public static class ReservationModule
                 return Results.Ok(res);
             })
             .Produces<Result<List<VehicleDto>>>();
+
+        app.MapPost("check-selection",
+            async (ReservationCheckSelectionQuery request, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var res = await sender.Send(request, cancellationToken);
+                return res.IsSuccessful ? Results.Ok(res) : Results.BadRequest(res);
+            })
+            .Produces<Result<ReservationCheckSelectionDto>>();
     }
 
     public static void MapReservationForm(this IEndpointRouteBuilder builder)
