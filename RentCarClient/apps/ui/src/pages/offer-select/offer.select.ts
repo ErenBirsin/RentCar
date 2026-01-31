@@ -7,6 +7,7 @@ import { VehicleModel } from '@shared/lib/models/vehicle.model';
 import { BranchModel } from '@shared/lib/models/branch.model';
 import { initialReservation } from '@shared/lib/models/reservation.model';
 import { ReservationState } from '../services/reservation.state';
+import { Router } from '@angular/router';
 
 @Component({
   imports: [FormsModule, CommonModule],
@@ -16,6 +17,7 @@ import { ReservationState } from '../services/reservation.state';
 })
 export default class OfferSelect {
   readonly #http = inject(HttpService);
+  readonly #router = inject(Router);
 
   // Form fields
   readonly pickUpLocationId = signal<string>('');
@@ -160,6 +162,10 @@ export default class OfferSelect {
     this.filterBrand.set('');
     this.filterSeatCount.set(null);
     this.filterAutomaticOnly.set(false);
+  }
+
+  goToProtectionPackages() {
+    this.#router.navigate(['/protection-packages']);
   }
 
 }

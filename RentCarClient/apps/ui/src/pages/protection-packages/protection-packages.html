@@ -1,0 +1,102 @@
+<section class="progress-steps py-3 bg-white border-bottom">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="steps-container d-flex align-items-center gap-4">
+          <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-label">ARAÇ SEÇİMİ</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step active">
+            <div class="step-number">2</div>
+            <div class="step-label">GÜVENCE PAKETLERİ</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-label">ÜCRET&EKSTRA</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-label">SÜRÜCÜ DETAY</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <div class="total-price-summary">
+          <span class="total-label">Toplam:</span>
+          <span class="total-amount">{{ total() | number:'1.0-0'}}</span>
+          <span class="total-currency">TL</span>
+          <div class="selected-package-name" *ngIf="selectedPackageName()">Seçilen paket: {{ selectedPackageName() }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="protection-packages py-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="row g-3">
+          <div class="col-md-6 col-lg-3" *ngFor="let p of protectionPackagesData()">
+            <div class="protection-card"
+                 [class.recommended]="p.isRecommended"
+                 [class.selected]="p.id === selectedId()"
+                 (click)="selectProtectionPackage(p)"
+                 (keyup.enter)="selectProtectionPackage(p)"
+                 (keyup.space)="selectProtectionPackage(p)"
+                 tabindex="0"
+                 role="button"
+                 [attr.aria-pressed]="p.id === selectedId()">
+              <div class="protection-header">
+                <div class="package-selector">
+                  <input type="radio"
+                         class="form-check-input"
+                         name="protection"
+                         [checked]="p.id === selectedId()"
+                         (click)="$event.stopPropagation(); selectProtectionPackage(p)"
+                         (keyup.enter)="$event.stopPropagation(); selectProtectionPackage(p)"
+                         (keyup.space)="$event.stopPropagation(); selectProtectionPackage(p)">
+                </div>
+                <h5 class="package-title">{{ p.name }} <span *ngIf="p.id === selectedId()" class="selected-badge">Seçildi</span></h5>
+                <div class="package-rating">
+                  <i class="bi" [class.bi-star-fill]="p.isRecommended" [class.bi-star]="!p.isRecommended"></i>
+                </div>
+                <div class="package-price">
+                  <span class="price-value" *ngIf="p.price && p.price > 0">{{ p.price | number:'1.0-0' }} TL</span>
+                  <span class="price-label" *ngIf="!p.price || p.price === 0">Dahil</span>
+                </div>
+              </div>
+
+              <div class="protection-features">
+                <div class="feature-item" *ngFor="let f of p.coverages">
+                  <i class="bi bi-check-circle"></i>
+                  <span>{{ f }}</span>
+                </div>
+              </div>
+
+              <div class="protection-footer">
+                <div class="daily-price" *ngIf="p.price && p.price > 0">{{ p.price | number:'1.0-0' }} <span class="currency">TL / Gün</span></div>
+                <div class="daily-price" *ngIf="!p.price || p.price === 0">Dahil</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="(protectionPackagesData().length === 0)" class="col-12">
+            <div class="alert alert-warning">Güvence paketi bulunamadı.</div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12 text-end">
+            <button class="btn btn-primary btn-lg" (click)="goNext()">İleri</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
