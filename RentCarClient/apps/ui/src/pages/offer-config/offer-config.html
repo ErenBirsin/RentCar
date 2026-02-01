@@ -1,0 +1,214 @@
+<section class="progress-steps py-3 bg-white border-bottom">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="steps-container d-flex align-items-center gap-4">
+          <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-label">ARAÇ SEÇİMİ</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-label">GÜVENCE PAKETLERİ</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step active">
+            <div class="step-number">3</div>
+            <div class="step-label">ÜCRET&EKSTRA</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-label">SÜRÜCÜ DETAY</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <div class="total-price-summary">
+          <span class="total-label">Toplam:</span>
+          <span class="total-amount">{{ total() | number:'1.0-0' }}</span>
+          <span class="total-currency">TL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="extras-section py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <!-- Protection Services -->
+        <div class="extras-card mb-4">
+          <div class="card-header">
+            <h5><i class="bi bi-shield-check text-primary me-2"></i>Önerilen Güvenceler</h5>
+          </div>
+          <div class="card-body">
+            @if (extrasData().length === 0) {
+              <div class="col-12 text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Yükleniyor...</span>
+                </div>
+                <p class="mt-2 text-muted">Ekstralar yükleniyor...</p>
+              </div>
+            } @else {
+              <div class="row g-3">
+                @for (extra of protectionExtras(); track extra.id) {
+                  <div class="col-md-6">
+                    <div class="service-item"
+                         [class.selected]="isExtraSelected(extra.id)">
+                      <div class="service-info">
+                        <h6>{{ extra.name }}</h6>
+                        <p class="text-muted small">{{ extra.description }}</p>
+                      </div>
+                      <div class="service-action">
+                        <!-- Tam genişlikte turuncu buton -->
+                        <button class="price-tag"
+                                (click)="toggleExtra(extra)">
+                          {{ extra.price | number:'1.0-0' }} <span class="currency">TL Günlük</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Additional Services -->
+        <div class="extras-card mb-4">
+          <div class="card-header">
+            <h5><i class="bi bi-plus-circle text-primary me-2"></i>Ek Sürücü Paketi</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              @for (extra of driverExtras(); track extra.id) {
+                <div class="col-md-6">
+                  <div class="service-item"
+                       [class.selected]="isExtraSelected(extra.id)">
+                    <div class="service-info">
+                      <h6>{{ extra.name }}</h6>
+                      <p class="text-muted small">{{ extra.description }}</p>
+                    </div>
+                    <div class="service-action">
+                      <!-- Tam genişlikte turuncu buton -->
+                      <button class="price-tag"
+                              (click)="toggleExtra(extra)">
+                        {{ extra.price | number:'1.0-0' }} <span class="currency">TL Günlük</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Child Seats -->
+        <div class="extras-card">
+          <div class="card-header">
+            <h5><i class="bi bi-person-plus text-primary me-2"></i>Koltuk Adaptörü</h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              @for (extra of seatExtras(); track extra.id) {
+                <div class="col-md-4">
+                  <div class="service-item"
+                       [class.selected]="isExtraSelected(extra.id)">
+                    <div class="service-info">
+                      <h6>{{ extra.name }}</h6>
+                      <p class="text-muted small">{{ extra.description }}</p>
+                    </div>
+                    <div class="service-action">
+                      <!-- Tam genişlikte turuncu buton -->
+                      <button class="price-tag"
+                              (click)="toggleExtra(extra)">
+                        {{ extra.price | number:'1.0-0' }} <span class="currency">TL Günlük</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Summary -->
+      <div class="col-lg-4">
+        <div class="summary-card sticky-top" id="summaryCard">
+          <div class="card-header">
+            @if (vehicle()) {
+              <h5>{{ vehicle().brand }} {{ vehicle().model }}</h5>
+              <p class="text-muted mb-0">{{ vehicle().categoryName }} | {{ vehicle().modelYear }}</p>
+            } @else {
+              <h5>Araç Seçiliyor...</h5>
+              <p class="text-muted mb-0">Yükleniyor...</p>
+            }
+          </div>
+          <div class="card-body">
+            <div class="summary-image text-center mb-3">
+              @if (vehicle()) {
+                <img [src]="getVehicleImage(vehicle())"
+                     [alt]="vehicle().brand + ' ' + vehicle().model"
+                     class="img-fluid">
+              }
+            </div>
+
+            <div class="summary-details">
+              <div class="detail-row">
+                <div class="car-specs">
+                  @for (spec of vehicleSpecs(); track spec.icon) {
+                    <div class="spec-row">
+                      <i [class]="'bi ' + spec.icon"></i>
+                      <span>{{ spec.label }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="detail-row">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <span>{{ kmInfo() }}</span>
+              </div>
+              <div class="detail-row">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <span>{{ protectionPackage().name || 'Güvence paketi seçili' }}</span>
+              </div>
+            </div>
+
+            <div class="summary-pricing mt-4">
+              <div class="price-breakdown">
+                <div class="price-row">
+                  <span>Araç Kiralama Fiyatı</span>
+                  <span class="price">{{ vehicleTotal() | number:'1.0-0' }} TL</span>
+                </div>
+                <div class="price-row">
+                  <span>Güvence Paketleri</span>
+                  <span class="price">{{ protectionTotal() | number:'1.0-0' }} TL</span>
+                </div>
+                @if (selectedExtras().length > 0) {
+                  <div class="price-row">
+                    <span>Ekstralar</span>
+                    <span class="price">{{ extrasTotal() | number:'1.0-0' }} TL</span>
+                  </div>
+                }
+                <div class="price-row total">
+                  <span>TOPLAM ÖDENECEK TUTAR</span>
+                  <span class="price total-price">{{ total() | number:'1.0-0' }} <small>TL</small></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <button class="btn btn-primary w-100" (click)="goNext()">
+                <i class="bi bi-arrow-right-circle me-2"></i>Sürücü Bilgilerine Geç
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

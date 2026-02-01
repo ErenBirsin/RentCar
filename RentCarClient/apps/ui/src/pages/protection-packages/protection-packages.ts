@@ -57,6 +57,6 @@ export default class ProtectionPackages {
       return;
     }
     // TODO: navigate to next step (extras / price details). Şimdilik placeholder olarak offer-select'e dönüyoruz.
-    this.#router.navigate(['/offer-select']);
+    this.#router.navigate(['/offer-config']);
   }
 }

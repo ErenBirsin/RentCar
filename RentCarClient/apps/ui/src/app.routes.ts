@@ -26,6 +26,11 @@ export const appRoutes: Route[] = [
         path: 'protection-packages',
         loadComponent: () => import('./pages/protection-packages/protection-packages'),
         canActivate: [protectionPackagesGuard]
+      },
+      {
+        path: 'offer-config',
+        loadComponent: () => import('./pages/offer-config/offer-config'),
+        canActivate: [protectionPackagesGuard]
       }
     ]
   }
