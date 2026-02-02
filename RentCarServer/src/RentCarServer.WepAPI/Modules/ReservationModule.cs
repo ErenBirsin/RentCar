@@ -12,10 +12,21 @@ public static class ReservationModule
         var app = builder
             .MapGroup("/reservations")
             .RequireRateLimiting("fixed")
-            .RequireAuthorization()
             .WithTags("Reservations");
 
-        app.MapPost(string.Empty,
+        app.MapPost("public",
+            async (PublicReservationCreateCommand request, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var res = await sender.Send(request, cancellationToken);
+                return res.IsSuccessful ? Results.Ok(res) : Results.InternalServerError(res);
+            })
+            .Produces<Result<string>>()
+            .AllowAnonymous();
+
+        var adminApp = app.MapGroup("")
+            .RequireAuthorization();
+
+        adminApp.MapPost(string.Empty,
             async (ReservationCreateCommand request, ISender sender, CancellationToken cancellationToken) =>
             {
                 var res = await sender.Send(request, cancellationToken);
@@ -23,7 +34,7 @@ public static class ReservationModule
             })
             .Produces<Result<string>>();
 
-        app.MapPut(string.Empty,
+        adminApp.MapPut(string.Empty,
             async (ReservationUpdateCommand request, ISender sender, CancellationToken cancellationToken) =>
             {
                 var res = await sender.Send(request, cancellationToken);
@@ -31,7 +42,7 @@ public static class ReservationModule
             })
             .Produces<Result<string>>();
 
-        app.MapDelete("{id}",
+        adminApp.MapDelete("{id}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
                 var res = await sender.Send(new ReservationDeleteCommand(id), cancellationToken);
@@ -39,7 +50,7 @@ public static class ReservationModule
             })
             .Produces<Result<string>>();
 
-        app.MapGet("{id}",
+        adminApp.MapGet("{id}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
                 var res = await sender.Send(new ReservationGetQuery(id), cancellationToken);
@@ -47,7 +58,7 @@ public static class ReservationModule
             })
             .Produces<Result<ReservationDto>>();
 
-        app.MapPost("vehicle-getall",
+        adminApp.MapPost("vehicle-getall",
             async (ReservationGetAllVehicleQuery request, ISender sender, CancellationToken cancellationToken) =>
             {
                 var res = await sender.Send(request, cancellationToken);
@@ -55,7 +66,7 @@ public static class ReservationModule
             })
             .Produces<Result<List<VehicleDto>>>();
 
-        app.MapPost("check-selection",
+        adminApp.MapPost("check-selection",
             async (ReservationCheckSelectionQuery request, ISender sender, CancellationToken cancellationToken) =>
             {
                 var res = await sender.Send(request, cancellationToken);
