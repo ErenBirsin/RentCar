@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { NgxMaskDirective } from 'ngx-mask';
 import { httpResource } from '@angular/common/http';
 import { ReservationState } from '../services/reservation.state';
-import { CustomerModel } from '@shared/lib/models/customer.model';
 
 @Component({
   imports: [CommonModule, FormsModule, NgxMaskDirective],
@@ -17,7 +16,6 @@ export default class CustomerDetails {
   readonly #reservationState = inject(ReservationState);
   readonly #router = inject(Router);
 
-  // Form verileri
   readonly customerForm = signal({
     firstName: '',
     lastName: '',
@@ -86,10 +84,69 @@ export default class CustomerDetails {
       ...prev,
       customer: customerData
     }));
+    this.createReservation();
+  }
+  createReservation() {
+    const reservation = this.reservation();
 
-    // TODO: Backend'e rezervasyon gönder
-    alert('Rezervasyonunuz başarıyla oluşturuldu!');
-    this.#router.navigate(['/']);
+    const reservationData = {
+      customerFirstName: this.customerForm().firstName,
+      customerLastName: this.customerForm().lastName,
+      customerIdentityNumber: this.customerForm().identityNumber,
+      customerPhoneNumber: this.customerForm().phoneNumber,
+      customerEmail: this.customerForm().email,
+      customerFullAddress: this.customerForm().fullAddress || '',
+      pickUpLocationId: reservation.pickUpLocationId,
+      pickUpDate: reservation.pickUpDate,
+      pickUpTime: reservation.pickUpTime,
+      deliveryDate: reservation.deliveryDate,
+      deliveryTime: reservation.deliveryTime,
+      vehicleId: reservation.vehicleId,
+      vehicleDailyPrice: reservation.vehicleDailyPrice,
+      protectionPackageId: reservation.protectionPackageId,
+      protectionPackagePrice: reservation.protectionPackagePrice,
+      reservationExtras: reservation.reservationExtras || [],
+      note: reservation.note || '',
+      creditCartInformation: {
+        cartNumber: this.customerForm().cardNumber,
+        owner: `${this.customerForm().firstName} ${this.customerForm().lastName}`,
+        expiry: `${this.customerForm().cardMonth}/${this.customerForm().cardYear}`,
+        ccv: this.customerForm().cvv
+      },
+      total: reservation.total,
+      totalDay: reservation.totalDay
+    };
+
+    fetch('https://localhost:7161/reservations/public', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(reservationData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Rezervasyon oluşturulamadı');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Rezervasyon başarılı:', data);
+      const reservationNumber = data.value || this.generateReservationNumber();
+      this.#router.navigate(['/confirm-reservation'], {
+        queryParams: { reservationNumber }
+      });
+    })
+    .catch(error => {
+      console.error('Rezervasyon hatası:', error);
+      alert('Rezervasyon oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
+    });
+  }
+
+  generateReservationNumber(): string {
+    const year = new Date().getFullYear();
+    const random = Math.random().toString(36).substr(2, 6).toUpperCase();
+    return `RNT-${year}-${random}`;
   }
 
   readonly vehicleSpecs = computed(() => {

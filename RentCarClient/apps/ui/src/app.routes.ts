@@ -37,6 +37,10 @@ export const appRoutes: Route[] = [
         loadComponent: () => import('./pages/customer-details/customer-details'),
         canActivate: [protectionPackagesGuard]
       },
+      {
+        path: 'confirm-reservation',
+        loadComponent: () => import('./pages/confirm-reservation/confirm-reservation'),
+      }
     ]
   }
 ];
