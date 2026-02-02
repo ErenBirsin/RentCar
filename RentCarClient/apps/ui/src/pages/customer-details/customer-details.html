@@ -1,0 +1,372 @@
+<section class="progress-steps py-3 bg-white border-bottom">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="steps-container d-flex align-items-center gap-4">
+          <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-label">ARAÇ SEÇİMİ</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-label">GÜVENCE PAKETLERİ</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step completed">
+            <div class="step-number"><i class="bi bi-check"></i></div>
+            <div class="step-label">ÜCRET&EKSTRA</div>
+          </div>
+          <div class="step-divider"></div>
+          <div class="step active">
+            <div class="step-number">4</div>
+            <div class="step-label">SÜRÜCÜ DETAY</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <div class="total-price-summary">
+          <span class="total-label">Toplam:</span>
+          <span class="total-amount">{{ total() | number:'1.0-0' }}</span>
+          <span class="total-currency">TL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="customer-details-section py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Main Form -->
+      <div class="col-lg-8">
+        <!-- Personal Information -->
+        <div class="form-card mb-4">
+          <div class="form-header">
+            <h5><i class="bi bi-person-fill text-primary me-2"></i>Kişisel Bilgiler</h5>
+          </div>
+          <div class="form-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">Ad *</label>
+                <input type="text"
+                       class="form-control"
+                       id="firstName"
+                       [(ngModel)]="customerForm().firstName"
+                       name="firstName"
+                       [class.is-invalid]="showErrors() && !customerForm().firstName"
+                       required>
+                @if (showErrors() && !customerForm().firstName) {
+                  <div class="invalid-feedback">
+                    Lütfen adınızı giriniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Soyad *</label>
+                <input type="text"
+                       class="form-control"
+                       id="lastName"
+                       [(ngModel)]="customerForm().lastName"
+                       name="lastName"
+                       [class.is-invalid]="showErrors() && !customerForm().lastName"
+                       required>
+                @if (showErrors() && !customerForm().lastName) {
+                  <div class="invalid-feedback">
+                    Lütfen soyadınızı giriniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="identityNumber" class="form-label">TC Kimlik No *</label>
+                <input type="text"
+                       class="form-control"
+                       id="identityNumber"
+                       [(ngModel)]="customerForm().identityNumber"
+                       name="identityNumber"
+                       [class.is-invalid]="showErrors() && !customerForm().identityNumber"
+                       required
+                       maxlength="11"
+                       minlength="11">
+                @if (showErrors() && !customerForm().identityNumber) {
+                  <div class="invalid-feedback">
+                    Lütfen TC kimlik numaranızı giriniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="dateOfBirth" class="form-label">Doğum Tarihi *</label>
+                <input type="date"
+                       class="form-control"
+                       id="dateOfBirth"
+                       [(ngModel)]="customerForm().dateOfBirth"
+                       name="dateOfBirth"
+                       [class.is-invalid]="showErrors() && !customerForm().dateOfBirth"
+                       required>
+                @if (showErrors() && !customerForm().dateOfBirth) {
+                  <div class="invalid-feedback">
+                    Lütfen doğum tarihinizi seçiniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="phoneNumber" class="form-label">Telefon *</label>
+                <input type="tel"
+                       class="form-control"
+                       id="phoneNumber"
+                       [(ngModel)]="customerForm().phoneNumber"
+                       name="phoneNumber"
+                       [class.is-invalid]="showErrors() && !customerForm().phoneNumber"
+                       required
+                       mask="(000) 000 00 00"
+                       prefix="+90"
+                       placeholder="+90 (555) 555 55 55">
+                @if (showErrors() && !customerForm().phoneNumber) {
+                  <div class="invalid-feedback">
+                    Lütfen telefon numaranızı giriniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label">E-posta *</label>
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       [(ngModel)]="customerForm().email"
+                       name="email"
+                       [class.is-invalid]="showErrors() && !customerForm().email"
+                       required>
+                @if (showErrors() && !customerForm().email) {
+                  <div class="invalid-feedback">
+                    Lütfen e-posta adresinizi giriniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-6">
+                <label for="drivingLicenseIssuanceDate" class="form-label">Ehliyet Veriliş Tarihi *</label>
+                <input type="date"
+                       class="form-control"
+                       id="drivingLicenseIssuanceDate"
+                       [(ngModel)]="customerForm().drivingLicenseIssuanceDate"
+                       name="drivingLicenseIssuanceDate"
+                       [class.is-invalid]="showErrors() && !customerForm().drivingLicenseIssuanceDate"
+                       required>
+                @if (showErrors() && !customerForm().drivingLicenseIssuanceDate) {
+                  <div class="invalid-feedback">
+                    Lütfen ehliyet veriliş tarihinizi seçiniz.
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Information -->
+        <div class="form-card mb-4">
+          <div class="form-header">
+            <h5><i class="bi bi-geo-alt-fill text-primary me-2"></i>Adres Bilgileri (İsteğe Bağlı)</h5>
+            <button type="button"
+                    class="btn btn-link btn-sm text-primary"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#addressForm">
+              <i class="bi bi-plus-circle"></i> Adres Bilgileri
+            </button>
+          </div>
+          <div class="collapse" id="addressForm">
+            <div class="form-body">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label for="fullAddress" class="form-label">Adres</label>
+                  <textarea class="form-control"
+                            id="fullAddress"
+                            rows="3"
+                            [(ngModel)]="customerForm().fullAddress"
+                            name="fullAddress"
+                            placeholder="Detaylı adres bilginiz"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credit Card Information -->
+        <div class="form-card mb-4">
+          <div class="form-header" style="flex-direction: column; align-items: start;">
+            <h5>
+              <i class="bi bi-credit-card-fill text-primary me-2"></i>
+              Kredi Kartı Bilgileri
+            </h5>
+            <p class="form-subtitle">Ödeme yapılan kredi kartının isim aracı kiralayacak kişi aynı
+              olmalıdır. Ödeme yapılan kredi kartının araç tesliminde ofiste gösterilmesi talep
+              edilecektir. Kiralama süresinin 1 saatten fazla bir süre olması halinde
+              rezervasyonunuzun herhangi bir gerekçe göstermeksizin iptal edebiliriz. Rezervasyon
+              ücretinin tamamı kiralama esnasında bildirilmiş olduğunuz kredi kartınıza iade edilir.
+              Kiralama süresinin 3 günden az olması halinde ücreti iade yapılmaz.</p>
+          </div>
+          <div class="form-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="cardNumber" class="form-label">Kredi Kartı Numarası *</label>
+                <div class="input-group">
+                  <input type="text"
+                         class="form-control"
+                         id="cardNumber"
+                         [(ngModel)]="customerForm().cardNumber"
+                         name="cardNumber"
+                         [class.is-invalid]="showErrors() && !customerForm().cardNumber"
+                         mask="0000 0000 0000 0000"
+                         placeholder="4444 4444 4444 4444"
+                         required>
+                  <span class="input-group-text">
+                    <i class="bi bi-credit-card text-muted"></i>
+                  </span>
+                </div>
+                @if (showErrors() && !customerForm().cardNumber) {
+                  <div class="invalid-feedback">
+                    Lütfen kredi kartı numaranızı giriniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-4">
+                <label for="cardMonth" class="form-label">Ay *</label>
+                <select class="form-select"
+                        id="cardMonth"
+                        [(ngModel)]="customerForm().cardMonth"
+                        name="cardMonth"
+                        [class.is-invalid]="showErrors() && !customerForm().cardMonth"
+                        required>
+                  <option value="">Ay</option>
+                  @for (month of months; track month) {
+                    <option [value]="month">{{ month }}</option>
+                  }
+                </select>
+                @if (showErrors() && !customerForm().cardMonth) {
+                  <div class="invalid-feedback">
+                    Lütfen kart ayını seçiniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-4">
+                <label for="cardYear" class="form-label">Yıl *</label>
+                <select class="form-select"
+                        id="cardYear"
+                        [(ngModel)]="customerForm().cardYear"
+                        name="cardYear"
+                        [class.is-invalid]="showErrors() && !customerForm().cardYear"
+                        required>
+                  <option value="">Yıl</option>
+                  @for (year of years(); track year) {
+                    <option [value]="year">{{ year }}</option>
+                  }
+                </select>
+                @if (showErrors() && !customerForm().cardYear) {
+                  <div class="invalid-feedback">
+                    Lütfen kart yılını seçiniz.
+                  </div>
+                }
+              </div>
+              <div class="col-md-4">
+                <label for="cvv" class="form-label">CVV *</label>
+                <div class="input-group">
+                  <input type="password"
+                         class="form-control"
+                         id="cvv"
+                         [(ngModel)]="customerForm().cvv"
+                         name="cvv"
+                         [class.is-invalid]="showErrors() && !customerForm().cvv"
+                         placeholder="CVV"
+                         maxlength="4"
+                         required>
+                  <span class="input-group-text">
+                    <i class="bi bi-info-circle"
+                       data-bs-toggle="tooltip"
+                       title="Kartınızın arkasındaki 3 haneli güvenlik kodu"></i>
+                  </span>
+                </div>
+                @if (showErrors() && !customerForm().cvv) {
+                  <div class="invalid-feedback">
+                    Lütfen CVV kodunu giriniz.
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Sidebar -->
+      <div class="col-lg-4">
+        <div class="summary-card sticky-top" id="summaryCard">
+          <div class="card-header">
+            <h5>Rezervasyon Özeti</h5>
+          </div>
+          <div class="card-body">
+            <div class="car-summary mb-4">
+              @if (vehicle()) {
+                <img [src]="'https://localhost:7161/images/' + vehicle().imageUrl"
+                     [alt]="vehicle().brand + ' ' + vehicle().model"
+                     class="img-fluid mb-3">
+                <h6>{{ vehicle().brand }} {{ vehicle().model }}</h6>
+                <p class="text-muted small">veya benzeri | {{ vehicle().categoryName }}</p>
+              } @else {
+                <img src="https://picsum.photos/seed/carplaceholder/300/180.jpg"
+                     alt="Araç"
+                     class="img-fluid mb-3">
+                <h6>Araç Seçiliyor...</h6>
+                <p class="text-muted small">Yükleniyor...</p>
+              }
+            </div>
+
+            <div class="rental-details mb-4">
+              <div class="detail-row">
+                <i class="bi bi-geo-alt-fill text-primary"></i>
+                <span>{{ getBranchName() || 'Şube seçilmedi' }}</span>
+              </div>
+              <div class="detail-row">
+                <i class="bi bi-calendar3 text-primary"></i>
+                <span>{{ reservation().pickUpDate | date:'dd.MM.yyyy' }}, {{ reservation().pickUpTime }}</span>
+              </div>
+              <div class="detail-row">
+                <i class="bi bi-calendar3 text-primary"></i>
+                <span>{{ reservation().deliveryDate | date:'dd.MM.yyyy' }}, {{ reservation().deliveryTime }}</span>
+              </div>
+              <div class="detail-row">
+                <i class="bi bi-clock text-primary"></i>
+                <span>{{ reservation().totalDay || 1 }} Gün</span>
+              </div>
+            </div>
+
+            <div class="price-summary">
+              <div class="price-row">
+                <span>Araç Kirası</span>
+                <span>{{ vehicleTotal() | number:'1.0-0' }} TL</span>
+              </div>
+              <div class="price-row">
+                <span>Güvence Paketi</span>
+                <span>{{ protectionTotal() | number:'1.0-0' }} TL</span>
+              </div>
+              @if (reservation().reservationExtras && reservation().reservationExtras.length > 0) {
+                <div class="price-row">
+                  <span>Ekstra</span>
+                  <span>{{ extrasTotal() | number:'1.0-0' }} TL</span>
+                </div>
+              }
+              <div class="price-row total">
+                <span>TOPLAM</span>
+                <span>{{ total() | number:'1.0-0' }} TL</span>
+              </div>
+            </div>
+
+            <div class="text-center mt-2">
+              <button type="button"
+                      class="btn btn-orange btn-lg px-5"
+                      (click)="completeReservation()">
+                <i class="bi bi-check-circle me-2"></i>REZERVASYONU TAMAMLA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

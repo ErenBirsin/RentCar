@@ -104,7 +104,8 @@ export default class OfferConfig {
 
   goNext() {
     // TODO: customer-details sayfası oluşturulunca değiştirilecek
-    this.#router.navigate(['/']);
+    // this.#router.navigate(['/']);
+    this.#router.navigate(['/customer-details']);
   }
 
   getVehicleImage(vehicle: Partial<VehicleModel>) {
