@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal, ViewEncapsulation }
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpService } from '@shared/lib/services/http';
+import { AuthState } from '../services/auth.state';
 
 @Component({
   imports: [
@@ -18,6 +19,7 @@ export default class Login {
 
   readonly #http = inject(HttpService);
   readonly #router = inject(Router);
+  readonly #authState = inject(AuthState);
 
   togglePasswordVisibility() {
     this.showPassword.set(!this.showPassword());
@@ -32,7 +34,7 @@ export default class Login {
       form.value,
       (res) => {
         if (res?.token) {
-          localStorage.setItem('response', res.token);
+          this.#authState.setToken(res.token);
           this.#router.navigateByUrl('/');
         }
         this.loading.set(false);

@@ -1,0 +1,183 @@
+<!-- Header -->
+<section class="profile-header py-4 bg-primary text-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="profile-welcome">
+          <div class="user-avatar">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBRW6kw4PvewS5EGHKY7nNsJiWvrbsVIzZA&s"
+              [alt]="fullName()"
+              class="avatar-img"
+            />
+            <div class="avatar-badge">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+          </div>
+          <div class="welcome-text">
+            <h1 class="h2 mb-1">Hoş geldin, {{ customer().firstName }}!</h1>
+            <p class="mb-0">Profil bilgilerini buradan görüntüleyebilirsin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="profile-main py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-3">
+        <div class="profile-sidebar">
+          <!-- User Info Card -->
+          <div class="sidebar-card user-info">
+            <div class="user-avatar-large">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBRW6kw4PvewS5EGHKY7nNsJiWvrbsVIzZA&s"
+                [alt]="fullName()"
+                class="avatar-img"
+              />
+            </div>
+            <div class="user-details">
+              <h4>{{ fullName() }}</h4>
+              <p class="text-muted">{{ customer().email }}</p>
+            </div>
+          </div>
+
+          <!-- Navigation Menu -->
+          <div class="sidebar-card profile-nav">
+            <nav class="profile-menu">
+              <a class="menu-item active">
+                <i class="bi bi-person-fill"></i>
+                <span>Profil Bilgileri</span>
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        <div class="profile-content">
+          <div class="content-header">
+            <h3><i class="bi bi-person-fill text-primary me-2"></i>Profil Bilgileri</h3>
+            <p class="text-muted">Kişisel bilgilerini buradan görüntüleyebilirsin</p>
+          </div>
+
+          <div class="px-4 pb-3 d-flex justify-content-end gap-2">
+            @if(!isEditing()){
+              <button type="button" class="btn btn-outline-primary" (click)="startEdit()" [disabled]="loading()">
+                <i class="bi bi-pencil-square me-1"></i>Düzenle
+              </button>
+            }@else{
+              <button type="button" class="btn btn-outline-secondary" (click)="cancelEdit()" [disabled]="saving()">
+                İptal
+              </button>
+              <button type="button" class="btn btn-primary" (click)="save()" [disabled]="saving() || !isFormValid()">
+                @if(saving()){
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                }
+                Kaydet
+              </button>
+            }
+          </div>
+
+          <div class="profile-form">
+            <div class="form-section">
+              <div class="section-header">
+                <h5><i class="bi bi-person-circle text-primary me-2"></i>Kişisel Bilgiler</h5>
+              </div>
+              <div class="section-content">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="firstName" class="form-label">Ad</label>
+                    <input id="firstName" type="text" class="form-control" [value]="customer().firstName" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="lastName" class="form-label">Soyad</label>
+                    <input id="lastName" type="text" class="form-control" [value]="customer().lastName" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="identityNumber" class="form-label">T.C. Kimlik Numarası</label>
+                    <input id="identityNumber" type="text" class="form-control" [value]="maskedIdentityNumber()" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="dateOfBirth" class="form-label">Doğum Tarihi</label>
+                    <input id="dateOfBirth" type="text" class="form-control" [value]="customer().dateOfBirth" readonly>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="drivingLicenseDate" class="form-label">Ehliyet Alış Tarihi</label>
+                    <input id="drivingLicenseDate" type="text" class="form-control" [value]="customer().drivingLicenseIssuanceDate" readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="section-header">
+                <h5><i class="bi bi-telephone-fill text-primary me-2"></i>İletişim Bilgileri</h5>
+              </div>
+              <div class="section-content">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">E-posta</label>
+                    <input
+                      id="email"
+                      type="text"
+                      class="form-control"
+                      [value]="isEditing() ? form().email : customer().email"
+                      [readonly]="!isEditing()"
+                      (input)="updateField('email', $any($event.target).value)"
+                    >
+                  </div>
+                  <div class="col-md-6">
+                    <label for="phoneNumber" class="form-label">Telefon</label>
+                    <input
+                      id="phoneNumber"
+                      type="text"
+                      class="form-control"
+                      [value]="isEditing() ? form().phoneNumber : customer().phoneNumber"
+                      [readonly]="!isEditing()"
+                      (input)="updateField('phoneNumber', $any($event.target).value)"
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="section-header">
+                <h5><i class="bi bi-geo-alt-fill text-primary me-2"></i>Adres Bilgileri</h5>
+              </div>
+              <div class="section-content">
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="fullAddress" class="form-label">Adres</label>
+                    <textarea
+                      id="fullAddress"
+                      class="form-control"
+                      rows="3"
+                      [value]="isEditing() ? form().fullAddress : customer().fullAddress"
+                      [readonly]="!isEditing()"
+                      (input)="updateField('fullAddress', $any($event.target).value)"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            @if(loading()){
+              <div class="p-3 text-muted">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Yükleniyor...
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

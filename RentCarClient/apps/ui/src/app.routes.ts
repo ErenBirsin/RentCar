@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { protectionPackagesGuard } from './guards/protection-packages.guard';
+import { customerAuthGuard } from './guards/customer-auth.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -36,6 +37,11 @@ export const appRoutes: Route[] = [
         path: 'customer-details',
         loadComponent: () => import('./pages/customer-details/customer-details'),
         canActivate: [protectionPackagesGuard]
+      },
+      {
+        path: 'my-profile',
+        loadComponent: () => import('./pages/my-profile/my-profile'),
+        canActivate: [customerAuthGuard]
       },
       {
         path: 'confirm-reservation',

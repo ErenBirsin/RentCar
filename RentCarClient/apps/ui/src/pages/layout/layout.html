@@ -19,9 +19,25 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" routerLink="/contact"><i class="bi bi-telephone-fill"></i> İletişim</a>
                     </li>
+                    @if(isLoggedIn()){
+                    <li class="nav-item">
+                        <a class="nav-link text-light" routerLink="/my-profile"><i class="bi bi-person"></i> Profilim</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-light"
+                        role="button"
+                        tabindex="0"
+                        (click)="logout()"
+                        (keyup.enter)="logout()"
+                        (keyup.space)="logout()">
+                        <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                      </a>
+                    </li>
+                }@else{
                     <li class="nav-item">
                         <a class="nav-link text-light" routerLink="/login"><i class="bi bi-person-fill"></i> Giriş Yap</a>
                     </li>
+                  }
                 </ul>
             </div>
         </div>
