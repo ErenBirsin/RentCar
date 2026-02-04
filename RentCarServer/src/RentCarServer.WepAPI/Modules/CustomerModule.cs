@@ -29,7 +29,7 @@ public static class CustomerModule
             })
             .Produces<Result<string>>();
 
-        app.MapDelete("{id}",
+        app.MapDelete("{id:guid}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(new CustomerDeleteCommand(id), cancellationToken);
@@ -37,7 +37,7 @@ public static class CustomerModule
             })
             .Produces<Result<string>>();
 
-        app.MapGet("{id}",
+        app.MapGet("{id:guid}",
             async (Guid id, ISender sender, CancellationToken cancellationToken) =>
             {
                 var result = await sender.Send(new CustomerGetQuery(id), cancellationToken);
@@ -52,5 +52,21 @@ public static class CustomerModule
                 return Results.Ok(result);
             })
             .Produces<IQueryable<CustomerDto>>();
+
+        app.MapGet("me",
+            async (ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(new CustomerGetMeQuery(), cancellationToken);
+                return result.IsSuccessful ? Results.Ok(result) : Results.InternalServerError(result);
+            })
+            .Produces<Result<CustomerDto>>();
+
+        app.MapPut("me",
+            async (CustomerUpdateMeCommand request, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(request, cancellationToken);
+                return result.IsSuccessful ? Results.Ok(result) : Results.InternalServerError(result);
+            })
+            .Produces<Result<string>>();
     }
 }
