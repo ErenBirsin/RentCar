@@ -24,5 +24,29 @@ public static class CustomerAuthModule
         })
         .Produces<Result<CustomerLoginCommandResponse>>()
         .RequireRateLimiting("login-fixed");
+
+        app.MapPost("/forgot-password/{email}", async (string email, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var res = await sender.Send(new CustomerForgotPasswordCommand(email), cancellationToken);
+            return res.IsSuccessful ? Results.Ok(res) : Results.BadRequest(res);
+        })
+       .Produces<Result<string>>()
+       .RequireRateLimiting("forgot-pasword-fixed");
+
+        app.MapGet("/check-forgot-password-code/{forgotPasswordCode}", async (Guid forgotPasswordCode, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var res = await sender.Send(new CustomerCheckForgotPasswordCodeCommand(forgotPasswordCode), cancellationToken);
+            return res.IsSuccessful ? Results.Ok(res) : Results.BadRequest(res);
+        })
+       .Produces<Result<bool>>()
+       .RequireRateLimiting("check-forgot-password-code-fixed");
+
+        app.MapPost("/reset-password", async (CustomerResetPasswordCommand request, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var res = await sender.Send(request, cancellationToken);
+            return res.IsSuccessful ? Results.Ok(res) : Results.BadRequest(res);
+        })
+       .Produces<Result<string>>()
+       .RequireRateLimiting("reset-pasword-fixed");
     }
 }

@@ -31,6 +31,7 @@ public sealed class Customer : Entity
         SetFullAddress(fullAddress);
         SetStatus(isActive);
         SetPassword(password);
+        SetIsForgotPasswordCompleted(new(true));
     }
 
     public FirstName FirstName { get; private set; } = default!;
@@ -43,7 +44,9 @@ public sealed class Customer : Entity
     public DrivingLicenseIssuanceDate DrivingLicenseIssuanceDate { get; private set; } = default!;
     public FullAddress FullAddress { get; private set; } = default!;
     public Password Password { get; private set; } = default!;
-
+    public ForgotPasswordCode? ForgotPasswordCode { get; private set; }
+    public ForgotPasswordDate? ForgotPasswordDate { get; private set; }
+    public IsForgotPasswordCompleted IsForgotPasswordCompleted { get; private set; } = default!;
 
     #region Behaviors
     public void SetFirstName(FirstName firstName) => FirstName = firstName;
@@ -56,6 +59,18 @@ public sealed class Customer : Entity
     public void SetDrivingLicenseIssuanceDate(DrivingLicenseIssuanceDate date) => DrivingLicenseIssuanceDate = date;
     public void SetFullAddress(FullAddress fullAddress) => FullAddress = fullAddress;
     public void SetPassword(Password password) => Password = password;
+
+    public void CreateForgotPasswordId()
+    {
+        ForgotPasswordCode = new(Guid.CreateVersion7());
+        ForgotPasswordDate = new(DateTimeOffset.Now);
+        IsForgotPasswordCompleted = new(false);
+    }
+
+    public void SetIsForgotPasswordCompleted(IsForgotPasswordCompleted isForgotPasswordCompleted)
+    {
+        IsForgotPasswordCompleted = isForgotPasswordCompleted;
+    }
     public bool VerifyPasswordHash(string password)
     {
         using var hmac = new System.Security.Cryptography.HMACSHA512(Password.PasswordSalt);

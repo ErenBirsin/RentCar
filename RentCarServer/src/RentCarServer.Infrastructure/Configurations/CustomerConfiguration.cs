@@ -20,5 +20,8 @@ internal sealed class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.OwnsOne(x => x.DrivingLicenseIssuanceDate);
         builder.OwnsOne(x => x.FullAddress);
         builder.OwnsOne(x => x.Password);
+        builder.OwnsOne(x => x.ForgotPasswordCode);
+        builder.OwnsOne(x => x.ForgotPasswordDate);
+        builder.OwnsOne(x => x.IsForgotPasswordCompleted);
     }
 }
