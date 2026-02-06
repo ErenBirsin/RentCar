@@ -20,6 +20,10 @@ export const appRoutes: Route[] = [
         loadComponent:() => import('./pages/register/register')
       },
       {
+        path:'reset-password/:id',
+        loadComponent:() => import('./pages/reset-password/reset-password')
+      },
+      {
         path:'offer-select',
         loadComponent:() => import('./pages/offer-select/offer.select')
       },

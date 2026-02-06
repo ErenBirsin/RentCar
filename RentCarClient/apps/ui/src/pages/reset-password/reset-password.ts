@@ -1,0 +1,119 @@
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, signal, viewChild, ViewEncapsulation } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FlexiToastService } from 'flexi-toast';
+import { HttpService } from '@shared/lib/services/http';
+import { httpResource } from '@angular/common/http';
+
+@Component({
+  imports: [
+    NgClass,
+    FormsModule,
+    RouterLink,
+  ],
+  templateUrl: './reset-password.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export default class ResetPassword {
+  readonly id = signal<string>('');
+
+  readonly result = httpResource(() => `/rent/customer-auth/check-forgot-password-code/${this.id()}`);
+  readonly resultLoading = computed(() => this.result.isLoading());
+  readonly error = computed(() => this.result.error());
+
+  readonly password = signal<string>('');
+  readonly confirmPassword = signal<string>('');
+  readonly loading = signal<boolean>(false);
+
+  readonly passwordRequirements = computed(() => {
+    const pwd = this.password();
+    return {
+      minLength: pwd.length >= 8,
+      hasUpperCase: /[A-Z]/.test(pwd),
+      hasLowerCase: /[a-z]/.test(pwd),
+      hasNumber: /[0-9]/.test(pwd),
+      hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(pwd)
+    };
+  });
+
+  readonly passwordStrength = computed(() => {
+    const requirements = this.passwordRequirements();
+    const validCount = Object.values(requirements).filter(Boolean).length;
+
+    if (validCount === 0) return { level: 0, text: 'Zayıf', class: '' };
+    if (validCount <= 2) return { level: validCount, text: 'Zayıf', class: 'weak' };
+    if (validCount <= 3) return { level: validCount, text: 'Orta', class: 'medium' };
+    if (validCount <= 4) return { level: validCount, text: 'İyi', class: 'medium' };
+    return { level: validCount, text: 'Güçlü', class: 'strong' };
+  });
+
+  readonly isPasswordValid = computed(() => {
+    const requirements = this.passwordRequirements();
+    return Object.values(requirements).every(Boolean);
+  });
+
+  readonly passwordsMatch = computed(() => {
+    const pwd = this.password();
+    const confirmPwd = this.confirmPassword();
+    return pwd.length > 0 && confirmPwd.length > 0 && pwd === confirmPwd;
+  });
+
+  readonly isFormValid = computed(() => this.isPasswordValid() && this.passwordsMatch());
+
+  readonly strengthProgress = computed(() => (this.passwordStrength().level / 4) * 100);
+
+  readonly logoutAllDevices = signal<boolean>(true);
+
+  readonly newPasswordEl = viewChild<ElementRef<HTMLInputElement>>('newPasswordEl');
+  readonly confirmPasswordEl = viewChild<ElementRef<HTMLInputElement>>('confirmPasswordEl');
+
+  readonly #activated = inject(ActivatedRoute);
+  readonly #toast = inject(FlexiToastService);
+  readonly #http = inject(HttpService);
+  readonly #router = inject(Router);
+
+  constructor() {
+    this.#activated.params.subscribe(res => {
+      this.id.set(res['id']);
+    });
+  }
+
+  toggleNewPassword() {
+    const input = this.newPasswordEl()?.nativeElement;
+    if (!input) return;
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  toggleConfirmPassword() {
+    const input = this.confirmPasswordEl()?.nativeElement;
+    if (!input) return;
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  onSubmit(): void {
+    if (!this.isFormValid()) {
+      this.#toast.showToast('Uyarı!', 'Zorunlu alanları doldurmadınız', 'warning');
+      return;
+    }
+
+    const data = {
+      forgotPasswordCode: this.id(),
+      newPassword: this.password(),
+      logoutAllDevices: this.logoutAllDevices()
+    };
+
+    this.loading.set(true);
+    this.#http.post<string>(
+      '/rent/customer-auth/reset-password',
+      data,
+      (res: string) => {
+        this.#toast.showToast('Başarılı', res);
+        this.#router.navigateByUrl('/login');
+        this.loading.set(false);
+      },
+      () => this.loading.set(false)
+    );
+  }
+}
