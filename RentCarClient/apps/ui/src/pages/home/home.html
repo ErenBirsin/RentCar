@@ -1,73 +1,77 @@
-    <!-- Hero Section -->
+<!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-overlay">
             <div class="container">
-                <div class="justify-content-center">
-                    <div class="booking-card">
-                        <div class="booking-header p-3 bg-primary text-white">
-                            <h4 class="mb-0 text-center">
-                                <i class="bi bi-calendar-check me-2"></i>
-                                Araç Kiralama - Rent A Car
-                            </h4>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="hero-content text-white">
+                            <h1 class="hero-title mb-3">Konforlu ve Güvenli Araç Kiralama</h1>
+                            <p class="hero-subtitle mb-4">
+                                Bakımlı araçlar, şeffaf fiyatlandırma ve 7/24 destek ile yolculuğunu güvenle planla.
+                            </p>
+                            <div class="d-flex flex-wrap gap-3">
+                                <a routerLink="/offer-select" class="btn btn-light btn-lg fw-bold px-4">
+                                    <i class="bi bi-car-front me-2"></i>
+                                    Araçları İncele
+                                </a>
+                                <a routerLink="/register" class="btn btn-outline-light btn-lg fw-bold px-4">
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    Hemen Üye Ol
+                                </a>
+                            </div>
                         </div>
-                        <div class="booking-form p-4">
-                            <form>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <div class="form-tabs d-flex">
-                                            <button type="button" class="btn btn-outline-primary active me-2">
-                                                Yurt İçi
-                                            </button>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="col-lg-5 mt-5 mt-lg-0">
+                        <div class="booking-card">
+                            <div class="booking-form p-4">
+                                <div class="text-center">
+                                    <h4 class="mb-2">Hızlı Başlangıç</h4>
+                                    <p class="text-muted mb-4">Teklifleri görüntülemek için giriş yap veya hesap oluştur.</p>
                                 </div>
-
-                                <div class="row g-3 align-items-end">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="location" class="form-label text-muted small">Alış & Dönüş</label>
-                                            <select id="location" class="form-control">
-                                                <option>Kayseri Havalimanı</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="pickup-date" class="form-label text-muted small">Alış tarihi saati</label>
-                                            <div class="d-flex">
-                                                <input id="pickup-date" type="date" class="form-control">
-                                                <select class="form-control">
-                                                    <option>00:00</option>
-                                                    <option>00:30</option>
-                                                    <option>01:00</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="return-date" class="form-label text-muted small">Dönüş tarihi saati</label>
-                                            <div class="d-flex">
-                                                <input id="return-date" type="date" class="form-control">
-                                                <select class="form-control">
-                                                    <option>00:00</option>
-                                                    <option>00:30</option>
-                                                    <option>01:00</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <button type="button" class="btn btn-primary btn-lg fw-bold">
-                                            ARAÇLARI GÖSTER
-                                        </button>
-                                    </div>
+                                <div class="d-grid gap-2">
+                                    <a routerLink="/login" class="btn btn-primary btn-lg fw-bold">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                                        Giriş Yap
+                                    </a>
+                                    <a routerLink="/register" class="btn btn-outline-primary btn-lg fw-bold">
+                                        <i class="bi bi-person-plus me-2"></i>
+                                        Kayıt Ol
+                                    </a>
                                 </div>
-                            </form>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-value">50+</div>
+                        <div class="stat-label">Araç</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-value">10K+</div>
+                        <div class="stat-label">Müşteri</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-value">7/24</div>
+                        <div class="stat-label">Destek</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-value">%100</div>
+                        <div class="stat-label">Şeffaf Fiyat</div>
                     </div>
                 </div>
             </div>
@@ -146,6 +150,139 @@
                         </div>
                         <h4>Müşteri Memnuniyeti</h4>
                         <p class="text-muted">Binlerce memnun müşterimizin tercihi olan güvenilir hizmet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Nasıl Çalışır?</h2>
+                <p class="lead text-muted">Sadece birkaç adımda kiralamayı tamamla</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="how-card h-100">
+                        <div class="how-icon">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h5 class="mb-2">Araçları İncele</h5>
+                        <p class="text-muted mb-0">İhtiyacına uygun aracı kolayca görüntüle ve karşılaştır.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="how-card h-100">
+                        <div class="how-icon">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <h5 class="mb-2">Rezervasyonunu Tamamla</h5>
+                        <p class="text-muted mb-0">Bilgilerini gir, ek paketlerini seç ve rezervasyonu doğrula.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="how-card h-100">
+                        <div class="how-icon">
+                            <i class="bi bi-car-front"></i>
+                        </div>
+                        <h5 class="mb-2">Yola Çık</h5>
+                        <p class="text-muted mb-0">Aracını teslim al ve güvenle yolculuğunun keyfini çıkar.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                <a routerLink="/offer-select" class="btn btn-primary btn-lg fw-bold px-4">
+                    Araçları İncele
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Müşterilerimiz Ne Diyor?</h2>
+                <p class="lead text-muted">Gerçek deneyimler, gerçek yorumlar</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="testimonial-card h-100">
+                        <div class="testimonial-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="testimonial-text">“Aracı teslim alma ve iade süreci çok hızlıydı. Fiyatlar net, sürpriz yok.”</p>
+                        <div class="testimonial-user">
+                            <div class="user-badge">EA</div>
+                            <div>
+                                <div class="user-name">E. A.</div>
+                                <div class="user-meta">İstanbul</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-card h-100">
+                        <div class="testimonial-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="testimonial-text">“Müşteri hizmetleri 7/24 gerçekten yardımcı oldu. Yeni ve temiz araçlar.”</p>
+                        <div class="testimonial-user">
+                            <div class="user-badge">MK</div>
+                            <div>
+                                <div class="user-name">M. K.</div>
+                                <div class="user-meta">Ankara</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="testimonial-card h-100">
+                        <div class="testimonial-stars">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <p class="testimonial-text">“Uygulama kullanımı çok kolay. Kısa sürede rezervasyon yaptım, çok memnun kaldım.”</p>
+                        <div class="testimonial-user">
+                            <div class="user-badge">SA</div>
+                            <div>
+                                <div class="user-name">S. A.</div>
+                                <div class="user-meta">İzmir</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-card">
+                <div class="row align-items-center g-3">
+                    <div class="col-lg-8">
+                        <h3 class="mb-2">Hazır mısın?</h3>
+                        <p class="mb-0">Hemen üye ol, araç tekliflerini görüntüle ve kiralamaya başla.</p>
+                    </div>
+                    <div class="col-lg-4 d-flex justify-content-lg-end">
+                        <div class="d-flex gap-2">
+                            <a routerLink="/login" class="btn btn-light fw-bold">Giriş Yap</a>
+                            <a routerLink="/register" class="btn btn-outline-light fw-bold">Kayıt Ol</a>
+                        </div>
                     </div>
                 </div>
             </div>
