@@ -68,5 +68,14 @@ public static class CustomerModule
                 return result.IsSuccessful ? Results.Ok(result) : Results.InternalServerError(result);
             })
             .Produces<Result<string>>();
+
+        app.MapPut("me/change-password",
+             async (CustomerChangePasswordCommand request, ISender sender, CancellationToken cancellationToken) =>
+             {
+                 var result = await sender.Send(request, cancellationToken);
+                 return result.IsSuccessful ? Results.Ok(result) : Results.BadRequest(result);
+             })
+             .Produces<Result<string>>();
+
     }
 }
