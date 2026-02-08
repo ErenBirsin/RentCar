@@ -24,6 +24,11 @@ export const appRoutes: Route[] = [
         loadComponent:() => import('./pages/reset-password/reset-password')
       },
       {
+        path:'change-password',
+        loadComponent:() => import('./pages/change-password/change-password'),
+        canActivate: [customerAuthGuard]
+      },
+      {
         path:'offer-select',
         loadComponent:() => import('./pages/offer-select/offer.select')
       },
