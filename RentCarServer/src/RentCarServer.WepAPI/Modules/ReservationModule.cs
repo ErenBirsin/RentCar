@@ -26,6 +26,14 @@ public static class ReservationModule
         var adminApp = app.MapGroup("")
             .RequireAuthorization();
 
+        adminApp.MapGet("me",
+            async (ISender sender, CancellationToken cancellationToken) =>
+            {
+                var res = await sender.Send(new ReservationGetMyHistoryQuery(), cancellationToken);
+                return res.IsSuccessful ? Results.Ok(res) : Results.BadRequest(res);
+            })
+            .Produces<Result<List<ReservationDto>>>();
+
         adminApp.MapPost(string.Empty,
             async (ReservationCreateCommand request, ISender sender, CancellationToken cancellationToken) =>
             {
