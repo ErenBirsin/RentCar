@@ -29,6 +29,11 @@ export const appRoutes: Route[] = [
         canActivate: [customerAuthGuard]
       },
       {
+        path:'rent-history',
+        loadComponent:() => import('./pages/rent-history/rent-history'),
+        canActivate: [customerAuthGuard]
+      },
+      {
         path:'offer-select',
         loadComponent:() => import('./pages/offer-select/offer.select')
       },

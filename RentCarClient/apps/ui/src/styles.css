@@ -6661,6 +6661,58 @@ html {
     }
 }
 
+/* ===== RENT HISTORY (PROFILE) ===== */
+.rental-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rental-card {
+    background: #ffffff;
+    border: 1px solid rgba(44, 62, 80, 0.12);
+    border-radius: 16px;
+    padding: 1rem;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.rental-status-wrap {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(108, 117, 125, 0.12);
+    border: 1px solid rgba(108, 117, 125, 0.18);
+    backdrop-filter: blur(8px);
+}
+
+.rental-status-wrap .badge {
+    border-radius: 999px;
+    padding: 0.45rem 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.rental-card .rental-vehicle img {
+    width: 100%;
+    max-height: 140px;
+    object-fit: cover;
+    transition: transform 0.25s ease;
+}
+
+.rental-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 107, 53, 0.55);
+    background-color: rgba(39, 174, 96, 0.06);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+}
+
+.rental-card:hover .rental-vehicle img {
+    transform: scale(1.03);
+}
+
 /* ===== ŞİFRE SIFIRLAMA SAYFASI CSS ===== */
 
  .admin-reset-wrapper {

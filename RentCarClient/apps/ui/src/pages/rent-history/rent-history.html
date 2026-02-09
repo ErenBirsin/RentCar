@@ -1,0 +1,167 @@
+<!-- Header -->
+<section class="profile-header py-4 bg-primary text-white">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="profile-welcome">
+          <div class="user-avatar">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBRW6kw4PvewS5EGHKY7nNsJiWvrbsVIzZA&s"
+              [alt]="fullName()"
+              class="avatar-img"
+            />
+            <div class="avatar-badge">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+          </div>
+          <div class="welcome-text">
+            <h1 class="h2 mb-1">Hoş geldin, {{ customer().firstName }}!</h1>
+            <p class="mb-0">Kiralama geçmişini buradan görüntüleyebilirsin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="profile-main py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-lg-3">
+        <div class="profile-sidebar">
+          <div class="sidebar-card user-info">
+            <div class="user-avatar-large">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNBRW6kw4PvewS5EGHKY7nNsJiWvrbsVIzZA&s"
+                [alt]="fullName()"
+                class="avatar-img"
+              />
+            </div>
+            <div class="user-details">
+              <h4>{{ fullName() }}</h4>
+              <p class="text-muted">{{ customer().email }}</p>
+            </div>
+          </div>
+
+          <div class="sidebar-card profile-nav">
+            <nav class="profile-menu">
+              <a class="menu-item" routerLink="/my-profile">
+                <i class="bi bi-person-fill"></i>
+                <span>Profil Bilgileri</span>
+                <i class="bi bi-chevron-right"></i>
+              </a>
+              <a class="menu-item" routerLink="/change-password">
+                <i class="bi bi-lock-fill"></i>
+                <span>Şifre Değiştir</span>
+                <i class="bi bi-chevron-right"></i>
+              </a>
+              <a class="menu-item active" routerLink="/rent-history">
+                <i class="bi bi-clock-history"></i>
+                <span>Kiralama Geçmişi</span>
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-lg-9">
+        <div class="profile-content">
+          <div class="content-header">
+            <h3><i class="bi bi-clock-history text-primary me-2"></i>Kiralama Geçmişi</h3>
+            <p class="text-muted">Geçmiş kiralama işlemlerini görüntüle</p>
+          </div>
+
+          <div class="stats-overview">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-car-front"></i>
+                  </div>
+                  <div class="stat-info">
+                    <h4>{{ totalCount() }}</h4>
+                    <span>Toplam Kiralama</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-calendar-check"></i>
+                  </div>
+                  <div class="stat-info">
+                    <h4>{{ totalDays() }}</h4>
+                    <span>Toplam Gün</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="bi bi-currency-exchange"></i>
+                  </div>
+                  <div class="stat-info">
+                    <h4>{{ totalAmount() | number:'1.0-0' }}₺</h4>
+                    <span>Toplam Tutar</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if(listLoading()){
+            <div class="p-3 text-muted">
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Yükleniyor...
+            </div>
+          }@else{
+            @if(reservations().length === 0){
+              <div class="alert alert-light border">Henüz bir kiralama kaydın bulunmuyor.</div>
+            }@else{
+              <div class="rental-history-list">
+                <div class="rental-card" *ngFor="let r of reservations()">
+                  <div class="rental-status-wrap">
+                    <span class="badge" [ngClass]="getStatusBadgeClass(r.status)">{{ r.status }}</span>
+                  </div>
+                  <div class="row g-3 align-items-center">
+                    <div class="col-md-3">
+                      <div class="rental-vehicle">
+                        <img [src]="vehicleImageUrl(r.vehicle.imageUrl)" [alt]="r.vehicle.brand + ' ' + r.vehicle.model" class="img-fluid rounded">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="rental-details">
+                        <div class="d-flex justify-content-between flex-wrap">
+                          <h5 class="mb-1">{{ r.vehicle.brand }} {{ r.vehicle.model }} ({{ r.vehicle.modelYear }})</h5>
+                        </div>
+                        <div class="small text-muted mb-2">Rezervasyon No: {{ r.reservationNumber }}</div>
+                        <div class="small">
+                          <div><strong>Alış:</strong> {{ r.pickUp.name }}</div>
+                          <div><strong>Tarih:</strong> {{ r.pickUpDateTime | date:'dd.MM.yyyy HH:mm' }} - {{ r.deliveryDateTime | date:'dd.MM.yyyy HH:mm' }}</div>
+                          <div><strong>Gün:</strong> {{ r.totalDay }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 text-md-end">
+                      <div class="rental-price">
+                        <div class="h5 mb-1">{{ r.total | number:'1.0-0' }}₺</div>
+                        <div class="small text-muted">Toplam</div>
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" disabled>
+                          Detay
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
