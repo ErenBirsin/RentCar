@@ -53,6 +53,7 @@
                        class="form-control"
                        id="firstName"
                        [(ngModel)]="customerForm().firstName"
+                       [readonly]="personalInfoLocked()"
                        name="firstName"
                        [class.is-invalid]="showErrors() && !customerForm().firstName"
                        required>
@@ -68,6 +69,7 @@
                        class="form-control"
                        id="lastName"
                        [(ngModel)]="customerForm().lastName"
+                       [readonly]="personalInfoLocked()"
                        name="lastName"
                        [class.is-invalid]="showErrors() && !customerForm().lastName"
                        required>
@@ -83,6 +85,7 @@
                        class="form-control"
                        id="identityNumber"
                        [(ngModel)]="customerForm().identityNumber"
+                       [readonly]="personalInfoLocked()"
                        name="identityNumber"
                        [class.is-invalid]="showErrors() && !customerForm().identityNumber"
                        required
@@ -100,6 +103,7 @@
                        class="form-control"
                        id="dateOfBirth"
                        [(ngModel)]="customerForm().dateOfBirth"
+                       [readonly]="personalInfoLocked()"
                        name="dateOfBirth"
                        [class.is-invalid]="showErrors() && !customerForm().dateOfBirth"
                        required>
@@ -115,6 +119,7 @@
                        class="form-control"
                        id="phoneNumber"
                        [(ngModel)]="customerForm().phoneNumber"
+                       [readonly]="personalInfoLocked()"
                        name="phoneNumber"
                        [class.is-invalid]="showErrors() && !customerForm().phoneNumber"
                        required
@@ -133,6 +138,7 @@
                        class="form-control"
                        id="email"
                        [(ngModel)]="customerForm().email"
+                       [readonly]="personalInfoLocked()"
                        name="email"
                        [class.is-invalid]="showErrors() && !customerForm().email"
                        required>
@@ -148,6 +154,7 @@
                        class="form-control"
                        id="drivingLicenseIssuanceDate"
                        [(ngModel)]="customerForm().drivingLicenseIssuanceDate"
+                       [readonly]="personalInfoLocked()"
                        name="drivingLicenseIssuanceDate"
                        [class.is-invalid]="showErrors() && !customerForm().drivingLicenseIssuanceDate"
                        required>
@@ -181,6 +188,7 @@
                             id="fullAddress"
                             rows="3"
                             [(ngModel)]="customerForm().fullAddress"
+                            [readonly]="personalInfoLocked()"
                             name="fullAddress"
                             placeholder="Detaylı adres bilginiz"></textarea>
                 </div>

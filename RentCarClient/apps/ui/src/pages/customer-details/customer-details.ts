@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { NgxMaskDirective } from 'ngx-mask';
 import { httpResource } from '@angular/common/http';
 import { ReservationState } from '../services/reservation.state';
+import { HttpService } from '@shared/lib/services/http';
+import { FlexiToastService } from 'flexi-toast';
+import { AuthState } from '../services/auth.state';
+import { CustomerModel } from '@shared/lib/models/customer.model';
 
 @Component({
   imports: [CommonModule, FormsModule, NgxMaskDirective],
@@ -15,6 +19,11 @@ import { ReservationState } from '../services/reservation.state';
 export default class CustomerDetails {
   readonly #reservationState = inject(ReservationState);
   readonly #router = inject(Router);
+  readonly #http = inject(HttpService);
+  readonly #toast = inject(FlexiToastService);
+  readonly #authState = inject(AuthState);
+
+  readonly loggedInCustomer = signal<CustomerModel | null>(null);
 
   readonly customerForm = signal({
     firstName: '',
@@ -35,6 +44,8 @@ export default class CustomerDetails {
   readonly reservation = computed(() => this.#reservationState.get()());
   readonly vehicle = computed(() => this.reservation().vehicle);
   readonly total = computed(() => this.reservation().total || 0);
+
+  readonly personalInfoLocked = computed(() => !!this.loggedInCustomer()?.id);
 
   readonly isFormValid = computed(() => {
     const form = this.customerForm();
@@ -59,12 +70,29 @@ export default class CustomerDetails {
   }
 
   completeReservation() {
+    const token = this.#authState.token();
+    if (!token) {
+      this.#toast.showToast('Uyarı', 'Araç kiralayabilmek için giriş yapmalısınız.', 'warning');
+      this.#router.navigateByUrl('/login');
+      return;
+    }
+
     console.log('Butona tıklandı!');
     console.log('Form valid mi:', this.isFormValid());
     console.log('Form verileri:', this.customerForm());
 
     if (!this.isFormValid()) {
       this.showErrors.set(true);
+      return;
+    }
+
+    const logged = this.loggedInCustomer();
+    if (logged?.identityNumber && this.customerForm().identityNumber && logged.identityNumber !== this.customerForm().identityNumber) {
+      this.#toast.showToast(
+        'Uyarı',
+        'Kişisel bilgiler (TC) giriş yaptığınız hesapla uyuşmuyor. Lütfen kendi hesap bilgilerinizle devam edin.',
+        'warning'
+      );
       return;
     }
 
@@ -90,12 +118,6 @@ export default class CustomerDetails {
     const reservation = this.reservation();
 
     const reservationData = {
-      customerFirstName: this.customerForm().firstName,
-      customerLastName: this.customerForm().lastName,
-      customerIdentityNumber: this.customerForm().identityNumber,
-      customerPhoneNumber: this.customerForm().phoneNumber,
-      customerEmail: this.customerForm().email,
-      customerFullAddress: this.customerForm().fullAddress || '',
       pickUpLocationId: reservation.pickUpLocationId,
       pickUpDate: reservation.pickUpDate,
       pickUpTime: reservation.pickUpTime,
@@ -108,39 +130,28 @@ export default class CustomerDetails {
       reservationExtras: reservation.reservationExtras || [],
       note: reservation.note || '',
       creditCartInformation: {
-        cartNumber: this.customerForm().cardNumber,
-        owner: `${this.customerForm().firstName} ${this.customerForm().lastName}`,
-        expiry: `${this.customerForm().cardMonth}/${this.customerForm().cardYear}`,
-        ccv: this.customerForm().cvv
+        CartNumber: this.customerForm().cardNumber,
+        Owner: `${this.customerForm().firstName} ${this.customerForm().lastName}`,
+        Expiry: `${this.customerForm().cardMonth}/${this.customerForm().cardYear}`,
+        CCV: this.customerForm().cvv
       },
       total: reservation.total,
       totalDay: reservation.totalDay
     };
 
-    fetch('https://localhost:7161/reservations/public', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+    this.#http.post<string>(
+      '/rent/reservations/me',
+      reservationData,
+      (res) => {
+        const reservationNumber = res || this.generateReservationNumber();
+        this.#router.navigate(['/confirm-reservation'], {
+          queryParams: { reservationNumber }
+        });
       },
-      body: JSON.stringify(reservationData)
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Rezervasyon oluşturulamadı');
+      () => {
+        this.#toast.showToast('Hata', 'Rezervasyon oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.', 'error');
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Rezervasyon başarılı:', data);
-      const reservationNumber = data.value || this.generateReservationNumber();
-      this.#router.navigate(['/confirm-reservation'], {
-        queryParams: { reservationNumber }
-      });
-    })
-    .catch(error => {
-      console.error('Rezervasyon hatası:', error);
-      alert('Rezervasyon oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
-    });
+    );
   }
 
   generateReservationNumber(): string {
@@ -194,6 +205,26 @@ export default class CustomerDetails {
   readonly protectionTotal = computed(() => {
     return (this.reservation().protectionPackagePrice || 0) * (this.reservation().totalDay || 1);
   });
+
+  constructor() {
+    const token = this.#authState.token();
+    if (token) {
+      this.#http.get<CustomerModel>('/rent/customers/me', (res) => {
+        this.loggedInCustomer.set(res);
+        this.customerForm.update(prev => ({
+          ...prev,
+          firstName: res.firstName ?? prev.firstName,
+          lastName: res.lastName ?? prev.lastName,
+          identityNumber: res.identityNumber ?? prev.identityNumber,
+          phoneNumber: res.phoneNumber ?? prev.phoneNumber,
+          email: res.email ?? prev.email,
+          fullAddress: res.fullAddress ?? prev.fullAddress,
+          dateOfBirth: res.dateOfBirth ?? prev.dateOfBirth,
+          drivingLicenseIssuanceDate: res.drivingLicenseIssuanceDate ?? prev.drivingLicenseIssuanceDate,
+        }));
+      });
+    }
+  }
 
   readonly months = [
     '01', '02', '03', '04', '05', '06',

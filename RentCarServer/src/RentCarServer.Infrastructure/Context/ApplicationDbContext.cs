@@ -8,8 +8,11 @@ using System.Security.Claims;
 namespace RentCarServer.Infrastructure.Context;
 internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options)
     {
+        _httpContextAccessor = httpContextAccessor;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,9 +35,8 @@ internal sealed class ApplicationDbContext : DbContext, IUnitOfWork
     {
         var entries = ChangeTracker.Entries<Entity>();
 
-        HttpContextAccessor httpContextAccessor = new();
         string? userIdString =
-        httpContextAccessor
+        _httpContextAccessor
         .HttpContext?
         .User
         .Claims

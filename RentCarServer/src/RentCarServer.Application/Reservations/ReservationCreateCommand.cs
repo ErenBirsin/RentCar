@@ -41,9 +41,56 @@ public sealed record ReservationCreateCommand(
     int TotalDay
 ) : IRequest<Result<string>>;
 
+public sealed record ReservationCreateForMeCommand(
+    Guid? PickUpLocationId,
+    DateOnly PickUpDate,
+    TimeOnly PickUpTime,
+    DateOnly DeliveryDate,
+    TimeOnly DeliveryTime,
+    Guid VehicleId,
+    decimal VehicleDailyPrice,
+    Guid ProtectionPackageId,
+    decimal ProtectionPackagePrice,
+    List<ReservationExtra> ReservationExtras,
+    string Note,
+    CreditCartInformation CreditCartInformation,
+    decimal Total,
+    int TotalDay
+) : IRequest<Result<string>>;
+
 public sealed class ReservationCreateCommandValidator : AbstractValidator<ReservationCreateCommand>
 {
     public ReservationCreateCommandValidator()
+    {
+        RuleFor(x => x.CreditCartInformation.CartNumber)
+            .NotEmpty()
+            .WithMessage("Kart numarası boş bırakılamaz.");
+
+        RuleFor(x => x.CreditCartInformation.Owner)
+            .NotEmpty()
+            .WithMessage("Kart sahibi adı boş bırakılamaz.");
+
+        RuleFor(x => x.CreditCartInformation.Expiry)
+           .NotEmpty()
+           .WithMessage("Son kullanma tarihi boş bırakılamaz.");
+
+        RuleFor(x => x.CreditCartInformation.CCV)
+           .NotEmpty()
+           .WithMessage("CCV boş bırakılamaz.");
+
+        RuleFor(x => x.PickUpDate)
+            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
+            .WithMessage("Teslim alma tarihi bugünden önce olamaz.");
+
+        RuleFor(x => x.DeliveryDate)
+            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
+            .WithMessage("Teslim etme tarihi bugünden önce olamaz.");
+    }
+}
+
+public sealed class ReservationCreateForMeCommandValidator : AbstractValidator<ReservationCreateForMeCommand>
+{
+    public ReservationCreateForMeCommandValidator()
     {
         RuleFor(x => x.CreditCartInformation.CartNumber)
             .NotEmpty()
@@ -238,5 +285,67 @@ internal sealed class ReservationCreateCommandHandler(
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return "Rezervasyon başarıyla oluşturuldu";
+    }
+}
+
+internal sealed class ReservationCreateForMeCommandHandler(
+    IBranchRepository branchRepository,
+    ICustomerRepository customerRepository,
+    IReservationRepository reservationRepository,
+    IVehicleRepository vehicleRepository,
+    IClaimContext claimContext,
+    IUnitOfWork unitOfWork) : IRequestHandler<ReservationCreateForMeCommand, Result<string>>
+{
+    public Task<Result<string>> Handle(ReservationCreateForMeCommand request, CancellationToken cancellationToken)
+    {
+        var customerId = claimContext.GetUserId();
+
+        return new ReservationCreateCommand(
+            customerId,
+            request.PickUpLocationId,
+            request.PickUpDate,
+            request.PickUpTime,
+            request.DeliveryDate,
+            request.DeliveryTime,
+            request.VehicleId,
+            request.VehicleDailyPrice,
+            request.ProtectionPackageId,
+            request.ProtectionPackagePrice,
+            request.ReservationExtras,
+            request.Note,
+            request.CreditCartInformation,
+            request.Total,
+            request.TotalDay).HandleWithDependencies(
+                branchRepository,
+                customerRepository,
+                reservationRepository,
+                vehicleRepository,
+                claimContext,
+                unitOfWork,
+                cancellationToken);
+    }
+}
+
+internal static class ReservationCreateCommandHandlerExtensions
+{
+    public static async Task<Result<string>> HandleWithDependencies(
+        this ReservationCreateCommand request,
+        IBranchRepository branchRepository,
+        ICustomerRepository customerRepository,
+        IReservationRepository reservationRepository,
+        IVehicleRepository vehicleRepository,
+        IClaimContext claimContext,
+        IUnitOfWork unitOfWork,
+        CancellationToken cancellationToken)
+    {
+        var handler = new ReservationCreateCommandHandler(
+            branchRepository,
+            customerRepository,
+            reservationRepository,
+            vehicleRepository,
+            claimContext,
+            unitOfWork);
+
+        return await handler.Handle(request, cancellationToken);
     }
 }

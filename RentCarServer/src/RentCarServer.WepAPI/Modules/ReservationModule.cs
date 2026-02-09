@@ -34,6 +34,14 @@ public static class ReservationModule
             })
             .Produces<Result<List<ReservationDto>>>();
 
+        adminApp.MapPost("me",
+            async (ReservationCreateForMeCommand request, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var res = await sender.Send(request, cancellationToken);
+                return res.IsSuccessful ? Results.Ok(res) : Results.BadRequest(res);
+            })
+            .Produces<Result<string>>();
+
         adminApp.MapPost(string.Empty,
             async (ReservationCreateCommand request, ISender sender, CancellationToken cancellationToken) =>
             {
