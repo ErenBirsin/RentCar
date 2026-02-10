@@ -34,6 +34,11 @@ export const appRoutes: Route[] = [
         canActivate: [customerAuthGuard]
       },
       {
+        path:'reservation-detail/:id',
+        loadComponent:() => import('./pages/reservation-detail/reservation-detail'),
+        canActivate: [customerAuthGuard]
+      },
+      {
         path:'offer-select',
         loadComponent:() => import('./pages/offer-select/offer.select')
       },

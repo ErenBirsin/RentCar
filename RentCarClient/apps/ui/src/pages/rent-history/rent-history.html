@@ -150,9 +150,9 @@
                       <div class="rental-price">
                         <div class="h5 mb-1">{{ r.total | number:'1.0-0' }}₺</div>
                         <div class="small text-muted">Toplam</div>
-                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" disabled>
+                        <a class="btn btn-outline-primary btn-sm mt-2" [routerLink]="['/reservation-detail', r.id]">
                           Detay
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>
