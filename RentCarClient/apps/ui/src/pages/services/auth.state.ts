@@ -2,11 +2,26 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class AuthState {
-  readonly token = signal<string | null>(localStorage.getItem('response'));
+  readonly token = signal<string | null>(this.#readToken());
+
+  #readToken(): string | null {
+    const stored = localStorage.getItem('response');
+    if (!stored) return null;
+    const normalized = stored.trim();
+    if (!normalized) return null;
+    if (normalized === 'null') return null;
+    if (normalized === 'undefined') return null;
+    return normalized;
+  }
 
   setToken(token: string) {
-    localStorage.setItem('response', token);
-    this.token.set(token);
+    const normalized = (token ?? '').trim();
+    if (!normalized || normalized === 'null' || normalized === 'undefined') {
+      this.clear();
+      return;
+    }
+    localStorage.setItem('response', normalized);
+    this.token.set(normalized);
   }
 
   clear() {

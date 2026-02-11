@@ -74,6 +74,11 @@
                                                     id="identityNumber"
                                                     name="identityNumber"
                                                     ngModel
+                                                    #identityNumberEl
+                                                    inputmode="numeric"
+                                                    maxlength="11"
+                                                    pattern="\d{11}"
+                                                    (input)="onIdentityNumberInput(identityNumberEl)"
                                                     placeholder="11 haneli TC Kimlik No"
                                                     required
                                                 >
@@ -106,15 +111,14 @@
                                         <div class="form-group">
                                             <label for="phoneNumber" class="form-label">Telefon Numarası</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">
-                                                    +90
-                                                </span>
                                                 <input
-                                                    type="tel"
+                                                    type="text"
                                                     class="form-control"
                                                     id="phoneNumber"
                                                     name="phoneNumber"
                                                     ngModel
+                                                    prefix="+90"
+                                                    mask="(000) 000 00 00"
                                                     placeholder="5XX XXX XX XX"
                                                     required
                                                 >
@@ -192,7 +196,8 @@
                                             class="form-control"
                                             id="registerPassword"
                                             name="password"
-                                            ngModel
+                                            [ngModel]="password()"
+                                            (ngModelChange)="password.set($event)"
                                             placeholder="Güçlü bir şifre oluşturun"
                                             required
                                         >
@@ -217,7 +222,8 @@
                                             class="form-control"
                                             id="confirmPassword"
                                             name="confirmPassword"
-                                            ngModel
+                                            [ngModel]="confirmPassword()"
+                                            (ngModelChange)="confirmPassword.set($event)"
                                             placeholder="Şifrenizi tekrar girin"
                                             required
                                         >
@@ -233,15 +239,71 @@
 
                                 <!-- Password Strength Indicator -->
                                 <div class="password-strength">
-                                    <div class="strength-label">Şifre Gücü:</div>
-                                    <div class="strength-bars">
-                                        <div class="strength-bar"></div>
-                                        <div class="strength-bar"></div>
-                                        <div class="strength-bar"></div>
-                                        <div class="strength-bar"></div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="strength-label">Şifre Gücü: {{passwordStrength().level}}</span>
+                                        <span class="strength-text">{{passwordStrength().text}}</span>
                                     </div>
-                                    <div class="strength-text">Zayıf</div>
+                                    <div class="strength-bars">
+                                        <div class="strength-bar"
+                                            [class.weak]="passwordStrength().level >= 1 && passwordStrength().class === 'weak'"
+                                            [class.medium]="passwordStrength().level >= 1 && (passwordStrength().class === 'medium' || passwordStrength().class === 'good')"
+                                            [class.strong]="passwordStrength().level >= 1 && passwordStrength().class === 'strong'">
+                                        </div>
+                                        <div class="strength-bar"
+                                            [class.weak]="passwordStrength().level >= 2 && passwordStrength().class === 'weak'"
+                                            [class.medium]="passwordStrength().level >= 2 && (passwordStrength().class === 'medium' || passwordStrength().class === 'good')"
+                                            [class.strong]="passwordStrength().level >= 2 && passwordStrength().class === 'strong'">
+                                        </div>
+                                        <div class="strength-bar"
+                                            [class.weak]="passwordStrength().level >= 3 && passwordStrength().class === 'weak'"
+                                            [class.medium]="passwordStrength().level >= 3 && (passwordStrength().class === 'medium' || passwordStrength().class === 'good')"
+                                            [class.strong]="passwordStrength().level >= 3 && passwordStrength().class === 'strong'">
+                                        </div>
+                                        <div class="strength-bar"
+                                            [class.weak]="passwordStrength().level >= 4 && passwordStrength().class === 'weak'"
+                                            [class.medium]="passwordStrength().level >= 4 && (passwordStrength().class === 'medium' || passwordStrength().class === 'good')"
+                                            [class.strong]="passwordStrength().level >= 4 && passwordStrength().class === 'strong'">
+                                        </div>
+                                    </div>
                                 </div>
+
+                                @if(password().length > 0){
+                                <div class="password-requirements">
+                                    <h6 class="requirements-title">Şifre Gereksinimleri:</h6>
+                                    <div class="requirements-list">
+                                        <div class="requirement-item" [class.met]="passwordRequirements().minLength">
+                                            <i class="bi bi-x-circle" [ngClass]="passwordRequirements().minLength
+                                                        ? 'text-success'
+                                                        : 'text-danger'"></i>
+                                            <span>En az 8 karakter</span>
+                                        </div>
+                                        <div class="requirement-item" [class.met]="passwordRequirements().hasLowerCase">
+                                            <i class="bi bi-x-circle" [ngClass]="passwordRequirements().hasLowerCase
+                                                        ? 'text-success'
+                                                        : 'text-danger'"></i>
+                                            <span>Küçük harf (a-z)</span>
+                                        </div>
+                                        <div class="requirement-item" [class.met]="passwordRequirements().hasUpperCase">
+                                            <i class="bi bi-x-circle" [ngClass]="passwordRequirements().hasUpperCase
+                                                        ? 'text-success'
+                                                        : 'text-danger'"></i>
+                                            <span>Büyük harf (A-Z)</span>
+                                        </div>
+                                        <div class="requirement-item" [class.met]="passwordRequirements().hasNumber">
+                                            <i class="bi bi-x-circle" [ngClass]="passwordRequirements().hasNumber
+                                                        ? 'text-success'
+                                                        : 'text-danger'"></i>
+                                            <span>Rakam (0-9)</span>
+                                        </div>
+                                        <div class="requirement-item" [class.met]="passwordRequirements().hasSpecialChar">
+                                            <i class="bi bi-x-circle" [ngClass]="passwordRequirements().hasSpecialChar
+                                                        ? 'text-success'
+                                                        : 'text-danger'"></i>
+                                            <span>{{'Özel karakter (!@#$%^&*)'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                }
 
                                 <!-- Terms and Privacy -->
                                 <div class="terms-section">
