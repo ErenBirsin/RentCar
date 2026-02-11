@@ -39,6 +39,10 @@ export const appRoutes: Route[] = [
         canActivate: [customerAuthGuard]
       },
       {
+        path:'contact',
+        loadComponent:() => import('./pages/contact/contact')
+      },
+      {
         path:'offer-select',
         loadComponent:() => import('./pages/offer-select/offer.select')
       },
