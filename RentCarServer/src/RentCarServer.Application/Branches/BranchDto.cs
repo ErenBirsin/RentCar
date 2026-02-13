@@ -6,6 +6,12 @@ namespace RentCarServer.Application.Branches;
 public sealed class BranchDto : EntityDto
 {
     public string Name { get; set; } = default!;
+    public string City { get; set; } = default!;
+    public string District { get; set; } = default!;
+    public string FullAddress { get; set; } = default!;
+    public string PhoneNumber1 { get; set; } = default!;
+    public string? PhoneNumber2 { get; set; }
+    public string Email { get; set; } = default!;
     public Address Address { get; set; } = default!;
     public Contact Contact { get; set; } = default!;
 }
@@ -19,6 +25,12 @@ public static class BranchExtensions
             {
                 Id = s.Entity.Id,
                 Name = s.Entity.Name.Value,
+                City = s.Entity.Address.City,
+                District = s.Entity.Address.District,
+                FullAddress = s.Entity.Address.FullAddress,
+                PhoneNumber1 = s.Entity.Contact.PhoneNumber1,
+                PhoneNumber2 = s.Entity.Contact.PhoneNumber2,
+                Email = s.Entity.Contact.Email,
                 Address = s.Entity.Address,
                 Contact = s.Entity.Contact,
                 CreatedAt = s.Entity.CreatedAt,

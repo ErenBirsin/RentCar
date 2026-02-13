@@ -50,6 +50,14 @@ public sealed class ReservationExtraDto
 public sealed class ReservationDto : EntityDto
 {
     public string ReservationNumber { get; set; } = default!;
+    public string PickUpName { get; set; } = default!;
+    public string CustomerFullName { get; set; } = default!;
+    public string CustomerPhoneNumber { get; set; } = default!;
+    public string VehicleBrand { get; set; } = default!;
+    public string VehicleModel { get; set; } = default!;
+    public int VehicleModelYear { get; set; } = default!;
+    public string VehicleColor { get; set; } = default!;
+    public string VehicleCategoryName { get; set; } = default!;
     public Guid CustomerId { get; set; } = default!;
     public ReservationCustomerDto Customer { get; set; } = default!;
     public Guid PickUpLocationId { get; set; } = default!;
@@ -87,14 +95,29 @@ public static class ReservationExtensions
        )
     {
         var res = entities
-            .Join(customers, m => m.Entity.CustomerId, m => m.Id, (r, customer) => new
+            .GroupJoin(customers, m => m.Entity.CustomerId, m => m.Id, (r, customerGroup) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                CustomerGroup = customerGroup
+            })
+            .SelectMany(x => x.CustomerGroup.DefaultIfEmpty(), (r, customer) => new
             {
                 r.Entity,
                 r.CreatedUser,
                 r.UpdatedUser,
                 Customer = customer
             })
-            .Join(branches, m => m.Entity.PickUpLocationId, m => m.Id, (r, branch) => new
+            .GroupJoin(branches, m => m.Entity.PickUpLocationId, m => m.Id, (r, branchGroup) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                r.Customer,
+                BranchGroup = branchGroup
+            })
+            .SelectMany(x => x.BranchGroup.DefaultIfEmpty(), (r, branch) => new
             {
                 r.Entity,
                 r.CreatedUser,
@@ -102,7 +125,16 @@ public static class ReservationExtensions
                 r.Customer,
                 Branch = branch
             })
-            .Join(protectionPackages, m => m.Entity.ProtectionPackageId, m => m.Id, (r, protectionPackage) => new
+            .GroupJoin(protectionPackages, m => m.Entity.ProtectionPackageId, m => m.Id, (r, protectionPackageGroup) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                r.Customer,
+                r.Branch,
+                ProtectionPackageGroup = protectionPackageGroup
+            })
+            .SelectMany(x => x.ProtectionPackageGroup.DefaultIfEmpty(), (r, protectionPackage) => new
             {
                 r.Entity,
                 r.CreatedUser,
@@ -111,7 +143,17 @@ public static class ReservationExtensions
                 r.Branch,
                 ProtectionPackage = protectionPackage
             })
-            .Join(vehicles, m => m.Entity.VehicleId, m => m.Id, (r, vehicle) => new
+            .GroupJoin(vehicles, m => m.Entity.VehicleId, m => m.Id, (r, vehicleGroup) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                r.Customer,
+                r.Branch,
+                r.ProtectionPackage,
+                VehicleGroup = vehicleGroup
+            })
+            .SelectMany(x => x.VehicleGroup.DefaultIfEmpty(), (r, vehicle) => new
             {
                 r.Entity,
                 r.CreatedUser,
@@ -121,25 +163,67 @@ public static class ReservationExtensions
                 r.ProtectionPackage,
                 Vehicle = vehicle
             })
+            .GroupJoin(categories, m => m.Vehicle != null ? m.Vehicle.CategoryId.value : Guid.Empty, m => m.Id, (r, categoryGroup) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                r.Customer,
+                r.Branch,
+                r.ProtectionPackage,
+                r.Vehicle,
+                CategoryGroup = categoryGroup
+            })
+            .SelectMany(x => x.CategoryGroup.DefaultIfEmpty(), (r, category) => new
+            {
+                r.Entity,
+                r.CreatedUser,
+                r.UpdatedUser,
+                r.Customer,
+                r.Branch,
+                r.ProtectionPackage,
+                r.Vehicle,
+                Category = category
+            })
             .Select(s => new ReservationDto
             {
                 Id = s.Entity.Id,
                 ReservationNumber = s.Entity.ReservationNumber.Value,
+                PickUpName = s.Branch != null ? s.Branch.Name.Value : "",
+                CustomerFullName = s.Customer != null ? s.Customer.FullName.Value : "",
+                CustomerPhoneNumber = s.Customer != null ? s.Customer.PhoneNumber.Value : "",
+                VehicleBrand = s.Vehicle != null ? s.Vehicle.Brand.Value : "",
+                VehicleModel = s.Vehicle != null ? s.Vehicle.Model.Value : "",
+                VehicleModelYear = s.Vehicle != null ? s.Vehicle.ModelYear.Value : 0,
+                VehicleColor = s.Vehicle != null ? s.Vehicle.Color.Value : "",
+                VehicleCategoryName = s.Category != null ? s.Category.Name.Value : "",
                 CustomerId = s.Entity.CustomerId,
-                Customer = new ReservationCustomerDto
+                Customer = s.Customer != null ? new ReservationCustomerDto
                 {
                     Email = s.Customer.Email.Value,
                     FullAddress = s.Customer.FullAddress.Value,
                     FullName = s.Customer.FullName.Value,
                     IdentityNumber = s.Customer.IdentityNumber.Value,
                     PhoneNumber = s.Customer.PhoneNumber.Value
+                } : new ReservationCustomerDto
+                {
+                    Email = "",
+                    FullAddress = "",
+                    FullName = "",
+                    IdentityNumber = "",
+                    PhoneNumber = ""
                 },
                 PickUpLocationId = s.Entity.PickUpLocationId,
-                PickUp = new ReservationPickUpDto
+                PickUp = s.Branch != null ? new ReservationPickUpDto
                 {
                     Name = s.Branch.Name.Value,
                     FullAddress = s.Branch.Address.FullAddress,
                     PhoneNumber = s.Branch.Contact.PhoneNumber1
+                } : new ReservationPickUpDto
+                {
+                    Name = "",
+                    FullAddress = "",
+                    PhoneNumber = ""
                 },
                 PickUpDate = s.Entity.PickUpDate.Value,
                 PickUpTime = s.Entity.PickUpTime.Value,
@@ -149,13 +233,13 @@ public static class ReservationExtensions
                 DeliveryDateTime = s.Entity.DeliveryDateTime.Value,
                 VehicleId = s.Entity.VehicleId.value,
                 VehicleDailyPrice = s.Entity.VehicleDailyPrice.Value,
-                Vehicle = new ReservationVehicleDto
+                Vehicle = s.Vehicle != null ? new ReservationVehicleDto
                 {
                     Id = s.Vehicle.Id,
                     Brand = s.Vehicle.Brand.Value,
                     Model = s.Vehicle.Model.Value,
                     ModelYear = s.Vehicle.ModelYear.Value,
-                    CategoryName = categories.First(i => i.Id == s.Vehicle.CategoryId.value).Name.Value,
+                    CategoryName = s.Category != null ? s.Category.Name.Value : "",
                     Color = s.Vehicle.Color.Value,
                     FuelType = s.Vehicle.FuelType.Value,
                     Transmission = s.Vehicle.Transmission.Value,
@@ -166,10 +250,27 @@ public static class ReservationExtensions
                     ImageUrl = s.Vehicle.ImageUrl.Value,
                     DailyPrice = s.Vehicle.DailyPrice.Value,
                     Plate = s.Vehicle.Plate.Value
+                } : new ReservationVehicleDto
+                {
+                    Id = Guid.Empty,
+                    Brand = "",
+                    Model = "",
+                    ModelYear = 0,
+                    CategoryName = "",
+                    Color = "",
+                    FuelType = "",
+                    Transmission = "",
+                    FuelConsumption = 0,
+                    SeatCount = 0,
+                    TractionType = "",
+                    Kilometer = 0,
+                    ImageUrl = "",
+                    DailyPrice = 0,
+                    Plate = ""
                 },
                 ProtectionPackageId = s.Entity.ProtectionPackageId.value,
                 ProtectionPackagePrice = s.Entity.ProtectionPackagePrice.Value,
-                ProtectionPackageName = s.ProtectionPackage.Name.Value,
+                ProtectionPackageName = s.ProtectionPackage != null ? s.ProtectionPackage.Name.Value : "",
                 ReservationExtras = s.Entity.ReservationExtras.Join(extras, m => m.ExtraId, m => m.Id, (re, extra) => new ReservationExtraDto
                 {
                     ExtraId = re.ExtraId,

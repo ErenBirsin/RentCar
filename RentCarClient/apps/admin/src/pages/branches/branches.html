@@ -1,28 +1,31 @@
-  <app-grid
-    pageTitle="Şubeler"
-    endpoint="/rent/odata/branches"
-    [addOptions]="{url: '/branches/add',permission: 'branch:create'}"
-    [editOptions]="{url: '/branches/edit',permission:'branch:edit'}"
-    [detailOptions]="{url: '/branches/detail',permission:'branch:view'}"
-    [deleteOptions]="{url: '/rent/branches',permission:'branch:delete'}"
-    [breadcrumbs]="breadcrumbs()"
-    captionTitle="Şube Listesi"
-  >
+<app-grid
+  pageTitle="Şubeler"
+  endpoint="/rent/odata/branches"
+  [addOptions]="{url: '/branches/add',permission: 'branch:create'}"
+  [editOptions]="{url: '/branches/edit',permission:'branch:edit'}"
+  [detailOptions]="{url: '/branches/detail',permission:'branch:view'}"
+  [deleteOptions]="{url: '/rent/branches',permission:'branch:delete'}"
+  [breadcrumbs]="breadcrumbs()"
+  captionTitle="Şube Listesi"
+>
   <flexi-grid-column field="name" title="Şube Adı" />
-  <flexi-grid-column field="contact.phoneNumber1" title="Telefon 1">
+
+  <flexi-grid-column field="phoneNumber1" title="Telefon 1">
     <ng-template flexiGridCellTemplate let-item>
-        <span>+90{{item.contact.phoneNumber1 | mask:'(000) 000 00 00'}}</span>
+      <span>+90{{item.phoneNumber1 | mask:'(000) 000 00 00'}}</span>
     </ng-template>
-    </flexi-grid-column>
-    <flexi-grid-column field="contact.phoneNumber2" title="Telefon 1">
+  </flexi-grid-column>
+
+  <flexi-grid-column field="phoneNumber2" title="Telefon 2">
     <ng-template flexiGridCellTemplate let-item>
-      @if(item.contact.phoneNumber2){
-        <span>+90{{item.contact.phoneNumber2| mask:'(000) 000 00 00'}}</span>
+      @if(item.phoneNumber2){
+        <span>+90{{item.phoneNumber2 | mask:'(000) 000 00 00'}}</span>
       }
     </ng-template>
-    </flexi-grid-column>
-  <flexi-grid-column field="address.city" title="Şehir" />
-  <flexi-grid-column field="address.district" title="İlçe" />
-  <flexi-grid-column field="address.fullAddress" title="Açık Adrees" />
-  <flexi-grid-column field="contact.email" title="Mail Adresi" />
-  </app-grid>
+  </flexi-grid-column>
+
+  <flexi-grid-column field="city" title="Şehir" />
+  <flexi-grid-column field="district" title="İlçe" />
+  <flexi-grid-column field="fullAddress" title="Açık Adres" />
+  <flexi-grid-column field="email" title="Mail Adresi" />
+</app-grid>

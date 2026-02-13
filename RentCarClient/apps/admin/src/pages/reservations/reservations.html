@@ -18,7 +18,7 @@
             <span class="flexi-grid-card" [ngClass]="getStatusClass(item.status)">{{item.status}}</span>
         </ng-template>
     </flexi-grid-column>
-    <flexi-grid-column field="pickUp.name" title="Alış Noktası"/>
+    <flexi-grid-column field="pickUpName" title="Alış Noktası"/>
     <flexi-grid-column
       field="pickUpDateTime"
       title="Alış Tarihi"
@@ -30,13 +30,13 @@
       filterType="date"
       format="dd MMM yyyy HH:mm" />
 
-    <flexi-grid-column field="customer.fullName" title="Müşteri"/>
-    <flexi-grid-column field="customer.phoneNumber" title="Telefon">
+    <flexi-grid-column field="customerFullName" title="Müşteri"/>
+    <flexi-grid-column field="customerPhoneNumber" title="Telefon">
         <ng-template flexiGridCellTemplate let-item>
             <span>+90{{ item.customer.phoneNumber | mask: '(000) 000 00 00' }}</span>
         </ng-template>
     </flexi-grid-column>
-    <flexi-grid-column field="totalDay" title="Gün" textAlign="center"/>
+    <flexi-grid-column field="totalDay" title="Gün" filterType="number" textAlign="center"/>
     <flexi-grid-column title="Araç Resmi">
         <ng-template flexiGridCellTemplate let-item>
             <img
@@ -46,11 +46,11 @@
         </ng-template>
 
     </flexi-grid-column>
-    <flexi-grid-column field="vehicle.brand" title="Marka"/>
-    <flexi-grid-column field="vehicle.model" title="Model"/>
-    <flexi-grid-column field="vehicle.modelYear" title="Model Yılı"/>
-    <flexi-grid-column field="vehicle.color" title="Renk"/>
-    <flexi-grid-column field="vehicle.categoryName" title="Kategori"/>
+    <flexi-grid-column field="vehicleBrand" title="Marka"/>
+    <flexi-grid-column field="vehicleModel" title="Model"/>
+    <flexi-grid-column field="vehicleModelYear" title="Model Yılı" filterType="number"/>
+    <flexi-grid-column field="vehicleColor" title="Renk"/>
+    <flexi-grid-column field="vehicleCategoryName" title="Kategori"/>
     <flexi-grid-column
       field="total"
       title="Toplam Tutar"
