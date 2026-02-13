@@ -22,9 +22,9 @@ internal sealed class ReservationDeleteCommandHandler(
             return Result<string>.Failure("Rezervasyon bulunamadı");
         }
 
-        if (reservation.Status != Status.Pending)
+        if (reservation.Status == Status.Canceled)
         {
-            return Result<string>.Failure("Bu rezervasyon değiştirilemez");
+            return Result<string>.Failure("İptal edilen rezervasyon silinemez");
         }
 
         reservation.Delete();
