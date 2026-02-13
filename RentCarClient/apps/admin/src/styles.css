@@ -515,7 +515,9 @@ body {
 
 .layout-profile-name {
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    letter-spacing: 0.01em;
 }
 
 .profile-menu {
@@ -779,6 +781,16 @@ body {
     .breadcrumb-item.active {
         color: #e0e0e0;
     }
+
+    .profile-btn,
+    .profile-btn i,
+    .layout-profile-name {
+        color: #f8fafc;
+    }
+
+    .profile-btn:hover {
+        background: #253044;
+    }
 }
 
 /* ===== ANIMATIONS ===== */
@@ -882,6 +894,20 @@ body {
     color: var(--text-dark);
     font-weight: 600;
     font-size: 1.75rem;
+}
+
+.dashboard-page .page-title h1,
+.reservation-page .page-title h1,
+.branch-page .page-title h1,
+.role-page .page-title h1,
+.user-page .page-title h1,
+.customer-page .page-title h1,
+.category-page .page-title h1,
+.vehicle-page .page-title h1,
+.protection-package-page .page-title h1,
+.extra-page .page-title h1 {
+    color: #ffffff;
+    font-weight: 500;
 }
 
 .page-subtitle {
