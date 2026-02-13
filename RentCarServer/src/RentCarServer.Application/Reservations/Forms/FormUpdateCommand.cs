@@ -46,21 +46,33 @@ internal sealed class FormUpdateCommandHandler(
         string message;
         if (request.Type == "pickup")
         {
-            form = reservation.PickUpForm;
+            form = reservation.PickUpForm ?? new Form(
+                new Kilometer(request.Kilometer),
+                [],
+                [],
+                [],
+                new Note(string.Empty));
             message = "Araç müşteriye teslim edildi";
             reservation.SetReservationStatus(Status.Delivered);
             ReservationHistory history = new(
                 "Araç Teslim Edildi", "Araç müşteriye teslim edildi", DateTimeOffset.Now);
             reservation.SetHistory(history);
+            reservation.SetPickUpForm(form);
         }
         else
         {
-            form = reservation.DeliveryForm;
+            form = reservation.DeliveryForm ?? new Form(
+                new Kilometer(request.Kilometer),
+                [],
+                [],
+                [],
+                new Note(string.Empty));
             message = "Araç müşteriden teslim alındı";
             reservation.SetReservationStatus(Status.Completed);
             ReservationHistory history = new(
                 "Araç Geri Alındı", "Araç müşteriden geri alındı", DateTimeOffset.Now);
             reservation.SetHistory(history);
+            reservation.SetDeliveryForm(form);
         }
 
         form.SetKilometer(kilometer);

@@ -35,13 +35,9 @@ public sealed class ReservationUpdateCommandValidator : AbstractValidator<Reserv
 {
     public ReservationUpdateCommandValidator()
     {
-        RuleFor(x => x.PickUpDate)
-            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
-            .WithMessage("Teslim alma tarihi bugünden önce olamaz.");
-
         RuleFor(x => x.DeliveryDate)
-            .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
-            .WithMessage("Teslim etme tarihi bugünden önce olamaz.");
+            .GreaterThanOrEqualTo(x => x.PickUpDate)
+            .WithMessage("Teslim etme tarihi teslim alma tarihinden önce olamaz.");
     }
 }
 internal sealed class ReservationUpdateCommandHandler(
@@ -64,6 +60,23 @@ internal sealed class ReservationUpdateCommandHandler(
         if (reservation.Status == Status.Completed || reservation.Status == Status.Canceled)
         {
             return Result<string>.Failure("Bu rezervasyon değiştirilemez");
+        }
+
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var isPickUpDateChanged = reservation.PickUpDate.Value != request.PickUpDate;
+        var isDeliveryDateChanged = reservation.DeliveryDate.Value != request.DeliveryDate;
+
+        if (reservation.Status == Status.Pending)
+        {
+            if (isPickUpDateChanged && request.PickUpDate < today)
+            {
+                return Result<string>.Failure("Teslim alma tarihi bugünden önce olamaz.");
+            }
+
+            if (isDeliveryDateChanged && request.DeliveryDate < today)
+            {
+                return Result<string>.Failure("Teslim etme tarihi bugünden önce olamaz.");
+            }
         }
 
         var locationId = request.PickUpLocationId ?? claimContext.GetBranchId();
@@ -109,6 +122,7 @@ internal sealed class ReservationUpdateCommandHandler(
 
             var possibleOverlaps = await reservationRepository
                 .Where(r => r.VehicleId == request.VehicleId
+                && r.Id != request.Id
                 && (r.Status.Value == Status.Pending.Value || r.Status.Value == Status.Delivered.Value))
                 .Select(s => new
                 {

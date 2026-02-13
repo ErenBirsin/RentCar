@@ -82,7 +82,11 @@ export default class Grid implements AfterViewInit {
   delete(id: string){
     this.#toast.showSwal('Sil?', 'Kaydı silmek istiyor musunuz?','Sil', () => {
       this.#http.delete(`${this.deleteOptions().url}/${id}`,res => {
-        //toast ile mesaj göster
+        if (typeof res === 'string' && res.trim().length > 0) {
+          this.#toast.showToast('Başarılı', res, 'success');
+        } else {
+          this.#toast.showToast('Başarılı', 'Kayıt başarıyla silindi', 'success');
+        }
         this.result.reload();
       });
     })

@@ -1,4 +1,4 @@
 ﻿namespace RentCarServer.Domain.Reservations.ValueObjects;
 public sealed record PaymentInformation(
-    string CartNumber,
-    string Owner);
+    string? CartNumber,
+    string? Owner);

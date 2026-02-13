@@ -48,6 +48,7 @@ internal sealed class ReservationConfiguration : IEntityTypeConfiguration<Reserv
             {
                 x.ToTable("PickUpForm_Note");
             });
+            modelBuilder.Navigation(i => i.Note).IsRequired(false);
         });
         builder.OwnsOne(p => p.DeliveryForm, modelBuilder =>
         {
@@ -71,6 +72,10 @@ internal sealed class ReservationConfiguration : IEntityTypeConfiguration<Reserv
             {
                 x.ToTable("DeliveryForm_Note");
             });
+            modelBuilder.Navigation(i => i.Note).IsRequired(false);
         });
+        builder.Navigation(p => p.PaymentInformation).IsRequired(false);
+        builder.Navigation(p => p.PickUpForm).IsRequired();
+        builder.Navigation(p => p.DeliveryForm).IsRequired();
     }
 }

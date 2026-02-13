@@ -70,11 +70,11 @@ public sealed class Reservation : Entity, IAggregate
     public Price ProtectionPackagePrice { get; private set; } = default!;
     public IReadOnlyCollection<ReservationExtra> ReservationExtras => _reservationExtras;
     public Note Note { get; private set; } = default!;
-    public PaymentInformation PaymentInformation { get; private set; } = default!;
+    public PaymentInformation? PaymentInformation { get; private set; }
     public Status Status { get; private set; } = default!;
     public Total Total { get; private set; } = default!;
-    public Form PickUpForm { get; private set; } = default!;
-    public Form DeliveryForm { get; private set; } = default!;
+    public Form? PickUpForm { get; private set; }
+    public Form? DeliveryForm { get; private set; }
 
     public IReadOnlyCollection<ReservationHistory> Histories => _histories;
     public static Reservation Create(

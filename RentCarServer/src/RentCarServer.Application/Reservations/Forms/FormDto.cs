@@ -51,7 +51,9 @@ public static class FormExtensions
                 DeliveryDateTime = s.Entity.DeliveryDateTime.Value,
                 ReservationStatus = s.Entity.Status.Value,
                 CustomerId = s.Entity.CustomerId,
-                Kilometer = type == "pickup" ? s.Entity.PickUpForm.Kilometer.Value : s.Entity.DeliveryForm.Kilometer.Value,
+                Kilometer = type == "pickup"
+                    ? (s.Entity.PickUpForm != null ? s.Entity.PickUpForm.Kilometer.Value : 0)
+                    : (s.Entity.DeliveryForm != null ? s.Entity.DeliveryForm.Kilometer.Value : 0),
                 Customer = new ReservationCustomerDto
                 {
                     Email = s.Customer.Email.Value,
@@ -75,10 +77,18 @@ public static class FormExtensions
                     ImageUrl = s.Vehicle.ImageUrl.Value,
                     Plate = s.Vehicle.Plate.Value
                 },
-                Supplies = type == "pickup" ? s.Entity.PickUpForm.Supplies.Select(s => s.Value).ToArray() : s.Entity.DeliveryForm.Supplies.Select(s => s.Value).ToArray(),
-                ImageUrls = type == "pickup" ? s.Entity.PickUpForm.ImageUrls.Select(s => s.Value).ToArray() : s.Entity.DeliveryForm.ImageUrls.Select(s => s.Value).ToArray(),
-                Damages = type == "pickup" ? s.Entity.PickUpForm.Damages : s.Entity.DeliveryForm.Damages,
-                Note = type == "pickup" ? s.Entity.PickUpForm.Note.Value : s.Entity.DeliveryForm.Note.Value
+                Supplies = type == "pickup"
+                    ? (s.Entity.PickUpForm != null ? s.Entity.PickUpForm.Supplies.Select(s => s.Value).ToArray() : Array.Empty<string>())
+                    : (s.Entity.DeliveryForm != null ? s.Entity.DeliveryForm.Supplies.Select(s => s.Value).ToArray() : Array.Empty<string>()),
+                ImageUrls = type == "pickup"
+                    ? (s.Entity.PickUpForm != null ? s.Entity.PickUpForm.ImageUrls.Select(s => s.Value).ToArray() : Array.Empty<string>())
+                    : (s.Entity.DeliveryForm != null ? s.Entity.DeliveryForm.ImageUrls.Select(s => s.Value).ToArray() : Array.Empty<string>()),
+                Damages = type == "pickup"
+                    ? (s.Entity.PickUpForm != null ? s.Entity.PickUpForm.Damages : Array.Empty<Damage>())
+                    : (s.Entity.DeliveryForm != null ? s.Entity.DeliveryForm.Damages : Array.Empty<Damage>()),
+                Note = type == "pickup"
+                    ? (s.Entity.PickUpForm != null ? s.Entity.PickUpForm.Note.Value : string.Empty)
+                    : (s.Entity.DeliveryForm != null ? s.Entity.DeliveryForm.Note.Value : string.Empty)
             });
         return res;
     }
