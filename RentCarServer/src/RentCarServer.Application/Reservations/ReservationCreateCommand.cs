@@ -288,7 +288,7 @@ internal sealed class ReservationCreateCommandHandler(
         reservationRepository.Add(reservation);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return "Rezervasyon başarıyla oluşturuldu";
+        return reservation.ReservationNumber.Value;
     }
 }
 

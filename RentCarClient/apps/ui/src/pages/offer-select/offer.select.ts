@@ -8,6 +8,7 @@ import { BranchModel } from '@shared/lib/models/branch.model';
 import { initialReservation } from '@shared/lib/models/reservation.model';
 import { ReservationState } from '../services/reservation.state';
 import { Router } from '@angular/router';
+import { FlexiToastService } from 'flexi-toast';
 
 @Component({
   imports: [FormsModule, CommonModule],
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
 export default class OfferSelect {
   readonly #http = inject(HttpService);
   readonly #router = inject(Router);
+  readonly #toast = inject(FlexiToastService);
 
   // Form fields
   readonly pickUpLocationId = signal<string>('');
@@ -102,7 +104,8 @@ export default class OfferSelect {
     const deliveryDateTime = new Date(`${this.deliveryDate()}T${this.deliveryTime()}`);
     const diffMs = deliveryDateTime.getTime() - pickUpDateTime.getTime();
     if(diffMs <= 0){
-      this.totalDay.set(0);
+      // Aynı tarih/saat veya hatalı girişlerde minimum 1 gün kabul et
+      this.totalDay.set(1);
       return;
     }
     const oneDayMs = 24 * 60 * 60 * 1000;
@@ -165,6 +168,14 @@ export default class OfferSelect {
   }
 
   goToProtectionPackages() {
+    const reservation = this.#reservationState.get()();
+    const hasSelectedVehicle = !!this.selectedVehicle()?.id || !!reservation.vehicleId;
+
+    if (!hasSelectedVehicle) {
+      this.#toast.showToast('Uyarı', 'Lütfen önce araç seçimi yapınız.', 'warning');
+      return;
+    }
+
     this.#router.navigate(['/protection-packages']);
   }
 

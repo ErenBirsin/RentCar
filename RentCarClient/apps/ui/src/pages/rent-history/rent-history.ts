@@ -129,7 +129,8 @@ export default class RentHistory {
 
     if (!s) return 'bg-secondary';
 
-    if (s.includes('teslim') || s.includes('tamam')) return 'bg-success';
+    if (s.includes('teslim')) return 'status-delivered';
+    if (s.includes('tamam')) return 'bg-success';
     if (s.includes('bekliyor') || s.includes('pending') || s.includes('onay')) return 'bg-warning text-dark';
     if (s.includes('iptal') || s.includes('cancel')) return 'bg-danger';
     if (s.includes('aktif') || s.includes('active')) return 'bg-primary';

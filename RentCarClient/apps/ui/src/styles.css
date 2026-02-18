@@ -6681,11 +6681,6 @@ html {
     position: absolute;
     top: 12px;
     right: 12px;
-    padding: 6px;
-    border-radius: 999px;
-    background: rgba(108, 117, 125, 0.12);
-    border: 1px solid rgba(108, 117, 125, 0.18);
-    backdrop-filter: blur(8px);
 }
 
 .rental-status-wrap .badge {
@@ -6693,6 +6688,11 @@ html {
     padding: 0.45rem 0.75rem;
     font-weight: 700;
     letter-spacing: 0.2px;
+}
+
+.rental-status-wrap .badge.status-delivered {
+    background-color: #0d6efd !important;
+    color: #fff !important;
 }
 
 .rental-card .rental-vehicle img {
