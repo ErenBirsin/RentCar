@@ -36,7 +36,11 @@
             <span>+90{{ item.customer.phoneNumber | mask: '(000) 000 00 00' }}</span>
         </ng-template>
     </flexi-grid-column>
-    <flexi-grid-column field="totalDay" title="Gün" filterType="number" textAlign="center"/>
+        <flexi-grid-column field="totalDay" title="Gün" filterType="number" textAlign="center">
+      <ng-template flexiGridCellTemplate let-item>
+        <span>{{item.totalDay}}</span>
+      </ng-template>
+    </flexi-grid-column>
     <flexi-grid-column title="Araç Resmi">
         <ng-template flexiGridCellTemplate let-item>
             <img
@@ -48,7 +52,11 @@
     </flexi-grid-column>
     <flexi-grid-column field="vehicleBrand" title="Marka"/>
     <flexi-grid-column field="vehicleModel" title="Model"/>
-    <flexi-grid-column field="vehicleModelYear" title="Model Yılı" filterType="number"/>
+        <flexi-grid-column field="vehicleModelYear" title="Model Yılı" filterType="number">
+      <ng-template flexiGridCellTemplate let-item>
+        <span>{{item.vehicleModelYear}}</span>
+      </ng-template>
+    </flexi-grid-column>
     <flexi-grid-column field="vehicleColor" title="Renk"/>
     <flexi-grid-column field="vehicleCategoryName" title="Kategori"/>
     <flexi-grid-column
