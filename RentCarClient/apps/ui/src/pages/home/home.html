@@ -10,7 +10,12 @@
                                 Bakımlı araçlar, şeffaf fiyatlandırma ve 7/24 destek ile yolculuğunu güvenle planla.
                             </p>
                             <div class="d-flex flex-wrap gap-3">
-                                <a routerLink="/offer-select" class="btn btn-light btn-lg fw-bold px-4">
+                                <a role="button"
+                                   tabindex="0"
+                                   (click)="goToOfferSelect()"
+                                   (keyup.enter)="goToOfferSelect()"
+                                   (keyup.space)="goToOfferSelect()"
+                                   class="btn btn-light btn-lg fw-bold px-4">
                                     <i class="bi bi-car-front me-2"></i>
                                     Araçları İncele
                                 </a>
@@ -197,7 +202,12 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <a routerLink="/offer-select" class="btn btn-primary btn-lg fw-bold px-4">
+                <a role="button"
+                   tabindex="0"
+                   (click)="goToOfferSelect()"
+                   (keyup.enter)="goToOfferSelect()"
+                   (keyup.space)="goToOfferSelect()"
+                   class="btn btn-primary btn-lg fw-bold px-4">
                     Araçları İncele
                 </a>
             </div>
@@ -221,7 +231,7 @@
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                         </div>
-                        <p class="testimonial-text">“Aracı teslim alma ve iade süreci çok hızlıydı. Fiyatlar net, sürpriz yok.”</p>
+                        <p class="testimonial-text">"Aracı teslim alma ve iade süreci çok hızlıydı. Fiyatlar net, sürpriz yok."</p>
                         <div class="testimonial-user">
                             <div class="user-badge">EA</div>
                             <div>
@@ -240,7 +250,7 @@
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                         </div>
-                        <p class="testimonial-text">“Müşteri hizmetleri 7/24 gerçekten yardımcı oldu. Yeni ve temiz araçlar.”</p>
+                        <p class="testimonial-text">"Müşteri hizmetleri 7/24 gerçekten yardımcı oldu. Yeni ve temiz araçlar."</p>
                         <div class="testimonial-user">
                             <div class="user-badge">MK</div>
                             <div>
@@ -259,7 +269,7 @@
                             <i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
                         </div>
-                        <p class="testimonial-text">“Uygulama kullanımı çok kolay. Kısa sürede rezervasyon yaptım, çok memnun kaldım.”</p>
+                        <p class="testimonial-text">"Uygulama kullanımı çok kolay. Kısa sürede rezervasyon yaptım, çok memnun kaldım."</p>
                         <div class="testimonial-user">
                             <div class="user-badge">SA</div>
                             <div>

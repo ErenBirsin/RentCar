@@ -170,7 +170,7 @@
                   </div>
               </div>
 
-              <div *ngIf="!loading() && filteredVehicles().length === 0" class="col-12">
+              <div *ngIf="hasSearched() && !loading() && filteredVehicles().length === 0" class="col-12">
                   <div class="alert alert-warning">Seçtiğiniz tarihlerde araç bulunamadı.</div>
               </div>
 

@@ -60,6 +60,7 @@ export default class OfferSelect {
 
   readonly vehicles = signal<VehicleModel[]>([]);
   readonly loading = signal<boolean>(false);
+  readonly hasSearched = signal<boolean>(false);
   readonly totalDay = signal<number>(1);
 
 
@@ -86,6 +87,7 @@ export default class OfferSelect {
     };
 
     this.loading.set(true);
+    this.hasSearched.set(true);
     this.calculateDayDifference();
 
     this.#http.post<VehicleModel[]>('/rent/reservations/vehicle-getall', payload, (res) => {
@@ -104,8 +106,7 @@ export default class OfferSelect {
     const deliveryDateTime = new Date(`${this.deliveryDate()}T${this.deliveryTime()}`);
     const diffMs = deliveryDateTime.getTime() - pickUpDateTime.getTime();
     if(diffMs <= 0){
-      // Aynı tarih/saat veya hatalı girişlerde minimum 1 gün kabul et
-      this.totalDay.set(1);
+      this.totalDay.set(0);
       return;
     }
     const oneDayMs = 24 * 60 * 60 * 1000;
