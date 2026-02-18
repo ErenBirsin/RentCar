@@ -24,7 +24,7 @@ interface ReservationStatusPoint {
 }
 
 interface MonthlyRevenuePoint {
-  month: string; // yyyy-MM
+  month: string;
   total: number;
 }
 
@@ -52,7 +52,7 @@ export default class Dashboard implements OnInit, AfterViewInit{
 
   readonly januaryRevenueResult = httpResource<Result<number>>(() => {
     const year = new Date().getFullYear();
-    return `/rent/dashboard/monthly-revenue?year=${year}&month=1`;
+    return `/rent/dashboard/monthly-revenue?year=${year}&month=2`;
   });
   readonly januaryRevenue = computed(() => this.januaryRevenueResult.value()?.data ?? 0);
   readonly januaryRevenueLoading = computed(() => this.januaryRevenueResult.isLoading());

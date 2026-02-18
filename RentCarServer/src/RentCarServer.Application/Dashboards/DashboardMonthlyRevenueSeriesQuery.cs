@@ -5,9 +5,7 @@ using TS.MediatR;
 using TS.Result;
 
 namespace RentCarServer.Application.Dashboards;
-
-public sealed record DashboardMonthlyRevenueSeriesDto(string Month, decimal Total); // Month: yyyy-MM
-
+public sealed record DashboardMonthlyRevenueSeriesDto(string Month, decimal Total);
 public sealed record DashboardMonthlyRevenueSeriesQuery(int Months) : IRequest<Result<List<DashboardMonthlyRevenueSeriesDto>>>;
 
 internal sealed class DashboardMonthlyRevenueSeriesQueryHandler(
@@ -16,8 +14,8 @@ internal sealed class DashboardMonthlyRevenueSeriesQueryHandler(
 {
     public async Task<Result<List<DashboardMonthlyRevenueSeriesDto>>> Handle(DashboardMonthlyRevenueSeriesQuery request, CancellationToken cancellationToken)
     {
-        var now = DateTime.UtcNow;
-        var thisMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var now = DateTime.Now;
+        var thisMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
         var startMonth = thisMonth.AddMonths(-(request.Months - 1));
         var endExclusive = thisMonth.AddMonths(1);
 
@@ -25,11 +23,11 @@ internal sealed class DashboardMonthlyRevenueSeriesQueryHandler(
             .GetAll()
             .Where(r => r.IsActive == true)
             .Where(r => r.Status.Value == Status.Completed.Value)
-            .Where(r => r.DeliveryDateTime.Value >= startMonth && r.DeliveryDateTime.Value < endExclusive)
+            .Where(r => r.DeliveryDate.Value >= DateOnly.FromDateTime(startMonth) && r.DeliveryDate.Value <= DateOnly.FromDateTime(endExclusive.AddDays(-1)))
             .Select(r => new
             {
-                Year = r.DeliveryDateTime.Value.Year,
-                Month = r.DeliveryDateTime.Value.Month,
+                Year = r.DeliveryDate.Value.Year,
+                Month = r.DeliveryDate.Value.Month,
                 Total = (decimal)r.Total.Value
             })
             .GroupBy(x => new { x.Year, x.Month })
@@ -54,4 +52,3 @@ internal sealed class DashboardMonthlyRevenueSeriesQueryHandler(
         return list;
     }
 }
-
