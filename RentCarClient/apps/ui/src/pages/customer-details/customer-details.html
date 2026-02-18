@@ -281,9 +281,11 @@
                          id="cvv"
                          [(ngModel)]="customerForm().cvv"
                          name="cvv"
-                         [class.is-invalid]="showErrors() && !customerForm().cvv"
+                         [class.is-invalid]="showErrors() && ((customerForm().cvv?.length ?? 0) !== 3)"
                          placeholder="CVV"
-                         maxlength="4"
+                         maxlength="3"
+                         inputmode="numeric"
+                         pattern="[0-9]{3}"
                          required>
                   <span class="input-group-text">
                     <i class="bi bi-info-circle"
@@ -291,7 +293,7 @@
                        title="Kartınızın arkasındaki 3 haneli güvenlik kodu"></i>
                   </span>
                 </div>
-                @if (showErrors() && !customerForm().cvv) {
+                @if (showErrors() && ((customerForm().cvv?.length ?? 0) !== 3)) {
                   <div class="invalid-feedback">
                     Lütfen CVV kodunu giriniz.
                   </div>

@@ -82,7 +82,9 @@ public sealed class PublicReservationCreateCommandValidator : AbstractValidator<
 
         RuleFor(x => x.CreditCartInformation.CCV)
            .NotEmpty()
-           .WithMessage("CCV boş bırakılamaz.");
+           .WithMessage("CCV boş bırakılamaz.")
+           .Matches(@"^\d{3}$")
+           .WithMessage("CCV 3 haneli olmalıdır.");
 
         RuleFor(x => x.PickUpDate)
             .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))

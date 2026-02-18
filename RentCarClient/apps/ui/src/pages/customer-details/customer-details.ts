@@ -49,6 +49,7 @@ export default class CustomerDetails {
 
   readonly isFormValid = computed(() => {
     const form = this.customerForm();
+    const normalizedCvv = (form.cvv ?? '').trim();
     return form.firstName &&
            form.lastName &&
            form.identityNumber &&
@@ -59,7 +60,7 @@ export default class CustomerDetails {
            form.cardNumber &&
            form.cardMonth &&
            form.cardYear &&
-           form.cvv;
+           /^\d{3}$/.test(normalizedCvv);
   });
 
   updateField(field: string, value: string) {

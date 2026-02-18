@@ -76,7 +76,9 @@ public sealed class ReservationCreateCommandValidator : AbstractValidator<Reserv
 
         RuleFor(x => x.CreditCartInformation.CCV)
            .NotEmpty()
-           .WithMessage("CCV boş bırakılamaz.");
+           .WithMessage("CCV boş bırakılamaz.")
+           .Matches(@"^\d{3}$")
+           .WithMessage("CCV 3 haneli olmalıdır.");
 
         RuleFor(x => x.PickUpDate)
             .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
@@ -106,7 +108,9 @@ public sealed class ReservationCreateForMeCommandValidator : AbstractValidator<R
 
         RuleFor(x => x.CreditCartInformation.CCV)
            .NotEmpty()
-           .WithMessage("CCV boş bırakılamaz.");
+           .WithMessage("CCV boş bırakılamaz.")
+           .Matches(@"^\d{3}$")
+           .WithMessage("CCV 3 haneli olmalıdır.");
 
         RuleFor(x => x.PickUpDate)
             .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Today))
