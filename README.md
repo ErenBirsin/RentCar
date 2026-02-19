@@ -1,4 +1,4 @@
-# RentCar
+<img width="1720" height="1314" alt="Admin Giriş " src="https://github.com/user-attachments/assets/fd987ed4-c3e1-48d2-99a1-63d460e0aac2" /># RentCar
 
 <p align="center">
   <strong>Modern araç kiralama süreçlerini uçtan uca yöneten full-stack proje</strong>
@@ -76,35 +76,36 @@ Operasyon ekibi için merkezi yönetim arayüzü:
 
 | Ekran | Görsel |
 |-------|--------|
-| Admin Giriş | ![Admin Giriş](../RentCarEkran Görüntüleri/Admin/Admin%20Giri%C5%9F%20.png) |
-| Dashboard | ![Dashboard](../RentCarEkran Görüntüleri/Admin/Dashboard.png) |
-| Araçlar | ![Araçlar](../RentCarEkran Görüntüleri/Admin/Ara%C3%A7lar.png) |
-| Araç Ekle (1) | ![Araç Ekle 1](../RentCarEkran Görüntüleri/Admin/Ara%C3%A7%20Ekle%201.png) |
-| Araç Ekle (2) | ![Araç Ekle 2](../RentCarEkran Görüntüleri/Admin/Ara%C3%A7%20Ekle%202%20.png) |
-| Araç Detay | ![Araç Detay](../RentCarEkran Görüntüleri/Admin/Ara%C3%A7%20Detay.png) |
-| Rezervasyonlar | ![Rezervasyonlar](../RentCarEkran Görüntüleri/Admin/Rezervasyonlar%20.png) |
-| Rezervasyon Detayı | ![Rezervasyon Detayı](../RentCarEkran Görüntüleri/Admin/Rezervasyon%20Detay%C4%B1.png) |
-| Rezervasyon Ekle (1) | ![Rezervasyon Ekle 1](../RentCarEkran Görüntüleri/Admin/Rezervasyon%20Ekle%201%20.png) |
-| Rezervasyon Ekle (2) | ![Rezervasyon Ekle 2](../RentCarEkran Görüntüleri/Admin/Rezervasyon%20Ekle%202%20.png) |
-| Araç Teslim Formu | ![Araç Teslim Formu](../RentCarEkran Görüntüleri/Admin/Ara%C3%A7%20Teslim%20Formu%20.png) |
-| Araç İade Formu | ![Araç İade Formu](../RentCarEkran Görüntüleri/Admin/Ara%C3%A7%20%C4%B0ade%20Formu.png) |
-| Şifre Sıfırlama | ![Şifre Sıfırlama](../RentCarEkran Görüntüleri/Admin/%C5%9Eifre%20S%C4%B1f%C4%B1rlama%202%20.png) |
-| Şifre Sıfırlama Bağlantısı | ![Şifre Sıfırlama Bağlantısı](../RentCarEkran Görüntüleri/Admin/%C5%9Eifre%20S%C4%B1f%C4%B1rlama%20Ba%C4%9Flant%C4%B1s%C4%B1.png) |
+| Admin Giriş | ![Admin Giriş](<img width="1720" height="1314" alt="Admin Giriş " src="https://github.com/user-attachments/assets/23550eab-c2c4-4e66-9322-7daa42cf88d5" />) |
+| Dashboard | ![Dashboard](<img width="2850" height="1582" alt="Dashboard" src="https://github.com/user-attachments/assets/859db5c4-a98a-4c0d-9429-afd15d86673e" />) |
+| Araçlar | ![Araçlar](<img width="2880" height="1590" alt="Araçlar" src="https://github.com/user-attachments/assets/b435276d-4f8f-4bb0-942d-83d0a4b45381" />) |
+| Araç Ekle (1) | ![Araç Ekle 1](<img width="2848" height="1584" alt="Araç Ekle 1" src="https://github.com/user-attachments/assets/e3282e4e-bf40-4ba8-837c-ff48f7b262ee" />) |
+| Araç Ekle (2) | ![Araç Ekle 2](<img width="2848" height="1578" alt="Araç Ekle 2 " src="https://github.com/user-attachments/assets/2986bd3a-2166-422f-b769-dd2fc77762a6" />) |
+| Araç Detay | ![Araç Detay](<img width="2846" height="1584" alt="Araç Detay" src="https://github.com/user-attachments/assets/ae6c9d98-ecb8-49df-b3fd-3dbd6c6976a8" />) |
+| Rezervasyonlar | ![Rezervasyonlar](<img width="2848" height="1584" alt="Rezervasyonlar " src="https://github.com/user-attachments/assets/6a630d1e-cd3d-4596-981f-59c221ac51de" />) |
+| Rezervasyon Detayı | ![Rezervasyon Detayı](<img width="2858" height="1584" alt="Rezervasyon Detayı" src="https://github.com/user-attachments/assets/40aece33-4357-4bcf-96f4-ff731668635b" />) |
+| Rezervasyon Ekle (1) | ![Rezervasyon Ekle 1](<img width="2854" height="1584" alt="Rezervasyon Ekle 1 " src="https://github.com/user-attachments/assets/b0a9b4f0-8d14-410d-b2aa-085e271506a4" />) |
+| Rezervasyon Ekle (2) | ![Rezervasyon Ekle 2](<img width="2852" height="1584" alt="Rezervasyon Ekle 2 " src="https://github.com/user-attachments/assets/123814d7-b711-428a-969e-9ad1d86e61c7" />) |
+| Araç Teslim Formu | ![Araç Teslim Formu](<img width="2850" height="1582" alt="Araç Teslim Formu " src="https://github.com/user-attachments/assets/2c6d32aa-8740-41d2-ad5a-0e9010d0bbe3" />) |
+| Araç İade Formu | ![Araç İade Formu](<img width="2850" height="1584" alt="Araç İade Formu" src="https://github.com/user-attachments/assets/644bd08a-9bc0-4514-9d68-79bf734f4e7a" />) |
+| Şifre Sıfırlama Bağlantısı | ![Şifre Sıfırlama Bağlantısı](<img width="2876" height="1588" alt="Şifre Sıfırlama Bağlantısı" src="https://github.com/user-attachments/assets/aeb2ad9c-6c0f-4aad-909d-f7b45fada6ff" />) |
+| Şifre Sıfırlama | ![Şifre Sıfırlama](<img width="2852" height="1592" alt="Şifre Sıfırlama 2 " src="https://github.com/user-attachments/assets/427e0a8e-3c62-472a-a6fa-661e381147be" />) |
+
 
 ### Müşteri Uygulaması (UI)
 
 | Ekran | Görsel |
 |-------|--------|
-| Giriş Yap | ![Giriş Yap](../RentCarEkran Görüntüleri/UI/Giri%C5%9F%20Yap.png) |
-| Kayıt Ol | ![Kayıt Ol](../RentCarEkran Görüntüleri/UI/Kay%C4%B1t%20Ol%20.png) |
-| Araç Seçimi | ![Araç Seçimi](../RentCarEkran Görüntüleri/UI/Ara%C3%A7%20Se%C3%A7imi%201%20.png) |
-| Güvence Paketi Seçimi | ![Güvence Paketi Seçimi](../RentCarEkran Görüntüleri/UI/G%C3%BCvence%20Paketi%20Se%C3%A7imi%202%20.png) |
-| Ücret ve Ekstra Seçimi | ![Ücret ve Ekstra Seçimi](../RentCarEkran Görüntüleri/UI/%C3%9Ccret%20%26%20Ekstra%20Se%C3%A7imi%203.png) |
-| Sürücü Detay | ![Sürücü Detay](../RentCarEkran Görüntüleri/UI/S%C3%BCrc%C3%BC%20Detay%204%20.png) |
-| Rezervasyon Onay | ![Rezervasyon Onay](../RentCarEkran Görüntüleri/UI/Rezervasyon%20Onay%205%20.png) |
-| Kiralama Geçmişi | ![Kiralama Geçmişi](../RentCarEkran Görüntüleri/UI/Araba%20Kiralama%20Ge%C3%A7mi%C5%9Fi.png) |
-| Şifre Değiştir | ![Şifre Değiştir](../RentCarEkran Görüntüleri/UI/%C5%9Eifre%20De%C4%9Fi%C5%9Ftir.png) |
-| Şifremi Unuttum | ![Şifremi Unuttum](../RentCarEkran Görüntüleri/UI/%C5%9Eifremi%20unuttum%20eposta%20giri%C5%9Fi.png) |
+| Giriş Yap | ![Giriş Yap](<img width="2880" height="1582" alt="Giriş Yap" src="https://github.com/user-attachments/assets/363de725-cfff-432b-bdeb-b0669c77ba96" />) |
+| Kayıt Ol | ![Kayıt Ol](<img width="2880" height="1578" alt="Kayıt Ol " src="https://github.com/user-attachments/assets/c9fc1ed8-6e3a-42e0-9d67-a3e84b40b1a7" />) |
+| Araç Seçimi | ![Araç Seçimi](<img width="2876" height="1580" alt="Araç Seçimi 1 " src="https://github.com/user-attachments/assets/20b8f255-bb6e-4c15-b6e0-387b049cacfe" />) |
+| Güvence Paketi Seçimi | ![Güvence Paketi Seçimi](<img width="2874" height="1584" alt="Güvence Paketi Seçimi 2 " src="https://github.com/user-attachments/assets/3a9f509e-ab90-4e1f-8ffc-fbe6cd39c9ea" />) |
+| Ücret ve Ekstra Seçimi | ![Ücret ve Ekstra Seçimi](<img width="2866" height="1580" alt="Ücret   Ekstra Seçimi 3" src="https://github.com/user-attachments/assets/0bc64fed-e4bc-470a-aa5a-593d748da8bc" />) |
+| Sürücü Detay | ![Sürücü Detay](<img width="2872" height="1580" alt="Sürücü Detay 4 " src="https://github.com/user-attachments/assets/fd52a362-1284-4371-a9ef-18c1437e5b8f" />) |
+| Rezervasyon Onay | ![Rezervasyon Onay](<img width="2880" height="1578" alt="Rezervasyon Onay 5 " src="https://github.com/user-attachments/assets/a6d68cff-9605-4d09-8a91-e76680c3b3bc" />) |
+| Kiralama Geçmişi | ![Kiralama Geçmişi](<img width="2880" height="1584" alt="Araba Kiralama Geçmişi" src="https://github.com/user-attachments/assets/f607d1c5-71f4-42f5-baeb-60e0f05024eb" />) |
+| Şifre Değiştir | ![Şifre Değiştir](<img width="2880" height="1570" alt="Şifre Değiştir" src="https://github.com/user-attachments/assets/01a04c15-5e58-4a9d-8c78-fb9852056a0e" />) |
+| Şifremi Unuttum | ![Şifremi Unuttum](<img width="660" height="622" alt="Şifremi unuttum eposta girişi" src="https://github.com/user-attachments/assets/802a578e-161b-4789-a3d8-9745285079a3" />) |
 
 ---
 
